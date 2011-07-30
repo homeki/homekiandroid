@@ -23,6 +23,6 @@ public abstract class Device {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public abstract View getContentView(Context context);
+	public abstract int getContentView();
 	
 }

@@ -1,9 +1,11 @@
 package device;
 
+import com.homekey.android.R;
 import com.homekey.android.communication.CommandSendingService;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 public class Lamp extends Device {
 	enum Status{
@@ -47,6 +49,11 @@ public class Lamp extends Device {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
+	}
+
+	@Override
+	public int getContentView() {
+		return R.layout.lamp;
 	}
 	
 }

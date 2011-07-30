@@ -13,7 +13,7 @@ public class InspectDeviceActivity extends Activity {
 //        SharedPreferenceHelper.putStringValue(this, "server", "192.168.0.65:5000");
         Intent i = getIntent();
         Device d = (Device)i.getParcelableExtra("device");
-        setContentView(d.getContentView(this));
+        setContentView(d.getContentView());
         
 //        d.startActivity();
 //        startActivity(new Intent(this, DeviceList.class));

@@ -1,5 +1,10 @@
 package device;
 
+import com.homekey.android.R;
+
+import android.content.Context;
+import android.view.View;
+
 public class Temperature extends Device {
 	float value;
 	
@@ -22,6 +27,11 @@ public class Temperature extends Device {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
+	}
+
+	@Override
+	public int getContentView() {
+		return R.layout.temp;
 	}
 	
 }
