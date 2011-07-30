@@ -5,10 +5,12 @@ import com.homekey.android.communication.CommandSendingService;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 public class Lamp extends Device {
-	enum Status{
+	enum Status {
 		ON, OFF, LIMBO
 	}
 	
@@ -20,13 +22,13 @@ public class Lamp extends Device {
 	
 	public Lamp(JsonDevice d) {
 		this();
-		active = d.active;	
+		active = d.active;
 		added = d.added;
 		id = d.id;
 		name = d.name;
 	}
 	
-	public void switchOn(Context context){
+	public void switchOn(Context context) {
 		status = Status.ON;
 		Intent intent = new Intent(context, CommandSendingService.class);
 		intent.setAction(CommandSendingService.turnLampOn);
@@ -50,10 +52,20 @@ public class Lamp extends Device {
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
 	}
-
+	
 	@Override
-	public int getContentView() {
-		return R.layout.lamp;
+	public View getView(Context context) {
+		View v = LayoutInflater.from(context).inflate(R.layout.lamp, null);
+		TextView deviceName = (TextView) v.findViewById(R.id.lamp_devicename);
+		TextView deviceDesc = (TextView) v.findViewById(R.id.lamp_devicedesc);
+		TextView deviceTemp = (TextView) v.findViewById(R.id.lamp_temp);
+		
+		deviceTemp.setText(String.format("The lamp is %s.", getStatus() ? "on" : "off"));
+		
+		deviceName.setText(name);
+		deviceDesc.setText("Temperature");
+		
+		return v;
 	}
 	
 }

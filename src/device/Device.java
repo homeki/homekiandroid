@@ -3,6 +3,7 @@ package device;
 import java.util.Date;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class Device {
@@ -23,6 +24,6 @@ public abstract class Device {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public abstract int getContentView();
+	public abstract View getView(Context context);
 	
 }

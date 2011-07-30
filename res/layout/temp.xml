@@ -10,4 +10,8 @@
 		android:id="@+id/inspdev_devicedesc" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="Some Device Description"
 		android:layout_gravity="center_horizontal" android:gravity="center_horizontal"></TextView>
+	<TextView android:gravity="center_horizontal"
+		android:layout_gravity="center_horizontal" android:textAppearance="?android:attr/textAppearanceMedium"
+		android:id="@+id/inspdev_temp" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Some Temp Description" android:layout_marginTop="100dp"></TextView>
 </LinearLayout>

@@ -4,6 +4,7 @@ import device.Device;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class InspectDeviceActivity extends Activity {
     /** Called when the activity is first created. */
@@ -13,7 +14,8 @@ public class InspectDeviceActivity extends Activity {
 //        SharedPreferenceHelper.putStringValue(this, "server", "192.168.0.65:5000");
         Intent i = getIntent();
         Device d = (Device)i.getParcelableExtra("device");
-        setContentView(d.getContentView());
+        setContentView(d.getView(this));
+        
         
 //        d.startActivity();
 //        startActivity(new Intent(this, DeviceList.class));
