@@ -16,6 +16,7 @@ import device.Device;
 import device.Dimmer;
 import device.JsonDevice;
 import device.Lamp;
+import device.Temperature;
 
 public class GetDevices extends AsyncTask<Void, Void, List<JsonDevice>> {
 
@@ -49,7 +50,9 @@ public class GetDevices extends AsyncTask<Void, Void, List<JsonDevice>> {
 				mListAdapter.add(new Dimmer(d));
 			} else if (d.type.contains("Switch")) {
 				mListAdapter.add(new Lamp(d));
-			}		
+			} else if (d.type.contains("Temp")) {
+				mListAdapter.add(new Temperature(d));
+			}
 		}
 	}
 }
