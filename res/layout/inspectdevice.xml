@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="fill_parent" android:gravity="center_horizontal" android:layout_width="fill_parent" android:id="@+id/linearLayout1">
+	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/inspdev_devicename" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Device Name"
+		android:layout_gravity="center_horizontal" android:gravity="center_horizontal"></TextView>
+			<TextView android:textAppearance="?android:attr/textAppearanceSmall"
+		android:id="@+id/inspdev_devicedesc" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Some Device Description"
+		android:layout_gravity="center_horizontal" android:gravity="center_horizontal"></TextView>
+</LinearLayout>

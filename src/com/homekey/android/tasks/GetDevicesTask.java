@@ -17,12 +17,12 @@ import device.Dimmer;
 import device.JsonDevice;
 import device.Lamp;
 
-public class GetDevices extends AsyncTask<Void, Void, List<JsonDevice>> {
+public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 
 	private final ArrayAdapter<Device> mListAdapter;
 	private final Context c;
 	
-	public GetDevices(Context c, ArrayAdapter<Device> listAdapter){
+	public GetDevicesTask(Context c, ArrayAdapter<Device> listAdapter){
 		mListAdapter = listAdapter;
 		this.c = c;
 	}

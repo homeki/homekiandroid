@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.homekey.android.communication.CommandSender;
-import com.homekey.android.tasks.GetDevices;
+import com.homekey.android.tasks.GetDevicesTask;
 
 import device.Device;
 import device.Dimmer;
@@ -45,7 +45,7 @@ public class DeviceList extends ListActivity {
 		
 		setListAdapter(myAdapter);
 		
-		new GetDevices(this, myAdapter).execute();
+		new GetDevicesTask(this, myAdapter).execute();
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnClickListener {
@@ -81,11 +81,13 @@ public class DeviceList extends ListActivity {
 			
 			OnItemClickListener(int position) {
 				mPosition = position;
+				
 			}
 			
 			@Override
 			public void onClick(View arg0) {
-				Log.v("LOG", "onItemClick at position" + mPosition);
+				Log.d("ASDF", getItem(mPosition).toString());
+//				Log.v("LOG", "onItemClick at position" + mPosition);
 			}
 		}
 	}	

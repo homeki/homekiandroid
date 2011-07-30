@@ -2,6 +2,9 @@ package device;
 
 import java.util.Date;
 
+import android.content.Context;
+import android.view.View;
+
 public abstract class Device {
 	public int id;
 	public String name;
@@ -20,5 +23,6 @@ public abstract class Device {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public abstract View getContentView(Context context);
 	
 }
