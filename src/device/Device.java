@@ -3,7 +3,6 @@ package device;
 import java.util.Date;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class Device {
