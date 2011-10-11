@@ -1,13 +1,12 @@
 package com.homekey.android.communication;
 
 import java.io.IOException;
-import java.net.URL;
-
-import com.homekey.android.SharedPreferenceHelper;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
+
+import com.homekey.android.SharedPreferenceHelper;
 
 public class CommandSendingService extends IntentService {
 	public static String turnLampOn = "switch.lamp.on";
@@ -36,12 +35,12 @@ public class CommandSendingService extends IntentService {
 			int level = intent.getIntExtra("level", -1);
 			command = String.format("%s/set/level?id=%d&level=%d", address, id, level);
 		}
-//		try {
-//			URL url = new URL(command);
-//			CommandSender.sendCommand(url);
-//		} catch (IOException e) {
-//			Log.d("LOG", command);
-//			e.printStackTrace();
-//		}
+		
+		try {
+			CommandSender.sendCommand(command);
+		} catch (IOException e) {
+			Log.d("LOG", command);
+			e.printStackTrace();
+		}
 	}
 }
