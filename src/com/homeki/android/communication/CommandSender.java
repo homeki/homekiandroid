@@ -1,4 +1,4 @@
-package com.homekey.android.communication;
+package com.homeki.android.communication;
 
 import java.io.BufferedReader;
 import java.io.IOException;

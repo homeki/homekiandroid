@@ -1,12 +1,13 @@
-package com.homekey.android;
+package com.homeki.android;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.homeki.android.device.Device;
+
 import android.app.Application;
 import android.widget.ArrayAdapter;
-import device.Device;
 
 public class HomekiApplication extends Application {
 	List<Device> list = new ArrayList<Device>();

@@ -1,4 +1,4 @@
-package device;
+package com.homeki.android.device;
 
 import android.content.Context;
 

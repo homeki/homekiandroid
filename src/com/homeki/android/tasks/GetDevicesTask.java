@@ -1,4 +1,4 @@
-package com.homekey.android.tasks;
+package com.homeki.android.tasks;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -9,14 +9,14 @@ import android.os.AsyncTask;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.homekey.android.HomekiApplication;
-import com.homekey.android.commands.Commands;
+import com.homeki.android.HomekiApplication;
+import com.homeki.android.commands.Commands;
+import com.homeki.android.device.Device;
+import com.homeki.android.device.Dimmer;
+import com.homeki.android.device.JsonDevice;
+import com.homeki.android.device.Lamp;
+import com.homeki.android.device.Temperature;
 
-import device.Device;
-import device.Dimmer;
-import device.JsonDevice;
-import device.Lamp;
-import device.Temperature;
 
 public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 	private final HomekiApplication ha;

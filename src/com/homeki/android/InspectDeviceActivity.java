@@ -1,9 +1,10 @@
-package com.homekey.android;
+package com.homeki.android;
+
+import com.homeki.android.device.Device;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import device.Device;
 
 public class InspectDeviceActivity extends Activity {
     /** Called when the activity is first created. */

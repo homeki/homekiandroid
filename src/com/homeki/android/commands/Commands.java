@@ -1,11 +1,11 @@
-package com.homekey.android.commands;
+package com.homeki.android.commands;
 
 import java.io.IOException;
 
 import android.content.Context;
 
-import com.homekey.android.SharedPreferenceHelper;
-import com.homekey.android.communication.CommandSender;
+import com.homeki.android.SharedPreferenceHelper;
+import com.homeki.android.communication.CommandSender;
 
 public class Commands {
 	
