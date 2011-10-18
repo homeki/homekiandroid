@@ -33,7 +33,7 @@ public class CommandSendingService extends IntentService {
 			command = String.format("%s/set/off?id=%d", address, id);
 		} else if (action.equals(dim)) {
 			int level = intent.getIntExtra("level", -1);
-			command = String.format("%s/set/level?id=%d&level=%d", address, id, level);
+			command = String.format("%s/set/dim?id=%d&level=%d", address, id, level);
 		}
 		
 		try {

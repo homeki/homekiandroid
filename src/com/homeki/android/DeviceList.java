@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,9 +54,14 @@ public class DeviceList extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		list.add(new Lamp());
-		myAdapter.notifyDataSetChanged();
-		Log.d("LOG", "You clicked: " + myAdapter.getItem(position));
+
+		Intent intent = new Intent(this, InspectDeviceActivity.class);
+		intent.putExtra("device", position);
+		startActivity(intent);
+		//		list.add(new Lamp());
+//		myAdapter.notifyDataSetChanged();
+//		Log.d("LOG", "You clicked: " + myAdapter.getItem(position));
+		
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> {

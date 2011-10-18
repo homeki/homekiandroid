@@ -9,7 +9,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
-        SharedPreferenceHelper.putStringValue(this, "server", "192.168.0.107:5000");
+        SharedPreferenceHelper.putStringValue(this, "server", "87.96.244.210:5000");
         
         startActivity(new Intent(this, DeviceList.class));
         finish();

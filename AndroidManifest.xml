@@ -16,5 +16,6 @@
         </activity>
         <service android:name=".communication.CommandSendingService"></service>
         <activity android:name=".DeviceList"></activity>
+        <activity android:name="InspectDeviceActivity"></activity>
     </application>
 </manifest>
