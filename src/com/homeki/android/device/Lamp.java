@@ -1,7 +1,7 @@
-package device;
+package com.homeki.android.device;
 
-import com.homekey.android.R;
-import com.homekey.android.communication.CommandSendingService;
+import com.homeki.android.R;
+import com.homeki.android.communication.CommandSendingService;
 
 import android.content.Context;
 import android.content.Intent;

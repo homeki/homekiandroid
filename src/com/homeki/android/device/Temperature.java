@@ -1,6 +1,6 @@
-package device;
+package com.homeki.android.device;
 
-import com.homekey.android.R;
+import com.homeki.android.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

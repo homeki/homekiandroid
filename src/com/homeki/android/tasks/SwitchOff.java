@@ -1,11 +1,11 @@
-package com.homekey.android.tasks;
+package com.homeki.android.tasks;
 
 import java.io.IOException;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.homekey.android.commands.Commands;
+import com.homeki.android.commands.Commands;
 
 public class SwitchOff extends AsyncTask<Void, Void, String> {
 

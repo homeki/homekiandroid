@@ -1,4 +1,4 @@
-package com.homekey.android;
+package com.homeki.android;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.homekey.android.tasks.GetDevicesTask;
+import com.homeki.android.device.Device;
+import com.homeki.android.device.Lamp;
+import com.homeki.android.tasks.GetDevicesTask;
 
-import device.Device;
-import device.Lamp;
 
 public class DeviceList extends ListActivity {
 	ArrayAdapter<Device> myAdapter;

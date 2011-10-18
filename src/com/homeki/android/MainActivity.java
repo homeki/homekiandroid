@@ -1,4 +1,4 @@
-package com.homekey.android;
+package com.homeki.android;
 
 import android.app.Activity;
 import android.content.Intent;

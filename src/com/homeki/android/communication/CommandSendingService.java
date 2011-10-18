@@ -1,4 +1,4 @@
-package com.homekey.android.communication;
+package com.homeki.android.communication;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.homekey.android.SharedPreferenceHelper;
+import com.homeki.android.SharedPreferenceHelper;
 
 public class CommandSendingService extends IntentService {
 	public static String turnLampOn = "switch.lamp.on";
