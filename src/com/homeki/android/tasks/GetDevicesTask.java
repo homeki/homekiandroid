@@ -17,11 +17,10 @@ import com.homeki.android.device.JsonDevice;
 import com.homeki.android.device.Lamp;
 import com.homeki.android.device.Temperature;
 
-
 public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 	private final HomekiApplication ha;
 	
-	public GetDevicesTask(HomekiApplication ha){
+	public GetDevicesTask(HomekiApplication ha) {
 		this.ha = ha;
 	}
 	
@@ -33,27 +32,28 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Type listType = new TypeToken<List<JsonDevice>>(){}.getType();
+		Type listType = new TypeToken<List<JsonDevice>>() {}.getType();
 		return new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd hh:mm:ss").create().fromJson(s, listType);
 	}
 	
 	@Override
 	protected void onPostExecute(List<JsonDevice> result) {
-		super.onPostExecute(result);
-		List<Device> list = new ArrayList<Device>();
-		for (JsonDevice d : result) {
-			if (d.type.contains("Dimmer")) {
-				Lamp l = new Dimmer(d);
-				l.downloadStatus(ha);
-				list.add(l);
-			} else if (d.type.contains("Switch")) {
-				Lamp l = new Lamp(d);
-				l.downloadStatus(ha);
-				list.add(l);
-			} else if (d.type.contains("Temp")) {
-				list.add(new Temperature(d));
+		if (result != null) {
+			List<Device> list = new ArrayList<Device>();
+			for (JsonDevice d : result) {
+				if (d.type.contains("Dimmer")) {
+					Lamp l = new Dimmer(d);
+					l.downloadStatus(ha);
+					list.add(l);
+				} else if (d.type.contains("Switch")) {
+					Lamp l = new Lamp(d);
+					l.downloadStatus(ha);
+					list.add(l);
+				} else if (d.type.contains("Temp")) {
+					list.add(new Temperature(d));
+				}
 			}
+			ha.updateList(list);
 		}
-		ha.updateList(list);
 	}
 }

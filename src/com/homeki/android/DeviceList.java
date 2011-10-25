@@ -6,8 +6,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.homeki.android.device.Device;
-import com.homeki.android.device.Lamp;
 import com.homeki.android.tasks.GetDevicesTask;
 
 
@@ -85,4 +85,21 @@ public class DeviceList extends ListActivity {
 			return convertView;
 		}
 	}	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs")
+				.setIcon(android.R.drawable.ic_menu_preferences);
+		return(super.onCreateOptionsMenu(menu));
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case Menu.FIRST:
+				startActivity(new Intent(this, EditPreferences.class));
+				return(true);
+		}
+		return(super.onOptionsItemSelected(item));
+	}
 }

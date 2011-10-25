@@ -6,11 +6,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.util.Log;
+
 public class CommandSender {
 	
 	public static String sendCommand(String address) throws IOException {
 		URL url = new URL(address);
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		Log.d("LOG", address);
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 			return processServerResponse(in);

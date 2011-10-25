@@ -28,7 +28,6 @@ public class Lamp extends Device {
 		added = d.added;
 		id = d.id;
 		name = d.name;
-		
 	}
 	
 	public void switchOn(Context context) {
