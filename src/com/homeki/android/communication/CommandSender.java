@@ -12,8 +12,22 @@ public class CommandSender {
 	
 	public static String sendCommand(String address) throws IOException {
 		URL url = new URL(address);
+		
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		Log.d("LOG", address);
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+			return processServerResponse(in);
+		} finally {
+			urlConnection.disconnect();
+		}
+	}
+	
+	public static String postCommand(String address, String value) throws IOException {
+		URL url = new URL(address);
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		urlConnection.setRequestMethod("POST");
+		urlConnection.setRequestProperty("name", value);
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 			return processServerResponse(in);
