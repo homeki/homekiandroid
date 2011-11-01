@@ -1,14 +1,13 @@
 package com.homeki.android.device;
 
-import com.homeki.android.R;
-import com.homeki.android.communication.CommandSendingService;
-
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import com.homeki.android.R;
+import com.homeki.android.tasks.Dim;
 
 public class Dimmer extends Lamp {
 	int level;
@@ -23,11 +22,13 @@ public class Dimmer extends Lamp {
 	
 	public void dim(Context context, int level) {
 		this.level = level;
-		Intent intent = new Intent(context, CommandSendingService.class);
-		intent.setAction(CommandSendingService.dim);
-		intent.putExtra("level", level);
-		intent.putExtra("id", id);
-		context.startService(intent);
+		new Dim(context, id, level).execute();
+//		Intent intent = new Intent(context, CommandSendingService.class);
+//		intent.setAction(CommandSendingService.dim);
+//		intent.putExtra("level", level);
+//		intent.putExtra("id", id);
+//		context.startService(intent);
+		
 	}
 	
 	public boolean getStatus() {

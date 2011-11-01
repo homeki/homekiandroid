@@ -1,14 +1,14 @@
 package com.homeki.android.device;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.homeki.android.R;
-import com.homeki.android.communication.CommandSendingService;
+import com.homeki.android.tasks.SwitchOff;
+import com.homeki.android.tasks.SwitchOn;
 
 public class Lamp extends Device {
 	enum Status {
@@ -16,7 +16,7 @@ public class Lamp extends Device {
 	}
 	
 	Status status;
-	View b;
+	View b = null;
 	
 	public Lamp() {
 		status = Status.LIMBO;
@@ -30,42 +30,23 @@ public class Lamp extends Device {
 		name = d.name;
 	}
 	
-	public void switchOn(Context context) {
-		status = Status.ON;
-		Intent intent = new Intent(context, CommandSendingService.class);
-		intent.setAction(CommandSendingService.turnLampOn);
-		intent.putExtra("id", id);
-		context.startService(intent);
-		b.getBackground().setLevel(1);
-	}
-	
-	public void switchOff(Context context) {
-		status = Status.OFF;
-		Intent intent = new Intent(context, CommandSendingService.class);
-		intent.setAction(CommandSendingService.turnLampOff);
-		intent.putExtra("id", id);
-		context.startService(intent);
-		b.getBackground().setLevel(0);
-	}
-	
-	public void downloadStatus(Context context) {
-		Intent intent = new Intent(context, CommandSendingService.class);
-		intent.setAction(CommandSendingService.turnLampOff);
-		intent.putExtra("id", id);
-		context.startService(intent);
-		status = Status.OFF;
-	}
-
 	public void setStatus(boolean status) {
-		if (status)
+		if (status) {
 			this.status = Status.ON;
-		else
+			if (b!=null)
+				b.getBackground().setLevel(1);			
+		} else {
 			this.status = Status.OFF;
+			if (b!=null)
+				b.getBackground().setLevel(0);
+		}
 	}
 	
 	public boolean getStatus() {
 		return Status.ON == status;
 	}
+	
+	
 	
 	public boolean toggle(Context context) {
 		if (status == Status.OFF) {
@@ -77,6 +58,16 @@ public class Lamp extends Device {
 		}
 	}
 	
+	private void switchOff(Context context) {
+		new SwitchOff(context, id).execute();
+		setStatus(false);		
+	}
+
+	private void switchOn(Context context) {
+		new SwitchOn(context, id).execute();
+		setStatus(true);
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
