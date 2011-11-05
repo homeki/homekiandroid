@@ -14,7 +14,7 @@ import com.homeki.android.commands.Commands;
 import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.JsonDevice;
-import com.homeki.android.device.Lamp;
+import com.homeki.android.device.Switch;
 import com.homeki.android.device.Temperature;
 
 public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
@@ -42,11 +42,11 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			List<Device> list = new ArrayList<Device>();
 			for (JsonDevice d : result) {
 				if (d.type.contains("Dimmer")) {
-					Lamp l = new Dimmer(d);
+					Switch l = new Dimmer(d);
 					new DownloadDeviceStatus(ha, l).execute();
 					list.add(l);
 				} else if (d.type.contains("Switch")) {
-					Lamp l = new Lamp(d);
+					Switch l = new Switch(d);
 					new DownloadDeviceStatus(ha, l).execute();
 					list.add(l);
 				} else if (d.type.contains("Temp")) {

@@ -6,13 +6,13 @@ import android.os.AsyncTask;
 
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.commands.Commands;
-import com.homeki.android.device.Lamp;
+import com.homeki.android.device.Switch;
 
 public class DownloadDeviceStatus extends AsyncTask<Void, Void, String> {
 	private final HomekiApplication ha;
-	private Lamp d;
+	private Switch d;
 	
-	public DownloadDeviceStatus(HomekiApplication ha, Lamp d) {
+	public DownloadDeviceStatus(HomekiApplication ha, Switch d) {
 		this.ha = ha;
 		this.d = d;
 	}

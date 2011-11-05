@@ -10,15 +10,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
-import com.homeki.android.device.Lamp;
+import com.homeki.android.device.Switch;
 import com.homeki.android.tasks.GetDevicesTask;
 
 public class DeviceList extends ListActivity {
@@ -62,7 +65,7 @@ public class DeviceList extends ListActivity {
 		startActivity(intent);
 	}
 	
-	private class MyAdapter extends ArrayAdapter<Device> {
+	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener {
 		public MyAdapter(Context context, List<Device> objects) {
 			super(context, -1, objects);
 		}
@@ -75,7 +78,10 @@ public class DeviceList extends ListActivity {
 			// ensure we have a view
 			if (convertView == null) {
 				if (type == 1) {
+					// switch
 					convertView = mInflater.inflate(R.layout.listitem_switch, null);
+					CheckBox cb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
+					cb.setOnCheckedChangeListener(this);
 				}
 			}
 			
@@ -83,10 +89,12 @@ public class DeviceList extends ListActivity {
 			TextView tv = (TextView) convertView.findViewById(R.id.switch_title);
 			tv.setText(dev.toString());
 			
+			// set specific properties
 			if (type == 1) {
-				Lamp sw = (Lamp)dev;
-				ToggleButton tb = (ToggleButton)convertView.findViewById(R.id.switch_toggle);
+				Switch sw = (Switch)dev;
+				CheckBox tb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
 				tb.setChecked(sw.getStatus());
+				tb.setTag(position);
 			}
 			
 			return convertView;
@@ -96,13 +104,21 @@ public class DeviceList extends ListActivity {
 		public int getItemViewType(int position) {
 			Device dev = getItem(position);
 			
-			if (dev.getClass() == Lamp.class) {
+			if (dev.getClass() == Switch.class) {
 				return 1;
 			} else if (dev.getClass() == Dimmer.class) {
 				return 2;
 			}
 			
 			return 99;
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			int loc = (Integer)buttonView.getTag();
+			Switch s = (Switch)list.get(loc);
+			buttonView.setChecked(s.toggle(buttonView.getContext()));
+			
 		}
 	}
 	
