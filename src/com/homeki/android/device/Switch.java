@@ -1,12 +1,7 @@
 package com.homeki.android.device;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
 
-import com.homeki.android.R;
 import com.homeki.android.tasks.SwitchOff;
 import com.homeki.android.tasks.SwitchOn;
 
@@ -31,6 +26,11 @@ public class Switch extends Device {
 	
 	public boolean getStatus() {
 		return Status.ON == status;
+	}
+	
+	public void setName(Context context, String name) {
+		this.name = name;
+		//new SetName(context, id, name).execute();
 	}
 	
 	public void setStatus(boolean on) {
