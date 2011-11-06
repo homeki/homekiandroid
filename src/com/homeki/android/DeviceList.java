@@ -124,9 +124,9 @@ public class DeviceList extends ListActivity {
 			Switch s = (Switch)list.get(loc);
 			
 			if (isChecked)
-				s.switchOff(buttonView.getContext());
-			else
 				s.switchOn(buttonView.getContext());
+			else
+				s.switchOff(buttonView.getContext());
 		}
 
 		@Override
