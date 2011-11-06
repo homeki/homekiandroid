@@ -10,17 +10,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.homeki.android.device.Device;
+import com.homeki.android.device.Dimmer;
+import com.homeki.android.device.Switch;
 import com.homeki.android.tasks.GetDevicesTask;
 
-
 public class DeviceList extends ListActivity {
-	ArrayAdapter<Device> myAdapter;
+	private ArrayAdapter<Device> myAdapter;
 	private LayoutInflater mInflater;
 	private List<Device> list;
 	private HomekiApplication mApplication;
@@ -28,12 +33,12 @@ public class DeviceList extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (HomekiApplication)getApplication();
+		mApplication = (HomekiApplication) getApplication();
 		mInflater = getLayoutInflater();
-
+		
 		list = mApplication.getList();
 		
-		myAdapter = new MyAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, list);
+		myAdapter = new MyAdapter(this, list);
 		setListAdapter(myAdapter);
 		
 		new GetDevicesTask(mApplication).execute();
@@ -54,52 +59,82 @@ public class DeviceList extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-
+		
 		Intent intent = new Intent(this, InspectDeviceActivity.class);
 		intent.putExtra("device", position);
 		startActivity(intent);
-		//		list.add(new Lamp());
-//		myAdapter.notifyDataSetChanged();
-//		Log.d("LOG", "You clicked: " + myAdapter.getItem(position));
-		
 	}
 	
-	private class MyAdapter extends ArrayAdapter<Device> {
-		public MyAdapter(Context context, int resource, int textViewResourceId, List<Device> objects) {
-			super(context, resource, textViewResourceId, objects);
+	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener {
+		public MyAdapter(Context context, List<Device> objects) {
+			super(context, -1, objects);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			String text = getItem(position).toString();
-			if (null == convertView) {
-				convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+			Device dev = getItem(position);
+			int type = getItemViewType(position);
+			
+			// ensure we have a view
+			if (convertView == null) {
+				if (type == 1) {
+					// switch
+					convertView = mInflater.inflate(R.layout.listitem_switch, null);
+					CheckBox cb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
+					cb.setOnCheckedChangeListener(this);
+				}
 			}
-			// take the Button and set listener. It will be invoked when you
-			// click the button.
-			// set the text... not important
-			TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
-			tv.setText(text);
-			// !!! and this is the most important part: you are settin listener
-			// for the whole row
+			
+			// set common properties
+			TextView tv = (TextView) convertView.findViewById(R.id.switch_title);
+			tv.setText(dev.toString());
+			
+			// set specific properties
+			if (type == 1) {
+				Switch sw = (Switch)dev;
+				CheckBox tb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
+				tb.setChecked(sw.getStatus());
+				tb.setTag(position);
+			}
+			
 			return convertView;
 		}
-	}	
+		
+		@Override
+		public int getItemViewType(int position) {
+			Device dev = getItem(position);
+			
+			if (dev.getClass() == Switch.class) {
+				return 1;
+			} else if (dev.getClass() == Dimmer.class) {
+				return 2;
+			}
+			
+			return 99;
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			int loc = (Integer)buttonView.getTag();
+			Switch s = (Switch)list.get(loc);
+			buttonView.setChecked(s.toggle(buttonView.getContext()));
+			
+		}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs")
-				.setIcon(android.R.drawable.ic_menu_preferences);
-		return(super.onCreateOptionsMenu(menu));
+		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs").setIcon(android.R.drawable.ic_menu_preferences);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case Menu.FIRST:
-				startActivity(new Intent(this, EditPreferences.class));
-				return(true);
+		case Menu.FIRST:
+			startActivity(new Intent(this, EditPreferences.class));
+			return true;
 		}
-		return(super.onOptionsItemSelected(item));
+		return super.onOptionsItemSelected(item);
 	}
 }

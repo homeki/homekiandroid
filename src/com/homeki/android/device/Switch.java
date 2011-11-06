@@ -14,7 +14,7 @@ import com.homeki.android.tasks.SetName;
 import com.homeki.android.tasks.SwitchOff;
 import com.homeki.android.tasks.SwitchOn;
 
-public class Lamp extends Device {
+public class Switch extends Device {
 	enum Status {
 		ON, OFF, LIMBO
 	}
@@ -22,11 +22,11 @@ public class Lamp extends Device {
 	Status status;
 	View b = null;
 	
-	public Lamp() {
+	public Switch() {
 		status = Status.LIMBO;
 	}
 	
-	public Lamp(JsonDevice d) {
+	public Switch(JsonDevice d) {
 		this();
 		active = d.active;
 		added = d.added;

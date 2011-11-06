@@ -9,7 +9,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.homeki.android.R;
 import com.homeki.android.tasks.Dim;
 
-public class Dimmer extends Lamp {
+public class Dimmer extends Switch {
 	int level;
 	
 	public Dimmer() {
