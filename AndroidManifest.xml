@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name=".HomekiApplication">
-        <activity android:name=".MainActivity"
+        <activity android:name=".DeviceList"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,8 +15,7 @@
             </intent-filter>
         </activity>
         <service android:name=".communication.CommandSendingService"></service>
-        <activity android:name=".DeviceList"></activity>
-        <activity android:name="InspectDeviceActivity"></activity>
-        <activity android:name="EditPreferences"></activity>
+        <activity android:name=".InspectDeviceActivity"></activity>
+        <activity android:name=".EditPreferences"></activity>
     </application>
 </manifest>

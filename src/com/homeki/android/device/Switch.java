@@ -15,8 +15,7 @@ public class Switch extends Device {
 		ON, OFF, LIMBO
 	}
 	
-	Status status;
-	View b = null;
+	protected Status status;
 	
 	public Switch() {
 		status = Status.LIMBO;
@@ -30,38 +29,20 @@ public class Switch extends Device {
 		name = d.name;
 	}
 	
-	public void setStatus(boolean status) {
-		if (status) {
-			this.status = Status.ON;
-			if (b!=null)
-				b.getBackground().setLevel(1);			
-		} else {
-			this.status = Status.OFF;
-			if (b!=null)
-				b.getBackground().setLevel(0);
-		}
-	}
-	
 	public boolean getStatus() {
 		return Status.ON == status;
 	}
 	
-	public boolean toggle(Context context) {
-		if (status == Status.OFF) {
-			switchOn(context);
-			return true;
-		} else {
-			switchOff(context);
-			return false;
-		}
+	public void setStatus(boolean on) {
+		status = on ? Status.ON : Status.OFF;
 	}
 	
-	private void switchOff(Context context) {
+	public void switchOff(Context context) {
 		new SwitchOff(context, id).execute();
-		setStatus(false);		
+		setStatus(false);
 	}
 
-	private void switchOn(Context context) {
+	public void switchOn(Context context) {
 		new SwitchOn(context, id).execute();
 		setStatus(true);
 	}
@@ -69,28 +50,5 @@ public class Switch extends Device {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
-	}
-	
-	@Override
-	public View getView(Context context) {
-		View v = LayoutInflater.from(context).inflate(R.layout.lamp, null);
-		setUpView(v);
-		return v;
-	}
-
-	protected void setUpView(View v) {
-		TextView deviceName = (TextView) v.findViewById(R.id.lamp_devicename);
-		TextView deviceDesc = (TextView) v.findViewById(R.id.lamp_devicedesc);
-		b = v.findViewById(R.id.lamp_switch);
-		b.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				toggle(v.getContext());
-			}
-		});
-		
-		deviceName.setText(name);
-		b.getBackground().setLevel(getStatus() ? 1 : 0);
-		deviceDesc.setText("Lamp");
 	}
 }

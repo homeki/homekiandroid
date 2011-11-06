@@ -10,8 +10,8 @@ import android.app.Application;
 import android.widget.ArrayAdapter;
 
 public class HomekiApplication extends Application {
-	List<Device> list = new ArrayList<Device>();
-	List<ArrayAdapter<Device>> watchers = new LinkedList<ArrayAdapter<Device>>();
+	private List<Device> list = new ArrayList<Device>();
+	private List<ArrayAdapter<Device>> watchers = new LinkedList<ArrayAdapter<Device>>();
 	
 	public List<Device> getList() {
 		return list;
@@ -23,6 +23,10 @@ public class HomekiApplication extends Application {
 		}
 		list.clear();
 		list.addAll(newList);
+		notifyChanged();
+	}
+	
+	public void notifyChanged() {
 		for (ArrayAdapter<Device> aa: watchers) {
 			aa.notifyDataSetChanged();
 		}

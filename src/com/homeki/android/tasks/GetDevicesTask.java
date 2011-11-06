@@ -33,7 +33,7 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			e.printStackTrace();
 		}
 		Type listType = new TypeToken<List<JsonDevice>>() {}.getType();
-		return new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd hh:mm:ss").create().fromJson(s, listType);
+		return new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create().fromJson(s, listType);
 	}
 
 	@Override
@@ -42,13 +42,13 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			List<Device> list = new ArrayList<Device>();
 			for (JsonDevice d : result) {
 				if (d.type.contains("Dimmer")) {
-					Switch l = new Dimmer(d);
-					new DownloadDeviceStatus(ha, l).execute();
-					list.add(l);
+					Dimmer s = new Dimmer(d);
+					new GetDimmerStatus(ha, s).execute();
+					list.add(s);
 				} else if (d.type.contains("Switch")) {
-					Switch l = new Switch(d);
-					new DownloadDeviceStatus(ha, l).execute();
-					list.add(l);
+					Switch s = new Switch(d);
+					new GetSwitchStatus(ha, s).execute();
+					list.add(s);
 				} else if (d.type.contains("Temp")) {
 					list.add(new Temperature(d));
 				}

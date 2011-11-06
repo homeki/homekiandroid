@@ -10,18 +10,19 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Switch;
+import com.homeki.android.device.Temperature;
 import com.homeki.android.tasks.GetDevicesTask;
 
 public class DeviceList extends ListActivity {
@@ -33,6 +34,7 @@ public class DeviceList extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		mApplication = (HomekiApplication) getApplication();
 		mInflater = getLayoutInflater();
 		
@@ -56,16 +58,7 @@ public class DeviceList extends ListActivity {
 		mApplication.unregisterListWatcher(myAdapter);
 	}
 	
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		
-		Intent intent = new Intent(this, InspectDeviceActivity.class);
-		intent.putExtra("device", position);
-		startActivity(intent);
-	}
-	
-	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener {
+	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
 		public MyAdapter(Context context, List<Device> objects) {
 			super(context, -1, objects);
 		}
@@ -75,26 +68,36 @@ public class DeviceList extends ListActivity {
 			Device dev = getItem(position);
 			int type = getItemViewType(position);
 			
-			// ensure we have a view
-			if (convertView == null) {
-				if (type == 1) {
-					// switch
-					convertView = mInflater.inflate(R.layout.listitem_switch, null);
-					CheckBox cb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
-					cb.setOnCheckedChangeListener(this);
-				}
-			}
-			
-			// set common properties
-			TextView tv = (TextView) convertView.findViewById(R.id.switch_title);
-			tv.setText(dev.toString());
-			
 			// set specific properties
 			if (type == 1) {
+				// switch
+				convertView = mInflater.inflate(R.layout.listitem_switch, null);
 				Switch sw = (Switch)dev;
-				CheckBox tb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
-				tb.setChecked(sw.getStatus());
-				tb.setTag(position);
+				
+				TextView tv = (TextView)convertView.findViewById(R.id.switch_title);
+				tv.setText(sw.toString());
+				
+				CheckBox cb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
+				cb.setChecked(sw.getStatus());
+				cb.setTag(position);
+				cb.setOnCheckedChangeListener(this);
+			} else if (type == 2) {
+				// dimmer
+				convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
+				Dimmer dim = (Dimmer)dev;
+				
+				TextView tv = (TextView)convertView.findViewById(R.id.dimmer_title);
+				tv.setText(dim.toString());
+				
+				SeekBar sb = (SeekBar)convertView.findViewById(R.id.dimmer_seekbar);
+				sb.setMax(255);
+				sb.setProgress(dim.getLevel());
+				sb.setTag(position);
+				sb.setOnSeekBarChangeListener(this);
+			} else if (type == 3) {
+				// thermometer
+				convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
+				Temperature therm = (Temperature)dev;
 			}
 			
 			return convertView;
@@ -108,6 +111,8 @@ public class DeviceList extends ListActivity {
 				return 1;
 			} else if (dev.getClass() == Dimmer.class) {
 				return 2;
+			} else if (dev.getClass() == Temperature.class) {
+				return 3;
 			}
 			
 			return 99;
@@ -117,8 +122,28 @@ public class DeviceList extends ListActivity {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			int loc = (Integer)buttonView.getTag();
 			Switch s = (Switch)list.get(loc);
-			buttonView.setChecked(s.toggle(buttonView.getContext()));
 			
+			if (isChecked)
+				s.switchOff(buttonView.getContext());
+			else
+				s.switchOn(buttonView.getContext());
+		}
+
+		@Override
+		public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
+
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar sb) {
+
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar sb) {
+			int loc = (Integer)sb.getTag();
+			Dimmer d = (Dimmer)list.get(loc);
+			d.dim(sb.getContext(), sb.getProgress());
 		}
 	}
 	

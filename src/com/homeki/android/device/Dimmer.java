@@ -10,57 +10,34 @@ import com.homeki.android.R;
 import com.homeki.android.tasks.Dim;
 
 public class Dimmer extends Switch {
-	int level;
+	private int level;
 	
 	public Dimmer() {
 		super();
-		level = -1;
-	}	
+		this.level = -1;
+	}
+	
 	public Dimmer(JsonDevice d) {
 		super(d);
 	}
 	
 	public void dim(Context context, int level) {
-		this.level = level;
 		new Dim(context, id, level).execute();
-//		Intent intent = new Intent(context, CommandSendingService.class);
-//		intent.setAction(CommandSendingService.dim);
-//		intent.putExtra("level", level);
-//		intent.putExtra("id", id);
-//		context.startService(intent);
-		
-	}
-	
-	public boolean getStatus() {
-		return Status.ON == status;
+		this.setLevel(level);
 	}
 	
 	@Override
-	public View getView(Context context) {
-		View v = LayoutInflater.from(context).inflate(R.layout.dimmer, null);
-		setUpView(v);
-		return v;
+	public void setStatus(boolean on) {
+		super.setStatus(on);
+		this.setLevel(on ? 255 : 0);
 	}
 	
-	@Override
-	protected void setUpView(View v) {
-		super.setUpView(v);
-		SeekBar sb = (SeekBar) v.findViewById(R.id.dim_bar);
-		sb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				dim(seekBar.getContext(), seekBar.getProgress());
-			}
-			
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				
-			}
-			
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			}
-		});
+	public int getLevel() {
+		return level;
+	}
+	
+	public void setLevel(int level) {
+		super.setStatus(level > 0);
+		this.level = level;
 	}
 }

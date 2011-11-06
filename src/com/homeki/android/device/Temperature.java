@@ -30,19 +30,4 @@ public class Temperature extends Device {
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;
 	}
-
-	@Override
-	public View getView(Context context) {
-		View v = LayoutInflater.from(context).inflate(R.layout.temp, null);
-		TextView deviceName = (TextView)v.findViewById(R.id.inspdev_devicename);
-		TextView deviceDesc = (TextView)v.findViewById(R.id.inspdev_devicedesc);
-		TextView deviceTemp = (TextView)v.findViewById(R.id.inspdev_temp);
-		
-		deviceTemp.setText("The temperature here is " + value + " degrees.");
-		
-		deviceName.setText(name);
-		deviceDesc.setText("Temperature");
-		
-		return v;
-	}
 }
