@@ -15,7 +15,7 @@ import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.JsonDevice;
 import com.homeki.android.device.Switch;
-import com.homeki.android.device.Temperature;
+import com.homeki.android.device.Thermometer;
 
 public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 	private final HomekiApplication ha;
@@ -50,7 +50,7 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 					new GetSwitchStatus(ha, s).execute();
 					list.add(s);
 				} else if (d.type.contains("Temp")) {
-					list.add(new Temperature(d));
+					list.add(new Thermometer(d));
 				}
 			}
 			ha.updateList(list);

@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-public class Temperature extends Device {
+public class Thermometer extends Device {
 	float value;
 	
-	public Temperature() {
+	public Thermometer() {
 		value = -1f;
 	}
 	
-	public Temperature(JsonDevice d) {
+	public Thermometer(JsonDevice d) {
 		this();
 		active = d.active;	
 		added = d.added;

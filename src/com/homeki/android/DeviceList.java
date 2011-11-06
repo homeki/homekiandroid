@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Switch;
-import com.homeki.android.device.Temperature;
+import com.homeki.android.device.Thermometer;
 import com.homeki.android.tasks.GetDevicesTask;
 
 public class DeviceList extends ListActivity {
@@ -66,11 +66,9 @@ public class DeviceList extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Device dev = getItem(position);
-			int type = getItemViewType(position);
 			
 			// set specific properties
-			if (type == 1) {
-				// switch
+			if (dev.getClass() == Switch.class) {
 				convertView = mInflater.inflate(R.layout.listitem_switch, null);
 				Switch sw = (Switch)dev;
 				
@@ -81,8 +79,7 @@ public class DeviceList extends ListActivity {
 				cb.setChecked(sw.getStatus());
 				cb.setTag(position);
 				cb.setOnCheckedChangeListener(this);
-			} else if (type == 2) {
-				// dimmer
+			} else if (dev.getClass() == Dimmer.class) {
 				convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
 				Dimmer dim = (Dimmer)dev;
 				
@@ -94,28 +91,12 @@ public class DeviceList extends ListActivity {
 				sb.setProgress(dim.getLevel());
 				sb.setTag(position);
 				sb.setOnSeekBarChangeListener(this);
-			} else if (type == 3) {
-				// thermometer
+			} else if (dev.getClass() == Thermometer.class) {
 				convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
-				Temperature therm = (Temperature)dev;
+				Thermometer therm = (Thermometer)dev;
 			}
 			
 			return convertView;
-		}
-		
-		@Override
-		public int getItemViewType(int position) {
-			Device dev = getItem(position);
-			
-			if (dev.getClass() == Switch.class) {
-				return 1;
-			} else if (dev.getClass() == Dimmer.class) {
-				return 2;
-			} else if (dev.getClass() == Temperature.class) {
-				return 3;
-			}
-			
-			return 99;
 		}
 
 		@Override
