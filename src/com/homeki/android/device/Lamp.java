@@ -4,9 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.homeki.android.R;
+import com.homeki.android.tasks.Dim;
+import com.homeki.android.tasks.SetName;
 import com.homeki.android.tasks.SwitchOff;
 import com.homeki.android.tasks.SwitchOn;
 
@@ -46,7 +50,10 @@ public class Lamp extends Device {
 		return Status.ON == status;
 	}
 	
-	
+	public void setName(Context context, String name) {
+		this.name = name;
+		new SetName(context, id, name).execute();
+	}
 	
 	public boolean toggle(Context context) {
 		if (status == Status.OFF) {
@@ -90,9 +97,19 @@ public class Lamp extends Device {
 				toggle(v.getContext());
 			}
 		});
-		
 		deviceName.setText(name);
 		b.getBackground().setLevel(getStatus() ? 1 : 0);
 		deviceDesc.setText("Lamp");
+
+		final EditText et = (EditText) v.findViewById(R.id.lamp_name);
+		Button button = (Button) v.findViewById(R.id.lamp_save);
+		
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setName(v.getContext(), et.getText().toString());
+			}
+		});
+		
 	}
 }

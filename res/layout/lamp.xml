@@ -29,10 +29,31 @@
     <Button
         android:id="@+id/lamp_switch"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:layout_weight="1"
         android:background="@drawable/lamp"
         android:text="Button" >
     </Button>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/lamp_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Whatever" >
+        </EditText>
+
+        <Button
+            android:id="@+id/lamp_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save" >
+        </Button>
+    </LinearLayout>
 
 </LinearLayout>
