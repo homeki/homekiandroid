@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import android.content.Context;
 
-import com.homeki.android.HomekiApplication;
 import com.homeki.android.SharedPreferenceHelper;
 import com.homeki.android.communication.CommandSender;
 
@@ -13,6 +12,11 @@ public class Commands {
 	private static String sendCommand(Context c, String command) throws IOException {
 		String address = String.format("http://%s", SharedPreferenceHelper.getStringValue(c, "server"));		
 		return CommandSender.sendCommand(String.format("%s/%s", address, command));
+	}
+	
+	private static String postCommand(Context c, String command, String values) throws IOException {
+		String address = String.format("http://%s", SharedPreferenceHelper.getStringValue(c, "server"));		
+		return CommandSender.postCommand(address, values);
 	}
 	
 	public static String getDevices(Context c) throws IOException {
@@ -37,5 +41,10 @@ public class Commands {
 	public static String getDeviceStatus(Context c, int id) throws IOException {
 		String command = String.format("get/status?id=%d", id);
 		return sendCommand(c, command);
+	}
+
+	public static String setName(Context c, int id, String name) throws IOException {
+		String command = String.format("set/device?id=%d", id);
+		return postCommand(c, command, String.format("{name=%s}",name));
 	}
 }
