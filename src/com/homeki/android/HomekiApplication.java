@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.homeki.android.device.Device;
-
 import android.app.Application;
 import android.widget.ArrayAdapter;
+
+import com.homeki.android.device.Device;
 
 public class HomekiApplication extends Application {
 	private List<Device> list = new ArrayList<Device>();

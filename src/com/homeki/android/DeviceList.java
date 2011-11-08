@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,66 +65,101 @@ public class DeviceList extends ListActivity {
 		}
 		
 		@Override
+		public int getViewTypeCount() {
+			return 3;
+		}
+		
+		@Override
+		public int getItemViewType(int position) {
+			Device dev = getItem(position);
+			if (dev.getClass() == Switch.class) {
+				return 0;
+			} else if (dev.getClass() == Dimmer.class) {
+				return 1;
+			} else if (dev.getClass() == Thermometer.class) {
+				return 2;
+			}
+			return -1;
+		}
+		
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Device dev = getItem(position);
-			
-			// set specific properties
-			if (dev.getClass() == Switch.class) {
-				convertView = mInflater.inflate(R.layout.listitem_switch, null);
-				Switch sw = (Switch)dev;
-				
-				TextView tv = (TextView)convertView.findViewById(R.id.switch_title);
-				tv.setText(sw.toString());
-				
-				CheckBox cb = (CheckBox)convertView.findViewById(R.id.switch_toggle);
-				cb.setChecked(sw.getStatus());
-				cb.setTag(position);
-				cb.setOnCheckedChangeListener(this);
-			} else if (dev.getClass() == Dimmer.class) {
-				convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
-				Dimmer dim = (Dimmer)dev;
-				
-				TextView tv = (TextView)convertView.findViewById(R.id.dimmer_title);
-				tv.setText(dim.toString());
-				
-				SeekBar sb = (SeekBar)convertView.findViewById(R.id.dimmer_seekbar);
-				sb.setMax(255);
-				sb.setProgress(dim.getLevel());
-				sb.setTag(position);
-				sb.setOnSeekBarChangeListener(this);
-			} else if (dev.getClass() == Thermometer.class) {
-				convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
-				Thermometer therm = (Thermometer)dev;
+			int type = getItemViewType(position);
+			ViewHolder vh;
+			if (convertView == null) {
+				Log.d("LOG", "No converView :(");
+				vh = new ViewHolder();
+				switch (type) {
+				case 0:
+					convertView = mInflater.inflate(R.layout.listitem_switch, null);
+					vh.tv = (TextView) convertView.findViewById(R.id.switch_title);
+					vh.cb = (CheckBox) convertView.findViewById(R.id.switch_toggle);
+					break;
+				case 1:
+					convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
+					vh.tv = (TextView) convertView.findViewById(R.id.dimmer_title);
+					vh.sb = (SeekBar) convertView.findViewById(R.id.dimmer_seekbar);
+					break;
+				case 2:
+					convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
+					vh.tv = (TextView) convertView.findViewById(R.id.thermometer_title);
+					break;
+				}
+				convertView.setTag(vh);
+			}  else {
+				Log.d("TAG", "YAY CONVERTVIEW IS THE SHIT!");
 			}
-			
+			vh = (ViewHolder) convertView.getTag();
+			switch (type) {
+			case 0:
+				vh.tv.setText(dev.toString());
+				vh.cb.setTag(position);
+				vh.cb.setChecked(((Switch) dev).getStatus());
+				break;
+			case 1:
+				vh.tv.setText(dev.toString());
+				vh.sb.setTag(position);
+				vh.sb.setProgress(((Dimmer) dev).getLevel());
+				break;
+			case 2:
+				vh.tv.setText(((Thermometer) dev).getStatus() + "");
+				break;
+			}
 			return convertView;
 		}
-
+		
+		class ViewHolder {
+			CheckBox cb;
+			TextView tv;
+			SeekBar sb;
+		}
+		
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			int loc = (Integer)buttonView.getTag();
-			Switch s = (Switch)list.get(loc);
+			int loc = (Integer) buttonView.getTag();
+			Switch s = (Switch) list.get(loc);
 			
 			if (isChecked)
 				s.switchOn(buttonView.getContext());
 			else
 				s.switchOff(buttonView.getContext());
 		}
-
+		
 		@Override
 		public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
-
+			
 		}
-
+		
 		@Override
 		public void onStartTrackingTouch(SeekBar sb) {
-
+			
 		}
-
+		
 		@Override
 		public void onStopTrackingTouch(SeekBar sb) {
-			int loc = (Integer)sb.getTag();
-			Dimmer d = (Dimmer)list.get(loc);
+			int loc = (Integer) sb.getTag();
+			Dimmer d = (Dimmer) list.get(loc);
 			d.dim(sb.getContext(), sb.getProgress());
 		}
 	}

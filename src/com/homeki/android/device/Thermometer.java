@@ -1,11 +1,5 @@
 package com.homeki.android.device;
 
-import com.homeki.android.R;
-
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 public class Thermometer extends Device {
 	float value;
