@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -59,6 +60,12 @@ public class DeviceList extends ListActivity {
 		mApplication.unregisterListWatcher(myAdapter);
 	}
 	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Log.d("LOG", "clicky");
+	}
+	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
 		public MyAdapter(Context context, List<Device> objects) {
 			super(context, -1, objects);
@@ -95,11 +102,13 @@ public class DeviceList extends ListActivity {
 					convertView = mInflater.inflate(R.layout.listitem_switch, null);
 					vh.tv = (TextView) convertView.findViewById(R.id.switch_title);
 					vh.cb = (CheckBox) convertView.findViewById(R.id.switch_toggle);
+					vh.cb.setOnCheckedChangeListener(this);
 					break;
 				case 1:
 					convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
 					vh.tv = (TextView) convertView.findViewById(R.id.dimmer_title);
 					vh.sb = (SeekBar) convertView.findViewById(R.id.dimmer_seekbar);
+					vh.sb.setOnSeekBarChangeListener(this);
 					break;
 				case 2:
 					convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
@@ -107,7 +116,7 @@ public class DeviceList extends ListActivity {
 					break;
 				}
 				convertView.setTag(vh);
-			}  else {
+			} else {
 				Log.d("TAG", "YAY CONVERTVIEW IS THE SHIT!");
 			}
 			vh = (ViewHolder) convertView.getTag();
