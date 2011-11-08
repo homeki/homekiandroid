@@ -24,6 +24,7 @@ import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 import com.homeki.android.tasks.GetDevicesTask;
+import com.homeki.android.tasks.SetDevice;
 
 public class DeviceList extends ListActivity {
 	private ArrayAdapter<Device> myAdapter;
@@ -43,6 +44,7 @@ public class DeviceList extends ListActivity {
 		myAdapter = new MyAdapter(this, list);
 		setListAdapter(myAdapter);
 		
+		new SetDevice(mApplication, 1, "jonas").execute();
 		new GetDevicesTask(mApplication).execute();
 	}
 	

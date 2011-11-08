@@ -15,7 +15,7 @@ public class Commands {
 	}
 	
 	private static String postCommand(Context c, String command, String values) throws IOException {
-		String address = String.format("http://%s", SharedPreferenceHelper.getStringValue(c, "server"));		
+		String address = String.format("http://%s/%s", SharedPreferenceHelper.getStringValue(c, "server"), command);		
 		return CommandSender.postCommand(address, values);
 	}
 	
