@@ -46,7 +46,11 @@ public class DeviceList extends ListActivity {
 		myAdapter = new MyAdapter(this, list);
 		setListAdapter(myAdapter);
 		
-		new SetDevice(mApplication, 1, "jonas").execute();
+		SetDevice setd = new SetDevice(getBaseContext(), 1);
+		setd.setName("Jonastesting");
+		setd.setDescription("Test test test");
+		setd.execute();
+		
 		new GetDevicesTask(mApplication).execute();
 	}
 	

@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.commands.Commands;
-import com.homeki.android.device.JsonStatus;
+import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Switch;
 
 public class GetSwitchStatus extends AsyncTask<Void, Void, JsonStatus> {

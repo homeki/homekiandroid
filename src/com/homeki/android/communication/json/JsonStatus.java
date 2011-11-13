@@ -1,4 +1,4 @@
-package com.homeki.android.device;
+package com.homeki.android.communication.json;
 
 public class JsonStatus {
 	public Object status;

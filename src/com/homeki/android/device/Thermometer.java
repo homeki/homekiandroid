@@ -1,5 +1,7 @@
 package com.homeki.android.device;
 
+import com.homeki.android.communication.json.JsonDevice;
+
 
 public class Thermometer extends Device {
 	float value;

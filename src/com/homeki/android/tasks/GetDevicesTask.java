@@ -11,9 +11,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.commands.Commands;
+import com.homeki.android.communication.json.JsonDevice;
 import com.homeki.android.device.Device;
 import com.homeki.android.device.Dimmer;
-import com.homeki.android.device.JsonDevice;
 import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 

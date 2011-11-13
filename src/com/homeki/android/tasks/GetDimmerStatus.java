@@ -7,8 +7,8 @@ import android.os.AsyncTask;
 import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.commands.Commands;
+import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Dimmer;
-import com.homeki.android.device.JsonStatus;
 
 public class GetDimmerStatus extends AsyncTask<Void, Void, JsonStatus> {
 	private final HomekiApplication ha;

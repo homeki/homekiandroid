@@ -1,13 +1,14 @@
-package com.homeki.android.device;
+package com.homeki.android.communication.json;
 
 import java.util.Date;
 
 public class JsonDevice {
 	public String type;
-	public int id;
+	public Integer id;
 	public String name;
+	public String description;
 	public Date added;
-	public boolean active;
+	public Boolean active;
 	
 	@Override
 	public String toString() {

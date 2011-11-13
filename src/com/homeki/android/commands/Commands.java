@@ -43,8 +43,8 @@ public class Commands {
 		return sendCommand(c, command);
 	}
 
-	public static String setName(Context c, int id, String name) throws IOException {
+	public static String setDevice(Context c, int id, String json) throws IOException {
 		String command = String.format("set/device?id=%d", id);
-		return postCommand(c, command, String.format("{name=%s}",name));
+		return postCommand(c, command, json);
 	}
 }

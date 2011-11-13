@@ -29,6 +29,9 @@ public class CommandSender {
 	}
 	
 	private static String convertToString(HttpEntity he) throws IOException {
+		if (!(he instanceof StringEntity))
+			return "";
+		
 		StringEntity se = (StringEntity)he;
 		BufferedReader in = new BufferedReader(new InputStreamReader(se.getContent()));
 		StringBuilder sb = new StringBuilder();

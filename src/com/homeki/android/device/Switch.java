@@ -2,6 +2,7 @@ package com.homeki.android.device;
 
 import android.content.Context;
 
+import com.homeki.android.communication.json.JsonDevice;
 import com.homeki.android.tasks.SwitchOff;
 import com.homeki.android.tasks.SwitchOn;
 
