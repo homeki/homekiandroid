@@ -1,8 +1,6 @@
 package com.homeki.android.communication;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,7 +17,7 @@ public class CommandSender {
 		HttpResponse response = client.execute(get);
 		return convertToString(response.getEntity());
 	}
-	
+
 	public static String postCommand(String address, String value) throws IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost p = new HttpPost(address);
@@ -29,15 +27,8 @@ public class CommandSender {
 	}
 	
 	private static String convertToString(HttpEntity he) throws IOException {
-		if (!(he instanceof StringEntity))
-			return "";
-		
-		StringEntity se = (StringEntity)he;
-		BufferedReader in = new BufferedReader(new InputStreamReader(se.getContent()));
-		StringBuilder sb = new StringBuilder();
-		while (in.ready()) {
-			sb.append(in.readLine() + "\n");
-		}
-		return sb.toString();
+		byte[] trolol = new byte[(int)he.getContentLength()];
+		he.getContent().read(trolol);
+		return new String(trolol);
 	}
 }
