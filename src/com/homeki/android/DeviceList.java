@@ -97,7 +97,6 @@ public class DeviceList extends ListActivity {
 			ViewHolder vh;
 			
 			if (convertView == null) {
-				Log.d("LOG", "No converView :(");
 				vh = new ViewHolder();
 				
 				switch (type) {
