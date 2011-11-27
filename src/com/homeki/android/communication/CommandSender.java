@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 public class CommandSender {
 	public static String sendCommand(String address) throws IOException {
@@ -27,8 +28,14 @@ public class CommandSender {
 	}
 	
 	private static String convertToString(HttpEntity he) throws IOException {
-		byte[] trolol = new byte[(int)he.getContentLength()];
-		he.getContent().read(trolol);
-		return new String(trolol);
+		String s;
+		
+		try {
+			s = EntityUtils.toString(he);
+		} catch (Exception ex) {
+			s = "";
+		}
+		
+		return s;
 	}
 }

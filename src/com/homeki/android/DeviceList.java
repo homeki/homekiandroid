@@ -92,12 +92,14 @@ public class DeviceList extends ListActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			Device dev = getItem(position);
 			int type = getItemViewType(position);
+			Device dev = getItem(position);
 			ViewHolder vh;
+			
 			if (convertView == null) {
 				Log.d("LOG", "No converView :(");
 				vh = new ViewHolder();
+				
 				switch (type) {
 				case 0:
 					convertView = mInflater.inflate(R.layout.listitem_switch, null);
@@ -117,10 +119,10 @@ public class DeviceList extends ListActivity {
 					break;
 				}
 				convertView.setTag(vh);
-			} else {
-				Log.d("TAG", "YAY CONVERTVIEW IS THE SHIT!");
 			}
+			
 			vh = (ViewHolder) convertView.getTag();
+			
 			switch (type) {
 			case 0:
 				vh.tv.setText(dev.toString());
@@ -136,6 +138,7 @@ public class DeviceList extends ListActivity {
 				vh.tv.setText(((Thermometer) dev).getStatus() + "");
 				break;
 			}
+			
 			return convertView;
 		}
 		
@@ -187,6 +190,7 @@ public class DeviceList extends ListActivity {
 			startActivity(new Intent(this, EditPreferences.class));
 			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 }
