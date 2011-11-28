@@ -31,7 +31,7 @@ public class Switch extends Device {
 	
 	public void setName(Context context, String name) {
 		this.name = name;
-		//new SetName(context, id, name).execute();
+		// new SetName(context, id, name).execute();
 	}
 	
 	public void setStatus(boolean on) {
@@ -39,15 +39,19 @@ public class Switch extends Device {
 	}
 	
 	public void switchOff(Context context) {
-		new SwitchOff(context, id).execute();
-		setStatus(false);
+		if (getStatus() != false) {
+			new SwitchOff(context, id).execute();
+			setStatus(false);
+		}
 	}
-
+	
 	public void switchOn(Context context) {
-		new SwitchOn(context, id).execute();
-		setStatus(true);
+		if (getStatus() != true) {
+			new SwitchOn(context, id).execute();
+			setStatus(true);
+		}
 	}
-
+	
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;

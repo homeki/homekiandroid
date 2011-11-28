@@ -4,38 +4,68 @@ import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
+import android.util.Log;
+
 public class CommandSender {
-	public static String sendCommand(String address) throws IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(address);
-		HttpResponse response = client.execute(get);
-		return convertToString(response.getEntity());
+	private static HttpParams params = setupParams();
+	private static SchemeRegistry schemeRegistry = setupRegistry();
+	private static ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+	private static HttpClient mHttpConn = new DefaultHttpClient(cm, params);
+			
+	private static SchemeRegistry setupRegistry() {
+		SchemeRegistry schemeRegistry = new SchemeRegistry();
+		schemeRegistry.register( new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));			
+		return schemeRegistry;
 	}
 
-	public static String postCommand(String address, String value) throws IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpPost p = new HttpPost(address);
-		p.setEntity(new StringEntity(value));
-		HttpResponse response = client.execute(p);
-		return convertToString(response.getEntity());
+	private static HttpParams setupParams() {
+		HttpParams params = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(params, 40 * 1000);
+		HttpConnectionParams.setSoTimeout(params, 40 * 1000);
+		ConnManagerParams.setMaxTotalConnections(params, 100);
+		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+		return params;
+	}
+
+	public static synchronized String sendCommand(String address) throws IOException {
+		HttpGet get = new HttpGet(address);
+		HttpResponse response = mHttpConn.execute(get);
+		return convertToString(response.getEntity(), get.getURI().toString());
 	}
 	
-	private static String convertToString(HttpEntity he) throws IOException {
+	public static synchronized String postCommand(String address, String value) throws IOException {
+		HttpPost p = new HttpPost(address);
+		p.setEntity(new StringEntity(value));
+		HttpResponse response = mHttpConn.execute(p);
+		return convertToString(response.getEntity(), p.getURI().toString());
+	}
+	
+	private static synchronized String convertToString(HttpEntity he, String http) throws IOException {
 		String s;
-		
 		try {
-			s = EntityUtils.toString(he);
+			s = new String(EntityUtils.toString(he));
 		} catch (Exception ex) {
 			s = "";
 		}
-		
+		he.consumeContent();
 		return s;
 	}
 }

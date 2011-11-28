@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -26,7 +26,6 @@ import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 import com.homeki.android.tasks.GetDevicesTask;
-import com.homeki.android.tasks.SetDevice;
 
 public class DeviceList extends ListActivity {
 	private ArrayAdapter<Device> myAdapter;
