@@ -45,7 +45,7 @@ public class DeviceList extends ListActivity {
 		myAdapter = new MyAdapter(this, list);
 		setListAdapter(myAdapter);
 		
-		new GetDevicesTask(mApplication).execute();
+		new GetDevicesTask().execute();
 	}
 	
 	@Override
@@ -152,9 +152,9 @@ public class DeviceList extends ListActivity {
 			Switch s = (Switch) list.get(loc);
 			
 			if (isChecked)
-				s.switchOn(buttonView.getContext());
+				s.switchOn();
 			else
-				s.switchOff(buttonView.getContext());
+				s.switchOff();
 		}
 		
 		@Override
@@ -171,7 +171,7 @@ public class DeviceList extends ListActivity {
 		public void onStopTrackingTouch(SeekBar sb) {
 			int loc = (Integer) sb.getTag();
 			Dimmer d = (Dimmer) list.get(loc);
-			d.dim(sb.getContext(), sb.getProgress());
+			d.dim(sb.getProgress());
 		}
 	}
 	
