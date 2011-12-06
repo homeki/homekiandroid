@@ -2,9 +2,13 @@ package com.homeki.android;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,26 +48,27 @@ public class DeviceList extends ListActivity {
 		
 		myAdapter = new MyAdapter(this, list);
 		setListAdapter(myAdapter);
-		
-		new GetDevicesTask(mApplication).execute();
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mApplication.registerListWatcher(myAdapter);
+		new GetDevicesTask(mApplication).execute();
+		IntentFilter filter = new IntentFilter(getString(R.string.server_not_found_action));
+		registerReceiver(serverTimeoutReceiver, filter);
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
+		unregisterReceiver(serverTimeoutReceiver);
 		mApplication.unregisterListWatcher(myAdapter);
 	}
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Log.d("LOG", "clicky");
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -159,12 +164,10 @@ public class DeviceList extends ListActivity {
 		
 		@Override
 		public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
-			
 		}
 		
 		@Override
 		public void onStartTrackingTouch(SeekBar sb) {
-			
 		}
 		
 		@Override
@@ -188,7 +191,17 @@ public class DeviceList extends ListActivity {
 			startActivity(new Intent(this, EditPreferences.class));
 			return true;
 		}
-		
 		return super.onOptionsItemSelected(item);
 	}
+	
+	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			new AlertDialog.Builder(DeviceList.this).setMessage("OMG THE SERVER IS BROKEN?").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					/* User clicked OK so do some stuff */
+				}
+			}).show();
+		}
+	};
 }

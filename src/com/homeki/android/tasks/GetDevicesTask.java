@@ -5,11 +5,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.homeki.android.HomekiApplication;
+import com.homeki.android.R;
 import com.homeki.android.commands.Commands;
 import com.homeki.android.communication.json.JsonDevice;
 import com.homeki.android.device.Device;
@@ -31,11 +36,14 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			s = Commands.getDevices(ha);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return null;
 		}
 		Type listType = new TypeToken<List<JsonDevice>>() {}.getType();
 		return new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create().fromJson(s, listType);
 	}
-
+	
 	@Override
 	protected void onPostExecute(List<JsonDevice> result) {
 		if (result != null) {
@@ -54,6 +62,9 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 				}
 			}
 			ha.updateList(list);
+		} else {
+			ha.getApplicationContext().sendBroadcast(new Intent(ha.getString(R.string.server_not_found_action)));
+			ha.updateList(new ArrayList<Device>());
 		}
 	}
 }
