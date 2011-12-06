@@ -6,16 +6,13 @@ import android.os.AsyncTask;
 
 import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
-import com.homeki.android.commands.Commands;
 import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Dimmer;
 
 public class GetDimmerStatus extends AsyncTask<Void, Void, JsonStatus> {
-	private final HomekiApplication ha;
 	private Dimmer d;
 	
-	public GetDimmerStatus(HomekiApplication ha, Dimmer d) {
-		this.ha = ha;
+	public GetDimmerStatus(Dimmer d) {
 		this.d = d;
 	}
 	
@@ -24,7 +21,7 @@ public class GetDimmerStatus extends AsyncTask<Void, Void, JsonStatus> {
 		String s = "";
 		
 		try {
-			s = Commands.getDeviceStatus(ha, d.getId());
+			s = HomekiApplication.getInstance().remote().getDeviceStatus(d.getId());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,6 +33,6 @@ public class GetDimmerStatus extends AsyncTask<Void, Void, JsonStatus> {
 	protected void onPostExecute(JsonStatus s) {
 		int level = (Integer)s.status;
 		d.setLevel(level);
-		ha.notifyChanged();
+		HomekiApplication.getInstance().notifyChanged();
 	}
 }

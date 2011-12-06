@@ -16,7 +16,7 @@
         <activity
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:name=".DeviceList"
+            android:name=".DeviceListActivity"
             android:screenOrientation="portrait" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +28,9 @@
         <service android:name=".communication.CommandSendingService" >
         </service>
 
-        <activity android:name=".InspectDeviceActivity" />
         <activity
             android:configChanges="orientation"
-            android:name=".EditPreferences"
+            android:name="SettingsActivity"
             android:screenOrientation="portrait" />
     </application>
 

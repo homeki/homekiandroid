@@ -2,21 +2,17 @@ package com.homeki.android.tasks;
 
 import java.io.IOException;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.GsonBuilder;
-import com.homeki.android.commands.Commands;
+import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonDevice;
-import com.homeki.android.communication.json.JsonStatus;
 
 public class SetDevice extends AsyncTask<Void, Void, String> {
-	private final Context c;
 	private int id;
 	private JsonDevice device;
 	
-	public SetDevice(Context c, int id){
-		this.c = c;
+	public SetDevice(int id){
 		this.id = id;
 		this.device = new JsonDevice();
 	}
@@ -34,7 +30,7 @@ public class SetDevice extends AsyncTask<Void, Void, String> {
 		String s = new GsonBuilder().create().toJson(device);
 		
 		try {
-			s = Commands.setDevice(c, id, s);
+			s = HomekiApplication.getInstance().remote().setDevice(id, s);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

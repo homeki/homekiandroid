@@ -38,16 +38,16 @@ public class Switch extends Device {
 		status = on ? Status.ON : Status.OFF;
 	}
 	
-	public void switchOff(Context context) {
+	public void switchOff() {
 		if (getStatus() != false) {
-			new SwitchOff(context, id).execute();
+			new SwitchOff(id).execute();
 			setStatus(false);
 		}
 	}
 	
-	public void switchOn(Context context) {
+	public void switchOn() {
 		if (getStatus() != true) {
-			new SwitchOn(context, id).execute();
+			new SwitchOn(id).execute();
 			setStatus(true);
 		}
 	}

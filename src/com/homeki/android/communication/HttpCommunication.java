@@ -22,21 +22,23 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
-import android.util.Log;
-
-public class CommandSender {
-	private static HttpParams params = setupParams();
-	private static SchemeRegistry schemeRegistry = setupRegistry();
-	private static ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-	private static HttpClient mHttpConn = new DefaultHttpClient(cm, params);
+public class HttpCommunication {
+	private HttpClient client;
+	
+	public HttpCommunication() {
+		HttpParams params = setupParams();
+		SchemeRegistry schemeRegistry = setupRegistry();
+		ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+		client = new DefaultHttpClient(cm, params);
+	}
 			
-	private static SchemeRegistry setupRegistry() {
+	private SchemeRegistry setupRegistry() {
 		SchemeRegistry schemeRegistry = new SchemeRegistry();
 		schemeRegistry.register( new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));			
 		return schemeRegistry;
 	}
 
-	private static HttpParams setupParams() {
+	private HttpParams setupParams() {
 		HttpParams params = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(params, 40 * 1000);
 		HttpConnectionParams.setSoTimeout(params, 40 * 1000);
@@ -45,23 +47,23 @@ public class CommandSender {
 		return params;
 	}
 
-	public static synchronized String sendCommand(String address) throws IOException {
+	public synchronized String sendCommand(String address) throws IOException {
 		HttpGet get = new HttpGet(address);
-		HttpResponse response = mHttpConn.execute(get);
-		return convertToString(response.getEntity(), get.getURI().toString());
+		HttpResponse response = client.execute(get);
+		return convertToString(response.getEntity());
 	}
 	
-	public static synchronized String postCommand(String address, String value) throws IOException {
+	public synchronized String postCommand(String address, String value) throws IOException {
 		HttpPost p = new HttpPost(address);
 		p.setEntity(new StringEntity(value));
-		HttpResponse response = mHttpConn.execute(p);
-		return convertToString(response.getEntity(), p.getURI().toString());
+		HttpResponse response = client.execute(p);
+		return convertToString(response.getEntity());
 	}
 	
-	private static synchronized String convertToString(HttpEntity he, String http) throws IOException {
+	private synchronized String convertToString(HttpEntity he) throws IOException {
 		String s;
 		try {
-			s = new String(EntityUtils.toString(he));
+			s = EntityUtils.toString(he);
 		} catch (Exception ex) {
 			s = "";
 		}

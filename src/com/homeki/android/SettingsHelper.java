@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-public class SharedPreferenceHelper {	
+public class SettingsHelper {	
 	public static String getStringValue(Context context, String key) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 		return sp.getString(key, "no_value");

@@ -2,29 +2,24 @@ package com.homeki.android.tasks;
 
 import java.io.IOException;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
-import com.homeki.android.commands.Commands;
+import com.homeki.android.HomekiApplication;
 
 public class Dim extends AsyncTask<Void, Void, String> {
-
-	private final Context c;
 	private int id;
 	private int level;
 	
-	public Dim(Context c, int id, int level){
-		this.c = c;
+	public Dim(int id, int level){
 		this.id = id;
 		this.level = level;
 	}
 	
 	@Override
 	protected String doInBackground(Void... params) {
-		
 		String s = "";
 		try {
-			s = Commands.dim(c, id, level);
+			s = HomekiApplication.getInstance().remote().dim(id, level);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

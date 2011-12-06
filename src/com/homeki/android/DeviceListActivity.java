@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,39 +30,36 @@ import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 import com.homeki.android.tasks.GetDevicesTask;
 
-public class DeviceList extends ListActivity {
-	private ArrayAdapter<Device> myAdapter;
-	private LayoutInflater mInflater;
+public class DeviceListActivity extends ListActivity {
+	private ArrayAdapter<Device> adapter;
+	private LayoutInflater inflater;
 	private List<Device> list;
-	private HomekiApplication mApplication;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mApplication = (HomekiApplication) getApplication();
-		mInflater = getLayoutInflater();
+		inflater = getLayoutInflater();
+		list = HomekiApplication.getInstance().getList();
 		
-		list = mApplication.getList();
-		
-		myAdapter = new MyAdapter(this, list);
-		setListAdapter(myAdapter);
+		adapter = new MyAdapter(this, list);
+		setListAdapter(adapter);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mApplication.registerListWatcher(myAdapter);
-		new GetDevicesTask(mApplication).execute();
 		IntentFilter filter = new IntentFilter(getString(R.string.server_not_found_action));
 		registerReceiver(serverTimeoutReceiver, filter);
+		HomekiApplication.getInstance().registerListWatcher(adapter);
+		new GetDevicesTask().execute();
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(serverTimeoutReceiver);
-		mApplication.unregisterListWatcher(myAdapter);
+		HomekiApplication.getInstance().unregisterListWatcher(adapter);
 	}
 	
 	@Override
@@ -105,19 +101,19 @@ public class DeviceList extends ListActivity {
 				
 				switch (type) {
 				case 0:
-					convertView = mInflater.inflate(R.layout.listitem_switch, null);
+					convertView = inflater.inflate(R.layout.listitem_switch, null);
 					vh.tv = (TextView) convertView.findViewById(R.id.switch_title);
 					vh.cb = (CheckBox) convertView.findViewById(R.id.switch_toggle);
 					vh.cb.setOnCheckedChangeListener(this);
 					break;
 				case 1:
-					convertView = mInflater.inflate(R.layout.listitem_dimmer, null);
+					convertView = inflater.inflate(R.layout.listitem_dimmer, null);
 					vh.tv = (TextView) convertView.findViewById(R.id.dimmer_title);
 					vh.sb = (SeekBar) convertView.findViewById(R.id.dimmer_seekbar);
 					vh.sb.setOnSeekBarChangeListener(this);
 					break;
 				case 2:
-					convertView = mInflater.inflate(R.layout.listitem_thermometer, null);
+					convertView = inflater.inflate(R.layout.listitem_thermometer, null);
 					vh.tv = (TextView) convertView.findViewById(R.id.thermometer_title);
 					break;
 				}
@@ -157,24 +153,22 @@ public class DeviceList extends ListActivity {
 			Switch s = (Switch) list.get(loc);
 			
 			if (isChecked)
-				s.switchOn(buttonView.getContext());
+				s.switchOn();
 			else
-				s.switchOff(buttonView.getContext());
+				s.switchOff();
 		}
 		
 		@Override
-		public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
-		}
+		public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {}
 		
 		@Override
-		public void onStartTrackingTouch(SeekBar sb) {
-		}
+		public void onStartTrackingTouch(SeekBar sb) {}
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar sb) {
 			int loc = (Integer) sb.getTag();
 			Dimmer d = (Dimmer) list.get(loc);
-			d.dim(sb.getContext(), sb.getProgress());
+			d.dim(sb.getProgress());
 		}
 	}
 	
@@ -188,7 +182,7 @@ public class DeviceList extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case Menu.FIRST:
-			startActivity(new Intent(this, EditPreferences.class));
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -197,7 +191,7 @@ public class DeviceList extends ListActivity {
 	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(DeviceList.this).setMessage("OMG THE SERVER IS BROKEN?").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(DeviceListActivity.this).setMessage("OMG THE SERVER IS BROKEN?").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					/* User clicked OK so do some stuff */
 				}
