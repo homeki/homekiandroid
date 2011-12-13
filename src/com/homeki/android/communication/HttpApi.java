@@ -1,8 +1,11 @@
 package com.homeki.android.communication;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.homeki.android.SettingsHelper;
 
@@ -43,9 +46,16 @@ public class HttpApi {
 		String command = String.format("set/dim?id=%d&level=%d", id, level);
 		return sendCommand(command);
 	}
-
 	public String getDeviceStatus(int id) throws IOException {
 		String command = String.format("get/status?id=%d", id);
+		return sendCommand(command);
+	}
+	public String getHistory(int id, long startTime, long endTime) throws IOException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String start = sdf.format(new Date(startTime));
+		String end = sdf.format(new Date(endTime));
+		Log.d("LOG", String.format("get/history?id=%d&from=%s&to=%s", id, start, end));
+		String command = String.format("get/history?id=%d&from=%s&to=%s", id, start, end);
 		return sendCommand(command);
 	}
 
@@ -53,4 +63,6 @@ public class HttpApi {
 		String command = String.format("set/device?id=%d", id);
 		return postCommand(command, json);
 	}
+	
+	
 }

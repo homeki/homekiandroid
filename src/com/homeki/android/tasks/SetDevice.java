@@ -17,8 +17,9 @@ public class SetDevice extends AsyncTask<Void, Void, String> {
 		this.device = new JsonDevice();
 	}
 	
-	public void setName(String name) {
+	public SetDevice setName(String name) {
 		device.name = name;
+		return this;
 	}
 	
 	public void setDescription(String description) {

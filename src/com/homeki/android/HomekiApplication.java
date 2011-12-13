@@ -42,6 +42,15 @@ public class HomekiApplication extends Application {
 		return list;
 	}
 	
+	public synchronized Device getDevice(int id) {
+		for (Device d: list) {
+			if (d.getId() ==  id) {
+				return d;
+			}
+		}
+		return null;
+	}
+	
 	public synchronized void updateList(List<Device> newList){
 		for (ArrayAdapter<Device> aa: watchers) {
 			aa.notifyDataSetInvalidated();

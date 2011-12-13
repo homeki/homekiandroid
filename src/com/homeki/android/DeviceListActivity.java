@@ -65,6 +65,14 @@ public class DeviceListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		
+		Device d = adapter.getItem(position);
+		if (d instanceof Switch) {
+			Intent intent = new Intent(this, SwitchActivity.class);
+			intent.putExtra("id", d.getId());
+			startActivity(intent);
+		}
+		
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -124,7 +132,7 @@ public class DeviceListActivity extends ListActivity {
 			
 			switch (type) {
 			case 0:
-				vh.tv.setText(dev.toString());
+				vh.tv.setText(dev.getName());
 				vh.cb.setTag(position);
 				vh.cb.setChecked(((Switch) dev).getStatus());
 				break;

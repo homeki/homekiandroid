@@ -39,7 +39,7 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			return null;
 		}
 		Type listType = new TypeToken<List<JsonDevice>>() {}.getType();
-		return new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create().fromJson(s, listType);
+		return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(s, listType);
 	}
 	
 	@Override

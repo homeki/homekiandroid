@@ -32,6 +32,14 @@
             android:configChanges="orientation"
             android:name="SettingsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:configChanges="orientation"
+            android:name="SwitchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:configChanges="orientation"
+            android:name="EditSwitchActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
