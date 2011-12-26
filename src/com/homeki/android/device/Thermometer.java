@@ -12,7 +12,6 @@ public class Thermometer extends Device {
 	
 	public Thermometer(JsonDevice d) {
 		this();
-		active = d.active;	
 		added = d.added;
 		id = d.id;
 		name = d.name;

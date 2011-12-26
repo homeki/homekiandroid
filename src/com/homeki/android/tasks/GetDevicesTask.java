@@ -3,6 +3,7 @@ package com.homeki.android.tasks;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -48,18 +49,19 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			List<Device> list = new ArrayList<Device>();
 			
 			for (JsonDevice d : result) {
-				if (d.type.contains("Dimmer")) {
+				if (d.type.contains("dimmer")) {
 					Dimmer s = new Dimmer(d);
 					new GetDimmerStatus(s).execute();
 					list.add(s);
-				} else if (d.type.contains("Switch")) {
+				} else if (d.type.contains("switch")) {
 					Switch s = new Switch(d);
 					new GetSwitchStatus(s).execute();
 					list.add(s);
-				} else if (d.type.contains("Temp")) {
+				} else if (d.type.contains("temp")) {
 					list.add(new Thermometer(d));
 				}
 			}
+			Log.d("LOG", list + "vs" + result);
 			HomekiApplication.getInstance().updateList(list);
 		} else {
 			Context context = HomekiApplication.getInstance().getApplicationContext();

@@ -19,7 +19,6 @@ public class Switch extends Device {
 	
 	public Switch(JsonDevice d) {
 		this();
-		active = d.active;
 		added = d.added;
 		id = d.id;
 		name = d.name;

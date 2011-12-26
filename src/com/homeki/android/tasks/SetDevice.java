@@ -23,7 +23,6 @@ public class SetDevice extends AsyncTask<Void, Void, String> {
 	}
 	
 	public void setDescription(String description) {
-		device.description = description;
 	}
 	
 	@Override
