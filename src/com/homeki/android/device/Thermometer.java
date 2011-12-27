@@ -21,6 +21,10 @@ public class Thermometer extends Device {
 		return value;
 	}
 	
+	public void setStatus(float value) {
+		this.value = value;
+	}
+	
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + id;

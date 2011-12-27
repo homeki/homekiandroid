@@ -142,7 +142,7 @@ public class DeviceListActivity extends ListActivity {
 				vh.sb.setProgress(((Dimmer) dev).getLevel());
 				break;
 			case 2:
-				vh.tv.setText(((Thermometer) dev).getStatus() + "");
+				vh.tv.setText(((Thermometer) dev).getStatus() + "" + (char) 0x00B0);
 				break;
 			}
 			
@@ -183,6 +183,7 @@ public class DeviceListActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs").setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(Menu.NONE, 2, Menu.NONE, "Refresh List").setIcon(android.R.drawable.ic_menu_rotate);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -191,6 +192,9 @@ public class DeviceListActivity extends ListActivity {
 		switch (item.getItemId()) {
 		case Menu.FIRST:
 			startActivity(new Intent(this, SettingsActivity.class));
+			return true;
+		case 2:
+			new GetDevicesTask().execute();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

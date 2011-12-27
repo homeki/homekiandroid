@@ -11,6 +11,11 @@
     android:paddingRight="5dip"
     android:paddingTop="2dip" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
     <TextView
         android:id="@+id/thermometer_title"
         android:layout_width="wrap_content"
@@ -18,10 +23,5 @@
         android:layout_marginLeft="6dip"
         android:layout_marginRight="6dip"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
 
 </LinearLayout>
