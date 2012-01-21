@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonStatus;
-import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Thermometer;
 
 public class GetThermometerStatusTask extends AsyncTask<Void, Void, JsonStatus> {
