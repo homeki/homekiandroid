@@ -9,10 +9,10 @@ import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Dimmer;
 
-public class GetDimmerStatus extends AsyncTask<Void, Void, JsonStatus> {
+public class GetDimmerStatusTask extends AsyncTask<Void, Void, JsonStatus> {
 	private Dimmer d;
 	
-	public GetDimmerStatus(Dimmer d) {
+	public GetDimmerStatusTask(Dimmer d) {
 		this.d = d;
 	}
 	

@@ -51,15 +51,15 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			for (JsonDevice d : result) {
 				if (d.type.equals("dimmer")) {
 					Dimmer s = new Dimmer(d);
-					new GetDimmerStatus(s).execute();
+					new GetDimmerStatusTask(s).execute();
 					list.add(s);
 				} else if (d.type.equals("switch") || d.type.equals("fakedimmer")) {
 					Switch s = new Switch(d);
-					new GetSwitchStatus(s).execute();
+					new GetSwitchStatusTask(s).execute();
 					list.add(s);
 				} else if (d.type.equals("thermometer")) {
 					Thermometer t = new Thermometer(d);
-					new GetThermometerStatus(t).execute();
+					new GetThermometerStatusTask(t).execute();
 					list.add(t);
 				}
 			}

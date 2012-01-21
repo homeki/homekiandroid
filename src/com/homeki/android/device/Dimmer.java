@@ -1,7 +1,7 @@
 package com.homeki.android.device;
 
 import com.homeki.android.communication.json.JsonDevice;
-import com.homeki.android.tasks.Dim;
+import com.homeki.android.tasks.DimTask;
 
 public class Dimmer extends Switch {
 	private int level;
@@ -16,7 +16,7 @@ public class Dimmer extends Switch {
 	}
 	
 	public void dim(int level) {
-		new Dim(id, level).execute();
+		new DimTask(id, level).execute();
 		this.setLevel(level);
 	}
 	

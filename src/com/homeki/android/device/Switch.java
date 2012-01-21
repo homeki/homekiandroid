@@ -3,8 +3,8 @@ package com.homeki.android.device;
 import android.content.Context;
 
 import com.homeki.android.communication.json.JsonDevice;
-import com.homeki.android.tasks.SwitchOff;
-import com.homeki.android.tasks.SwitchOn;
+import com.homeki.android.tasks.SwitchOffTask;
+import com.homeki.android.tasks.SwitchOnTask;
 
 public class Switch extends Device {
 	enum Status {
@@ -39,14 +39,14 @@ public class Switch extends Device {
 	
 	public void switchOff() {
 		if (getStatus() != false) {
-			new SwitchOff(id).execute();
+			new SwitchOffTask(id).execute();
 			setStatus(false);
 		}
 	}
 	
 	public void switchOn() {
 		if (getStatus() != true) {
-			new SwitchOn(id).execute();
+			new SwitchOnTask(id).execute();
 			setStatus(true);
 		}
 	}

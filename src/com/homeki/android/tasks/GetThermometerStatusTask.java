@@ -11,10 +11,10 @@ import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Dimmer;
 import com.homeki.android.device.Thermometer;
 
-public class GetThermometerStatus extends AsyncTask<Void, Void, JsonStatus> {
+public class GetThermometerStatusTask extends AsyncTask<Void, Void, JsonStatus> {
 	private Thermometer t;
 	
-	public GetThermometerStatus(Thermometer t) {
+	public GetThermometerStatusTask(Thermometer t) {
 		this.t = t;
 	}
 	

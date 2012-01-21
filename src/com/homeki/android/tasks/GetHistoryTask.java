@@ -17,13 +17,13 @@ import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonHistory;
 import com.homeki.android.device.Device;
 
-public class GetHistory extends AsyncTask<Void, Void, List<JsonHistory>> {
+public class GetHistoryTask extends AsyncTask<Void, Void, List<JsonHistory>> {
 	private Device d;
 	private long end;
 	private long start;
 	private final ImageView iv;
 	
-	public GetHistory(Device d, long start, long end, ImageView iv) {
+	public GetHistoryTask(Device d, long start, long end, ImageView iv) {
 		this.d = d;
 		this.start = start;
 		this.end = end;

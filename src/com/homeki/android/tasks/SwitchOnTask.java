@@ -6,20 +6,18 @@ import android.os.AsyncTask;
 
 import com.homeki.android.HomekiApplication;
 
-public class Dim extends AsyncTask<Void, Void, String> {
+public class SwitchOnTask extends AsyncTask<Void, Void, String> {
 	private int id;
-	private int level;
 	
-	public Dim(int id, int level){
+	public SwitchOnTask(int id){
 		this.id = id;
-		this.level = level;
 	}
 	
 	@Override
 	protected String doInBackground(Void... params) {
 		String s = "";
 		try {
-			s = HomekiApplication.getInstance().remote().dim(id, level);
+			s = HomekiApplication.getInstance().remote().switchOn(id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

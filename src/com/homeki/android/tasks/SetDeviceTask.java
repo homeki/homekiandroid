@@ -8,16 +8,16 @@ import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonDevice;
 
-public class SetDevice extends AsyncTask<Void, Void, String> {
+public class SetDeviceTask extends AsyncTask<Void, Void, String> {
 	private int id;
 	private JsonDevice device;
 	
-	public SetDevice(int id){
+	public SetDeviceTask(int id){
 		this.id = id;
 		this.device = new JsonDevice();
 	}
 	
-	public SetDevice setName(String name) {
+	public SetDeviceTask setName(String name) {
 		device.name = name;
 		return this;
 	}

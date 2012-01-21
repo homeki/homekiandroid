@@ -6,10 +6,10 @@ import android.os.AsyncTask;
 
 import com.homeki.android.HomekiApplication;
 
-public class SwitchOn extends AsyncTask<Void, Void, String> {
+public class SwitchOffTask extends AsyncTask<Void, Void, String> {
 	private int id;
 	
-	public SwitchOn(int id){
+	public SwitchOffTask(int id){
 		this.id = id;
 	}
 	
@@ -17,7 +17,7 @@ public class SwitchOn extends AsyncTask<Void, Void, String> {
 	protected String doInBackground(Void... params) {
 		String s = "";
 		try {
-			s = HomekiApplication.getInstance().remote().switchOn(id);
+			s = HomekiApplication.getInstance().remote().switchOff(id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

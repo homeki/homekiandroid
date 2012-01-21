@@ -1,7 +1,7 @@
 package com.homeki.android;
 
 import com.homeki.android.device.Device;
-import com.homeki.android.tasks.SetDevice;
+import com.homeki.android.tasks.SetDeviceTask;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -36,7 +36,7 @@ public class EditSwitchActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.done_button:
 			d.setName(name.getText().toString());
-			new SetDevice(id).setName(name.getText().toString()).execute();
+			new SetDeviceTask(id).setName(name.getText().toString()).execute();
 			finish();
 			break;
 		}

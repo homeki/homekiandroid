@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.homeki.android.device.Device;
-import com.homeki.android.tasks.GetHistory;
+import com.homeki.android.tasks.GetHistoryTask;
 
 public class SwitchActivity extends Activity {
 	private int id;
@@ -35,7 +35,7 @@ public class SwitchActivity extends Activity {
 		long oneWeek = 1000 * 3600 * 24 * 7L;
 		long twoDays = 1000 * 3600 * 24 * 2L;
 		long now = System.currentTimeMillis();
-		new GetHistory(d, now - twoDays, now, iv).execute();
+		new GetHistoryTask(d, now - twoDays, now, iv).execute();
 		name.setText(d.getName());
 		super.onResume();
 	}

@@ -9,10 +9,10 @@ import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonStatus;
 import com.homeki.android.device.Switch;
 
-public class GetSwitchStatus extends AsyncTask<Void, Void, JsonStatus> {
+public class GetSwitchStatusTask extends AsyncTask<Void, Void, JsonStatus> {
 	private Switch d;
 	
-	public GetSwitchStatus(Switch d) {
+	public GetSwitchStatusTask(Switch d) {
 		this.d = d;
 	}
 	
