@@ -42,7 +42,7 @@ public class TimerTriggerActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Device").setIcon(android.R.drawable.ic_menu_edit);
+//		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Device").setIcon(android.R.drawable.ic_menu_edit);
 		menu.add(Menu.NONE, 2, Menu.NONE, "Delete trigger").setIcon(android.R.drawable.ic_menu_edit);
 		return super.onCreateOptionsMenu(menu);
 	}

@@ -37,7 +37,7 @@ public class HttpApi {
 	}
 
 	public String deleteTrigger(int id) throws IOException {
-		String command = String.format("trigger/delete?triggerid=%d", id);
+		String command = String.format("trigger/timer/delete?triggerid=%d", id);
 		return sendCommand(command);
 	}
 	
@@ -72,5 +72,8 @@ public class HttpApi {
 		return postCommand(command, json);
 	}
 	
-	
+	public String addTimer(String json) throws IOException {
+		String command = String.format("trigger/timer/add");
+		return postCommand(command, json);
+	}
 }

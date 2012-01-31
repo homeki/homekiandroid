@@ -20,7 +20,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/edit_name"
+            android:id="@+id/timer_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
@@ -42,7 +42,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/edit_description"
+            android:id="@+id/timer_value"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="Time: "
+                android:text="Repeat type: "
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
