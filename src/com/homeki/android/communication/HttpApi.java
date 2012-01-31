@@ -29,7 +29,7 @@ public class HttpApi {
 	}
 	
 	public String getDevices() throws IOException {
-		return sendCommand("get/devices");
+		return sendCommand("device/list");
 	}
 	
 	public String getTriggers() throws IOException {
@@ -42,34 +42,33 @@ public class HttpApi {
 	}
 	
 	public String switchOn(int id) throws IOException {
-		String command = String.format("set/on?id=%d", id);
+		String command = String.format("device/state/set?deviceid=%d&value=%s", id, "on");
 		return sendCommand(command);
 	}
 	
 	public String switchOff(int id) throws IOException {
-		String command = String.format("set/off?id=%d", id);
+		String command = String.format("device/state/set?deviceid=%d&value=%s", id, "off");
 		return sendCommand(command);
 	}
 	
 	public String dim(int id, int level) throws IOException {
-		String command = String.format("set/dim?id=%d&level=%d", id, level);
+		String command = String.format("device/state/set?deviceid=%d&value=%d", id, level);
 		return sendCommand(command);
 	}
 	public String getDeviceStatus(int id) throws IOException {
-		String command = String.format("get/status?id=%d", id);
+		String command = String.format("device/state/get?deviceid=%d", id);
 		return sendCommand(command);
 	}
 	public String getHistory(int id, long startTime, long endTime) throws IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String start = sdf.format(new Date(startTime));
 		String end = sdf.format(new Date(endTime));
-		Log.d("LOG", String.format("get/history?id=%d&from=%s&to=%s", id, start, end));
-		String command = String.format("get/history?id=%d&from=%s&to=%s", id, start, end);
+		String command = String.format("device/state/list?deviceid=%d&from=%s&to=%s", id, start, end);
 		return sendCommand(command);
 	}
 
 	public String setDevice(int id, String json) throws IOException {
-		String command = String.format("set/device?id=%d", id);
+		String command = String.format("device/set?deviceid=%d", id);
 		return postCommand(command, json);
 	}
 	
