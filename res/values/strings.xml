@@ -3,4 +3,10 @@
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">Homeki</string>
     <string name="server_not_found_action">com.homeki.server_not_found_action</string>
+    <string name="trigger_prompt">Choose type</string>
+    <string-array name="trigger_array">
+        <item>Timer</item>
+        <item>Sun?</item>
+        <item>Whatever?</item>
+    </string-array>
 </resources>

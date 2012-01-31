@@ -32,6 +32,15 @@ public class HttpApi {
 		return sendCommand("get/devices");
 	}
 	
+	public String getTriggers() throws IOException {
+		return sendCommand("trigger/list");
+	}
+
+	public String deleteTrigger(int id) throws IOException {
+		String command = String.format("trigger/delete?triggerid=%d", id);
+		return sendCommand(command);
+	}
+	
 	public String switchOn(int id) throws IOException {
 		String command = String.format("set/on?id=%d", id);
 		return sendCommand(command);

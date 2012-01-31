@@ -10,15 +10,15 @@
     </uses-permission>
 
     <application
+        android:name=".HomekiApplication"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:name=".HomekiApplication" >
+        android:label="@string/app_name" >
         <activity
+            android:name=".DeviceListActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:name=".DeviceListActivity"
             android:screenOrientation="portrait" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,16 +29,28 @@
         </service>
 
         <activity
-            android:configChanges="orientation"
             android:name="SettingsActivity"
+            android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:configChanges="orientation"
             android:name="SwitchActivity"
+            android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:configChanges="orientation"
             android:name="EditSwitchActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TimerTriggerActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TriggerListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddTriggerActivity"
+            android:configChanges="orientation"
             android:screenOrientation="portrait" />
     </application>
 

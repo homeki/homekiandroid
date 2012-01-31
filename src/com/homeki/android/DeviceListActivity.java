@@ -184,6 +184,7 @@ public class DeviceListActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs").setIcon(android.R.drawable.ic_menu_preferences);
 		menu.add(Menu.NONE, 2, Menu.NONE, "Refresh List").setIcon(android.R.drawable.ic_menu_rotate);
+		menu.add(Menu.NONE, 3, Menu.NONE, "Timers").setIcon(android.R.drawable.btn_star);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -195,6 +196,9 @@ public class DeviceListActivity extends ListActivity {
 			return true;
 		case 2:
 			new GetDevicesTask().execute();
+			return true;
+		case 3:
+			startActivity(new Intent(this, TriggerListActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
