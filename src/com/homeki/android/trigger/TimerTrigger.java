@@ -1,16 +1,23 @@
 package com.homeki.android.trigger;
 
 import com.homeki.android.communication.json.JsonTimerTrigger;
+import com.homeki.android.communication.json.JsonTrigger;
 
 public class TimerTrigger extends Trigger {
-	private Integer time;
-	private Integer repeatType;
-	private Integer days;
-	
-	public TimerTrigger(JsonTimerTrigger t) {
+	public TimerTrigger(JsonTrigger t) {
 		super(t);
 	}
 
+	private Integer time;
+	private Integer repeatType;
+	private Integer days;
+
+	public void loadTimerStuff(JsonTimerTrigger t) {
+		time = t.time;
+		repeatType = t.repeatType;
+		days = t.days;
+	}
+	
 	public Integer getTime() {
 		return time;
 	}

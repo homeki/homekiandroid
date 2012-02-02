@@ -1,29 +1,30 @@
 package com.homeki.android;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
-import com.homeki.android.tasks.AddTimerTask;
-import com.homeki.android.tasks.SetDeviceTask;
-import com.homeki.android.trigger.Trigger;
+import com.homeki.android.tasks.EditTimerTask;
+import com.homeki.android.trigger.TimerTrigger;
 
-public class AddTriggerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
+public class AddTriggerActivity extends Activity implements OnItemSelectedListener, OnClickListener, OnTimeSetListener {
 	private TextView name;
-	private Trigger t;
+	private TimerTrigger t;
 	private Spinner s;
 	private TextView days;
 	private TextView repeatType;
 	private TextView time;
 	private TextView value;
+	private int id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,27 @@ public class AddTriggerActivity extends Activity implements OnItemSelectedListen
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		s.setAdapter(adapter);
 		s.setOnItemSelectedListener(this);
+		
+		id = getIntent().getIntExtra("id", -1);
+		if (id != -1) {
+			t = (TimerTrigger) HomekiApplication.getInstance().getTrigger(id);
+			name.setText(t.getName());
+			value.setText(String.valueOf(t.getNewValue()));
+			time.setText(getTime(t.getTime()));
+			repeatType.setText(String.valueOf(t.getRepeatType()));
+			days.setText(String.valueOf(t.getDays()));
+		} else {
+			time.setText("00:00");
+		}
+		time.setFocusable(false);
+		time.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TimePickerDialog tp = new TimePickerDialog(AddTriggerActivity.this, AddTriggerActivity.this, getTime(time.getText()) / 3600, getTime(time.getText()) % 3600 / 60, true);
+				tp.show();
+			}
+		});
+		
 		
 		findViewById(R.id.undo_button).setOnClickListener(this);
 		findViewById(R.id.done_button).setOnClickListener(this);
@@ -68,10 +90,26 @@ public class AddTriggerActivity extends Activity implements OnItemSelectedListen
 			finish();
 			break;
 		case R.id.done_button:
-			new AddTimerTask().setName(name.getText()).setValue(value.getText()).setTime(time.getText()).
-			setRepeatType(repeatType.getText()).setDays(days.getText()).execute();
+			new EditTimerTask().setName(name.getText()).setValue(value.getText()).setTime(getTime(time.getText())).
+			setRepeatType(repeatType.getText()).setDays(days.getText()).setId(id).execute();
 			finish();
 			break;
 		}
+	}
+
+	public int getTime(CharSequence s){
+		String[] strings = s.toString().split(":");
+		int hours = Integer.valueOf(strings[0]);
+		int minutes = Integer.valueOf(strings[1]);
+		return hours * 3600 + minutes * 60;
+	}
+	
+	private String getTime(int value) {
+		return String.format("%02d:%02d", value / 3600, (value % 3600) / 60);
+	}
+	
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		time.setText(String.format("%02d:%02d", hourOfDay, minute));
 	}
 }

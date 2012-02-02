@@ -8,35 +8,41 @@ import com.google.gson.GsonBuilder;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonTimerTrigger;
 
-public class AddTimerTask extends AsyncTask<Void, Void, String> {
+public class EditTimerTask extends AsyncTask<Void, Void, String> {
 	private JsonTimerTrigger trigger;
+	private int id;
 	
-	public AddTimerTask(){
+	public EditTimerTask(){
 		this.trigger = new JsonTimerTrigger();
 	}
 	
-	public AddTimerTask setName(CharSequence name) {
+	public EditTimerTask setName(CharSequence name) {
 		trigger.name = name.toString();
 		return this;
 	}
 	
-	public AddTimerTask setValue(CharSequence value) {
+	public EditTimerTask setValue(CharSequence value) {
 		trigger.newValue = Integer.parseInt(value.toString());
 		return this;
 	}
 	
-	public AddTimerTask setTime(CharSequence value) {
-		trigger.time = Integer.parseInt(value.toString());
+	public EditTimerTask setTime(int time) {
+		trigger.time = time;
 		return this;
 	}
 	
-	public AddTimerTask setRepeatType(CharSequence value) {
+	public EditTimerTask setRepeatType(CharSequence value) {
 		trigger.repeatType = Integer.parseInt(value.toString());
 		return this;
 	}
 	
-	public AddTimerTask setDays(CharSequence value) {
+	public EditTimerTask setDays(CharSequence value) {
 		trigger.days = Integer.parseInt(value.toString());
+		return this;
+	}
+	
+	public EditTimerTask setId(int id) {
+		this.id = id;
 		return this;
 	}
 	
@@ -45,7 +51,11 @@ public class AddTimerTask extends AsyncTask<Void, Void, String> {
 		String s = new GsonBuilder().create().toJson(trigger);
 		
 		try {
-			HomekiApplication.getInstance().remote().addTimer(s);
+			if (id != -1) {
+				HomekiApplication.getInstance().remote().editTimer(s, id);
+			} else {
+				HomekiApplication.getInstance().remote().addTimer(s);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

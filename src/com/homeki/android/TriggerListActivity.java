@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.homeki.android.tasks.GetDevicesTask;
-import com.homeki.android.tasks.GetTriggerTask;
+import com.homeki.android.tasks.GetTriggersTask;
 import com.homeki.android.trigger.Trigger;
 
 public class TriggerListActivity extends ListActivity {
@@ -46,7 +46,7 @@ public class TriggerListActivity extends ListActivity {
 		IntentFilter filter = new IntentFilter(getString(R.string.server_not_found_action));
 		registerReceiver(serverTimeoutReceiver, filter);
 		HomekiApplication.getInstance().registerTriggerWatcher(adapter);
-		new GetTriggerTask().execute();
+		new GetTriggersTask().execute();
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class TriggerListActivity extends ListActivity {
 		
 		Trigger t = adapter.getItem(position);
 		if (t instanceof Trigger) {
-			Intent intent = new Intent(this, TimerTriggerActivity.class);
+			Intent intent = new Intent(this, AddTriggerActivity.class);
 			intent.putExtra("id", t.getId());
 			startActivity(intent);
 		}
@@ -130,7 +130,7 @@ public class TriggerListActivity extends ListActivity {
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		case 2:
-			new GetTriggerTask().execute();
+			new GetTriggersTask().execute();
 			return true;
 		case 3:
 			startActivity(new Intent(this, AddTriggerActivity.class));

@@ -14,10 +14,11 @@ import com.google.gson.reflect.TypeToken;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.R;
 import com.homeki.android.communication.json.JsonTrigger;
+import com.homeki.android.trigger.TimerTrigger;
 import com.homeki.android.trigger.Trigger;
 
-public class GetTriggerTask extends AsyncTask<Void, Void, List<JsonTrigger>> {
-	public GetTriggerTask() {
+public class GetTriggersTask extends AsyncTask<Void, Void, List<JsonTrigger>> {
+	public GetTriggersTask() {
 		
 	}
 	
@@ -42,9 +43,9 @@ public class GetTriggerTask extends AsyncTask<Void, Void, List<JsonTrigger>> {
 			List<Trigger> list = new ArrayList<Trigger>();
 			
 			for (JsonTrigger t : result) {
-					Trigger tr = new Trigger(t);
-				//new GetThermometerStatusTask(t).execute();
-					list.add(tr);
+				TimerTrigger tr = new TimerTrigger(t);
+				new GetTimerTask(tr).execute();
+				list.add(tr);
 			}
 			HomekiApplication.getInstance().updateTriggerList(list);
 		} else {
