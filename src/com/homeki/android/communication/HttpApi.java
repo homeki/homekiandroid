@@ -88,4 +88,14 @@ public class HttpApi {
 		String command = String.format("trigger/timer/set?triggerid=%d", id);
 		return postCommand(command, json);
 	}
+
+	public String getLinkedDevices(int id) throws IOException {
+		String command = String.format("trigger/device/list?triggerid=%d", id);
+		return sendCommand(command);
+	}
+
+	public String linkDeviceTrigger(int deviceId, int triggerId, boolean link) throws IOException {
+		String command = String.format("trigger/%slink?triggerid=%d&deviceid=%d", link ? "" : "un", triggerId, deviceId);
+		return sendCommand(command);
+	}
 }

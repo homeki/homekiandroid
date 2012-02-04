@@ -3,7 +3,10 @@ package com.homeki.android;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.homeki.android.tasks.EditTimerTask;
+import com.homeki.android.tasks.GetTriggersTask;
 import com.homeki.android.trigger.TimerTrigger;
 
 public class AddTriggerActivity extends Activity implements OnItemSelectedListener, OnClickListener, OnTimeSetListener {
@@ -112,4 +116,25 @@ public class AddTriggerActivity extends Activity implements OnItemSelectedListen
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		time.setText(String.format("%02d:%02d", hourOfDay, minute));
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		if (id != -1) {
+			menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Link Devices").setIcon(android.R.drawable.ic_menu_preferences);
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case Menu.FIRST:
+			Intent intent = new Intent(this, LinkTriggerDeviceActivity.class);
+			intent.putExtra("id", id);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 }

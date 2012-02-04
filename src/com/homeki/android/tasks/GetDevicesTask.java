@@ -21,9 +21,8 @@ import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 
 public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
-	public GetDevicesTask() {
-		
-	}
+	
+	public GetDevicesTask() {}
 	
 	@Override
 	protected List<JsonDevice> doInBackground(Void... params) {
