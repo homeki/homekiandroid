@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.homeki.android.device.Device;
 import com.homeki.android.tasks.GetLinkedDevicesTask;
 import com.homeki.android.tasks.LinkTriggerDevice;
 

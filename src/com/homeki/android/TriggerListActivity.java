@@ -20,7 +20,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.homeki.android.tasks.GetDevicesTask;
 import com.homeki.android.tasks.GetTriggersTask;
 import com.homeki.android.trigger.Trigger;
 
@@ -75,42 +74,23 @@ public class TriggerListActivity extends ListActivity {
 		}
 		
 		@Override
-		public int getViewTypeCount() {
-			return 1;
-		}
-		
-		@Override
-		public int getItemViewType(int position) {
-			/*
-			 * Device dev = getItem(position); if (dev.getClass() ==
-			 * Switch.class) { return 0; } else if (dev.getClass() ==
-			 * Dimmer.class) { return 1; } else if (dev.getClass() ==
-			 * Thermometer.class) { return 2; } return -1;
-			 */
-			return 0;
-		}
-		
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder vh;
 			Trigger trigger = getItem(position);
 
 			if (convertView == null) {
 				vh = new ViewHolder();
-				convertView = inflater.inflate(R.layout.listitem_switch, null);
-				vh.tv = (TextView) convertView.findViewById(R.id.switch_title);
-				vh.cb = (CheckBox) convertView.findViewById(R.id.switch_toggle);
+				convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
+				vh.tv = (TextView) convertView.findViewById(android.R.id.text1);
 				convertView.setTag(vh);
 			}
 			
 			vh = (ViewHolder) convertView.getTag();
 			vh.tv.setText(trigger.getName());
-			vh.cb.setTag(position);
 			return convertView;
 		}
 		
 		class ViewHolder {
-			CheckBox cb;
 			TextView tv;
 		}
 	}

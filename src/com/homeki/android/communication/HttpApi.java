@@ -42,17 +42,17 @@ public class HttpApi {
 	}
 	
 	public String switchOn(int id) throws IOException {
-		String command = String.format("device/state/set?deviceid=%d&value=%s", id, "on");
+		String command = String.format("device/state/set?deviceid=%d&value=%d", id, 1);
 		return sendCommand(command);
 	}
 	
 	public String switchOff(int id) throws IOException {
-		String command = String.format("device/state/set?deviceid=%d&value=%s", id, "off");
+		String command = String.format("device/state/set?deviceid=%d&value=%d", id, 0);
 		return sendCommand(command);
 	}
 	
 	public String dim(int id, int level) throws IOException {
-		String command = String.format("device/state/set?deviceid=%d&value=%d", id, level);
+		String command = String.format("device/state/set?deviceid=%d&value=1&level=%d", id, level);
 		return sendCommand(command);
 	}
 	

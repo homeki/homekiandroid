@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.homeki.android.tasks.EditTimerTask;
-import com.homeki.android.tasks.GetTriggersTask;
 import com.homeki.android.trigger.TimerTrigger;
 
 public class AddTriggerActivity extends Activity implements OnItemSelectedListener, OnClickListener, OnTimeSetListener {

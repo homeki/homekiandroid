@@ -6,11 +6,12 @@ public class JsonDevice {
 	public String type;
 	public Integer id;
 	public String name;
+	public String description;
 	public Date added;
-	public Object status;
-
-	@Override
-	public String toString() {
-		return type;
+	public Boolean active;
+	public JsonState state;
+	
+	public JsonDevice() {
+		
 	}
 }
