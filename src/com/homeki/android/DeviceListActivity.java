@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -119,6 +120,9 @@ public class DeviceListActivity extends ListActivity {
 					vh.tv = (TextView) convertView.findViewById(R.id.dimmer_title);
 					vh.sb = (SeekBar) convertView.findViewById(R.id.dimmer_seekbar);
 					vh.sb.setOnSeekBarChangeListener(this);
+					
+					vh.cb = (CheckBox) convertView.findViewById(R.id.dimmer_toggle);
+					vh.cb.setOnCheckedChangeListener(this);
 					break;
 				case 2:
 					convertView = inflater.inflate(R.layout.listitem_thermometer, null);
@@ -137,9 +141,12 @@ public class DeviceListActivity extends ListActivity {
 				vh.cb.setChecked(((Switch) dev).getStatus());
 				break;
 			case 1:
-				vh.tv.setText(dev.toString());
+				Dimmer d = (Dimmer) dev;
+				vh.tv.setText(d.toString());
 				vh.sb.setTag(position);
-				vh.sb.setProgress(((Dimmer) dev).getLevel());
+				vh.sb.setProgress(d.getLevel());
+				vh.cb.setTag(position);
+				vh.cb.setChecked(d.getStatus());
 				break;
 			case 2:
 				vh.tv.setText(((Thermometer) dev).getStatus() + "" + (char) 0x00B0);
@@ -160,6 +167,11 @@ public class DeviceListActivity extends ListActivity {
 			int loc = (Integer) buttonView.getTag();
 			Switch s = (Switch) list.get(loc);
 			
+			if (s instanceof Dimmer){
+				Dimmer d = (Dimmer) s;
+				d.dim(d.getLevel(), isChecked ? 1 : 0);
+			}
+			
 			if (isChecked)
 				s.switchOn();
 			else
@@ -176,7 +188,7 @@ public class DeviceListActivity extends ListActivity {
 		public void onStopTrackingTouch(SeekBar sb) {
 			int loc = (Integer) sb.getTag();
 			Dimmer d = (Dimmer) list.get(loc);
-			d.dim(sb.getProgress());
+			d.dim(sb.getProgress(), d.getStatus() ? 1 : 0);
 		}
 	}
 	

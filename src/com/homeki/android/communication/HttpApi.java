@@ -51,8 +51,8 @@ public class HttpApi {
 		return sendCommand(command);
 	}
 	
-	public String dim(int id, int level) throws IOException {
-		String command = String.format("device/state/set?deviceid=%d&value=1&level=%d", id, level);
+	public String dim(int id, int level, int value) throws IOException {
+		String command = String.format("device/state/set?deviceid=%d&level=%d&value=%d", id, level, value);
 		return sendCommand(command);
 	}
 	

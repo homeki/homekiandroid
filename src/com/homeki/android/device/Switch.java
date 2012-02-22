@@ -33,21 +33,21 @@ public class Switch extends Device {
 		// new SetName(context, id, name).execute();
 	}
 	
-	public void setStatus(boolean on) {
-		status = on ? Status.ON : Status.OFF;
+	public void setStatus(Integer value) {
+		status = value > 0 ? Status.ON : Status.OFF;
 	}
 	
 	public void switchOff() {
 		if (getStatus() != false) {
 			new SwitchOffTask(id).execute();
-			setStatus(false);
+			setStatus(0);
 		}
 	}
 	
 	public void switchOn() {
 		if (getStatus() != true) {
 			new SwitchOnTask(id).execute();
-			setStatus(true);
+			setStatus(1);
 		}
 	}
 	

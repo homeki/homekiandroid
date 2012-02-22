@@ -32,7 +32,7 @@
             android:progressDrawable="@drawable/progress" />
 
         <CheckBox
-            android:id="@+id/switch_toggle"
+            android:id="@+id/dimmer_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"

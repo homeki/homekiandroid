@@ -15,15 +15,10 @@ public class Dimmer extends Switch {
 		super(d);
 	}
 	
-	public void dim(int level) {
-		new DimTask(id, level).execute();
+	public void dim(int level, int value) {
+		new DimTask(id, level, value).execute();
+		this.setStatus(value);
 		this.setLevel(level);
-	}
-	
-	@Override
-	public void setStatus(boolean on) {
-		super.setStatus(on);
-		this.setLevel(on ? 255 : 0);
 	}
 	
 	public int getLevel() {
@@ -31,7 +26,6 @@ public class Dimmer extends Switch {
 	}
 	
 	public void setLevel(int level) {
-		super.setStatus(level > 0);
 		this.level = level;
 	}
 }
