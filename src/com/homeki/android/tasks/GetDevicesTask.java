@@ -2,6 +2,7 @@ package com.homeki.android.tasks;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 					list.add(s);
 				} else if (d.type.equals("thermometer")) {
 					Thermometer t = new Thermometer(d);
-					t.setStatus((Float) d.state.value);
+					t.setStatus(((BigDecimal)d.state.value).floatValue());
 					list.add(t);
 				}
 			}
