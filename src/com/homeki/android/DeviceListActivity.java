@@ -1,5 +1,10 @@
 package com.homeki.android;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -9,6 +14,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +23,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -31,7 +39,7 @@ import com.homeki.android.device.Switch;
 import com.homeki.android.device.Thermometer;
 import com.homeki.android.tasks.GetDevicesTask;
 
-public class DeviceListActivity extends ListActivity {
+public class DeviceListActivity extends ListActivity implements OnItemLongClickListener {
 	private ArrayAdapter<Device> adapter;
 	private LayoutInflater inflater;
 	private List<Device> list;
@@ -39,12 +47,12 @@ public class DeviceListActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		inflater = getLayoutInflater();
 		list = HomekiApplication.getInstance().getList();
 		
 		adapter = new MyAdapter(this, list);
 		setListAdapter(adapter);
+		getListView().setOnItemLongClickListener(this);
 	}
 	
 	@Override
@@ -62,18 +70,15 @@ public class DeviceListActivity extends ListActivity {
 		unregisterReceiver(serverTimeoutReceiver);
 		HomekiApplication.getInstance().unregisterListWatcher(adapter);
 	}
-	
+
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		
+	public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id) {
 		Device d = adapter.getItem(position);
 		if (d instanceof Switch) {
 			Intent intent = new Intent(this, SwitchActivity.class);
 			intent.putExtra("id", d.getId());
 			startActivity(intent);
-		}
-		
+		}		return false;
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -197,6 +202,7 @@ public class DeviceListActivity extends ListActivity {
 		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs").setIcon(android.R.drawable.ic_menu_preferences);
 		menu.add(Menu.NONE, 2, Menu.NONE, "Refresh List").setIcon(android.R.drawable.ic_menu_rotate);
 		menu.add(Menu.NONE, 3, Menu.NONE, "Timers").setIcon(android.R.drawable.btn_star);
+		menu.add(Menu.NONE, 4, Menu.NONE, "broadcast").setIcon(android.R.drawable.btn_star_big_on);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -212,10 +218,50 @@ public class DeviceListActivity extends ListActivity {
 		case 3:
 			startActivity(new Intent(this, TriggerListActivity.class));
 			return true;
+		case 4:
+			testBroadCast();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
+	InetAddress getBroadcastAddress() throws IOException {
+	    WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+	    DhcpInfo dhcp = wifi.getDhcpInfo();
+	    // handle null somehow
+
+	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+	    byte[] quads = new byte[4];
+	    for (int k = 0; k < 4; k++)
+	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+	    Log.d("LOG", InetAddress.getByAddress(quads) + "");
+	    return InetAddress.getByAddress(quads);
+	}
+	
+	private void testBroadCast() {
+		DatagramSocket socket;
+		try {
+			socket = new DatagramSocket(53005);
+			socket.setBroadcast(true);
+			byte[] data = "trolol".getBytes();
+			DatagramPacket packet = new DatagramPacket(data, data.length,
+					getBroadcastAddress(), 53005);
+			socket.send(packet);
+			socket.disconnect();
+			socket.close();
+			DatagramSocket replySocket = new DatagramSocket(1337);
+			byte[] buf = new byte[1024];
+			packet = new DatagramPacket(buf, buf.length);
+			replySocket.receive(packet);
+			SettingsHelper.putStringValue(this, "server", packet.getAddress().getHostAddress()+":5000");
+			new GetDevicesTask().execute();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+
 	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {

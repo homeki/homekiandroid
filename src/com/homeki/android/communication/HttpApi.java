@@ -5,27 +5,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.homeki.android.SettingsHelper;
 
 public class HttpApi {
-	private final HttpCommunication comm;
 	private final Context context;
 	
 	public HttpApi(Context c) {
 		this.context = c;
-		this.comm = new HttpCommunication();
 	}
 	
 	private String sendCommand(String command) throws IOException {
 		String address = String.format("http://%s", SettingsHelper.getStringValue(context, "server"));
-		return comm.sendCommand(String.format("%s/%s", address, command));
+		return HttpCommunication.sendCommand(String.format("%s/%s", address, command));
 	}
 	
 	private String postCommand(String command, String values) throws IOException {
 		String address = String.format("http://%s/%s", SettingsHelper.getStringValue(context, "server"), command);
-		return comm.postCommand(address, values);
+		return HttpCommunication.postCommand(address, values);
 	}
 	
 	public String getDevices() throws IOException {
