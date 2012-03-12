@@ -9,19 +9,17 @@ import com.homeki.android.HomekiApplication;
 public class DimTask extends AsyncTask<Void, Void, String> {
 	private int id;
 	private int level;
-	private final int value;
 	
-	public DimTask(int id, int level, int value){
+	public DimTask(int id, int level) {
 		this.id = id;
 		this.level = level;
-		this.value = value;
 	}
 	
 	@Override
 	protected String doInBackground(Void... params) {
 		String s = "";
 		try {
-			s = HomekiApplication.getInstance().remote().dim(id, level, value);
+			s = HomekiApplication.getInstance().remote().dim(id, level);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
