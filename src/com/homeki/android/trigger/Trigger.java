@@ -6,10 +6,12 @@ public class Trigger {
 	protected int id;
 	protected String name;
 	private Integer newValue;
+	private String meta;
 	
 	public Trigger(JsonTrigger t) {
 		id = t.id;
 		name = t.name;
+		meta = t.meta;
 		setNewValue(t.newValue);
 	}
 	
@@ -35,5 +37,9 @@ public class Trigger {
 
 	public void setNewValue(Integer newValue) {
 		this.newValue = newValue;
+	}
+
+	public String getMeta() {
+		return meta;
 	}
 }

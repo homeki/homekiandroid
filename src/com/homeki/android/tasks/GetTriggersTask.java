@@ -44,7 +44,9 @@ public class GetTriggersTask extends AsyncTask<Void, Void, List<JsonTrigger>> {
 			
 			for (JsonTrigger t : result) {
 				TimerTrigger tr = new TimerTrigger(t);
-				new GetTimerTask(tr).execute();
+				if (t.type.equals("timer")){
+					new GetTimerTask(tr).execute();
+				}
 				list.add(tr);
 			}
 			HomekiApplication.getInstance().updateTriggerList(list);

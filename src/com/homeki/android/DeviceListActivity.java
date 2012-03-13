@@ -70,7 +70,7 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 		unregisterReceiver(serverTimeoutReceiver);
 		HomekiApplication.getInstance().unregisterListWatcher(adapter);
 	}
-
+	
 	@Override
 	public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id) {
 		Device d = adapter.getItem(position);
@@ -78,7 +78,8 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 			Intent intent = new Intent(this, SwitchActivity.class);
 			intent.putExtra("id", d.getId());
 			startActivity(intent);
-		}		return false;
+		}
+		return false;
 	}
 	
 	private class MyAdapter extends ArrayAdapter<Device> implements OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -172,15 +173,17 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 			int loc = (Integer) buttonView.getTag();
 			Switch s = (Switch) list.get(loc);
 			
-			if (s instanceof Dimmer){
+			if (s instanceof Dimmer) {
 				Dimmer d = (Dimmer) s;
 				d.dim(d.getLevel(), isChecked ? 1 : 0);
+			} else {
+				if (isChecked) {
+					s.switchOn();
+				} else {
+					s.switchOff();
+				}
 			}
 			
-			if (isChecked)
-				s.switchOn();
-			else
-				s.switchOff();
 		}
 		
 		@Override
@@ -226,16 +229,16 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 	}
 	
 	InetAddress getBroadcastAddress() throws IOException {
-	    WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-	    DhcpInfo dhcp = wifi.getDhcpInfo();
-	    // handle null somehow
-
-	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-	    byte[] quads = new byte[4];
-	    for (int k = 0; k < 4; k++)
-	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-	    Log.d("LOG", InetAddress.getByAddress(quads) + "");
-	    return InetAddress.getByAddress(quads);
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		DhcpInfo dhcp = wifi.getDhcpInfo();
+		// handle null somehow
+		
+		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+		byte[] quads = new byte[4];
+		for (int k = 0; k < 4; k++)
+			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		Log.d("LOG", InetAddress.getByAddress(quads) + "");
+		return InetAddress.getByAddress(quads);
 	}
 	
 	private void testBroadCast() {
@@ -244,24 +247,24 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 			socket = new DatagramSocket(53005);
 			socket.setBroadcast(true);
 			byte[] data = "trolol".getBytes();
-			DatagramPacket packet = new DatagramPacket(data, data.length,
-					getBroadcastAddress(), 53005);
+			DatagramPacket packet = new DatagramPacket(data, data.length, getBroadcastAddress(), 53005);
 			socket.send(packet);
 			socket.disconnect();
 			socket.close();
+			Log.d("LOG", "waiting for reply");
 			DatagramSocket replySocket = new DatagramSocket(1337);
 			byte[] buf = new byte[1024];
 			packet = new DatagramPacket(buf, buf.length);
 			replySocket.receive(packet);
-			SettingsHelper.putStringValue(this, "server", packet.getAddress().getHostAddress()+":5000");
+			SettingsHelper.putStringValue(this, "server", packet.getAddress().getHostAddress() + ":5000");
 			new GetDevicesTask().execute();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-
+	
 	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {

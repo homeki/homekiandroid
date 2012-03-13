@@ -31,13 +31,13 @@ public class EditTimerTask extends AsyncTask<Void, Void, String> {
 		return this;
 	}
 	
-	public EditTimerTask setRepeatType(CharSequence value) {
-		trigger.repeatType = Integer.parseInt(value.toString());
+	public EditTimerTask setRepeatType(long l) {
+		trigger.repeatType = (int) l;
 		return this;
 	}
 	
-	public EditTimerTask setDays(CharSequence value) {
-		trigger.days = Integer.parseInt(value.toString());
+	public EditTimerTask setDays(int days) {
+		trigger.days = days;
 		return this;
 	}
 	
