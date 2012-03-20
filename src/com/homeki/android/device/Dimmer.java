@@ -15,9 +15,8 @@ public class Dimmer extends Switch {
 		super(d);
 	}
 	
-	public void dim(int level, int value) {
-		new DimTask(id, level, value).execute();
-		this.setStatus(value);
+	public void dim(int level) {
+		new DimTask(id, level).execute();
 		this.setLevel(level);
 	}
 	

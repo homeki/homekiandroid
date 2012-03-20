@@ -48,12 +48,24 @@ public class GetDevicesTask extends AsyncTask<Void, Void, List<JsonDevice>> {
 			for (JsonDevice d : result) {
 				if (d.type.equals("dimmer")) {
 					Dimmer s = new Dimmer(d);
-					s.setLevel(d.state.level);
+					// added because in a db upgrade from history point per device to history point per value type
+					// we could have introduced devices without any history point which would then render null value here,
+					// can probably be removed soon
+					if (d.state.level != null)
+						s.setLevel(d.state.level);
+					else
+						s.setLevel(0);
 					s.setStatus((Integer) d.state.value);
 					list.add(s);
 				} else if (d.type.equals("switch")) {
 					Switch s = new Switch(d);
-					s.setStatus((Integer) d.state.value);
+					// added because in a db upgrade from history point per device to history point per value type
+					// we could have introduced devices without any history point which would then render null value here
+					// can probably be removed soon
+					if (d.state.value != null)
+						s.setStatus((Integer) d.state.value);
+					else
+						s.setStatus(0);
 					list.add(s);
 				} else if (d.type.equals("thermometer")) {
 					Thermometer t = new Thermometer(d);

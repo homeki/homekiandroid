@@ -173,18 +173,12 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			int loc = (Integer) buttonView.getTag();
 			Switch s = (Switch) list.get(loc);
-			
-			if (s instanceof Dimmer) {
-				Dimmer d = (Dimmer) s;
-				d.dim(d.getLevel(), isChecked ? 1 : 0);
+
+			if (isChecked) {
+				s.switchOn();
 			} else {
-				if (isChecked) {
-					s.switchOn();
-				} else {
-					s.switchOff();
-				}
+				s.switchOff();
 			}
-			
 		}
 		
 		@Override
@@ -197,7 +191,7 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 		public void onStopTrackingTouch(SeekBar sb) {
 			int loc = (Integer) sb.getTag();
 			Dimmer d = (Dimmer) list.get(loc);
-			d.dim(sb.getProgress(), d.getStatus() ? 1 : 0);
+			d.dim(sb.getProgress());
 		}
 	}
 	

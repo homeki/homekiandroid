@@ -48,8 +48,8 @@ public class HttpApi {
 		return sendCommand(command);
 	}
 	
-	public String dim(int id, int level, int value) throws IOException {
-		String command = String.format("device/state/set?deviceid=%d&level=%d&value=%d", id, level, value);
+	public String dim(int id, int level) throws IOException {
+		String command = String.format("device/state/set?deviceid=%d&channel=1&value=%d", id, level);
 		return sendCommand(command);
 	}
 	
