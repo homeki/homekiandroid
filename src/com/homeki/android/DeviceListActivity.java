@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -252,18 +253,36 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 			socket.disconnect();
 			socket.close();
 			Log.d("LOG", "waiting for reply");
-			DatagramSocket replySocket = new DatagramSocket(1337);
-			byte[] buf = new byte[1024];
-			packet = new DatagramPacket(buf, buf.length);
-			replySocket.receive(packet);
-			SettingsHelper.putStringValue(this, "server", packet.getAddress().getHostAddress() + ":5000");
-			new GetDevicesTask().execute();
+			dialog = ProgressDialog.show(this, "", "Searching for homekiserver...", true, true);
+			IntentFilter filter = new IntentFilter("FOUNDSERVER");
+			filter.addAction("NOSERVER");
+			registerReceiver(serverReceiver, filter);
+			startService(new Intent(this, ServerDetectorService.class));
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	ProgressDialog dialog;
+	BroadcastReceiver serverReceiver = new BroadcastReceiver() {
+		
+		public void onReceive(Context context, Intent intent) {
+			unregisterReceiver(this);
+			dialog.cancel();
+			if (intent.getAction().equals("FOUNDSERVER")){
+				SettingsHelper.putStringValue(DeviceListActivity.this, "server", intent.getStringExtra("ip") + ":5000");
+				new GetDevicesTask().execute();
+			} else {
+				new AlertDialog.Builder(DeviceListActivity.this).setMessage("Couldnt find any server on local network").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						/* User clicked OK so do some stuff */
+					}
+				}).show();
+			}
+		};
+	};
 	
 	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
 		@Override

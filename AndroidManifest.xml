@@ -57,6 +57,7 @@
             android:name=".LinkTriggerDeviceActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+        <service android:name="ServerDetectorService"></service>
     </application>
 
 </manifest>
