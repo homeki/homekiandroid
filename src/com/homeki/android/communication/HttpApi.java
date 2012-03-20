@@ -95,4 +95,9 @@ public class HttpApi {
 		String command = String.format("trigger/%slink?triggerid=%d&deviceid=%d", link ? "" : "un", triggerId, deviceId);
 		return sendCommand(command);
 	}
+
+	public String getLinkedTriggers(int id) throws IOException {
+		String command = String.format("device/trigger/list?deviceid=%d", id);
+		return sendCommand(command);
+	}
 }

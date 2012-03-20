@@ -43,6 +43,8 @@ public class SwitchActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Device").setIcon(android.R.drawable.ic_menu_edit);
+		menu.add(Menu.NONE, 2, Menu.NONE, "Link Triggers").setIcon(android.R.drawable.ic_menu_preferences);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -54,7 +56,13 @@ public class SwitchActivity extends Activity {
 			intent.putExtra("id", id);
 			startActivity(intent);
 			return true;
+		case 2:
+			intent = new Intent(this, LinkTriggerDeviceActivity.class);
+			intent.putExtra("deviceId", id);
+			startActivity(intent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
 }

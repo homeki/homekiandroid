@@ -1,6 +1,9 @@
 package com.homeki.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -14,35 +17,53 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.homeki.android.communication.json.JsonTriggerDeviceLink;
 import com.homeki.android.tasks.GetLinkedDevicesTask;
-import com.homeki.android.tasks.GetLinkedTriggersTask;
 import com.homeki.android.tasks.LinkTriggerDevice;
 
-public class LinkTriggerDeviceActivity extends ListActivity {
-	private ArrayAdapter<JsonTriggerDeviceLink> adapter;
+public class LinkDeviceTriggerActivity extends ListActivity {
+	private MyArrayAdapter adapter;
+	private int id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		int triggerId = getIntent().getIntExtra("triggerId", -1);
-		int deviceId = getIntent().getIntExtra("deviceId", -1);
-		ArrayList<JsonTriggerDeviceLink> devices = new ArrayList<JsonTriggerDeviceLink>();
-		adapter = new ArrayAdapter<JsonTriggerDeviceLink>(this, android.R.layout.simple_list_item_multiple_choice, devices);
+		this.id = getIntent().getIntExtra("id", -1);
+		
+		ArrayList<String> devices = new ArrayList<String>();
+		adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, devices);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		setListAdapter(adapter);
-		if (triggerId != -1){
-			new GetLinkedDevicesTask(getListView(), triggerId).execute();
-		} else if (deviceId != -1){
-			new GetLinkedTriggersTask(getListView(), deviceId).execute();
-		}
+
+		new GetLinkedDevicesTask(getListView(), id).execute();
 	}
 	
+	public class MyArrayAdapter extends ArrayAdapter<String> {
+		private Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		public MyArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
+			super(context, textViewResourceId, objects);
+		}
+		
+		public void add(String object, int id) {
+			super.add(object);
+			map.put(object, id);
+		}
+
+		public int getId(String name) {
+			return map.get(name);
+		}
+		
+		@Override
+		public void clear() {
+			super.clear();
+			map.clear();
+		}
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		JsonTriggerDeviceLink link = (JsonTriggerDeviceLink) adapter.getItem(position);
-		new LinkTriggerDevice(link.deviceId, link.triggerId, getListView().isItemChecked(position)).execute();
+		new LinkTriggerDevice(adapter.getId(adapter.getItem(position)), this.id, getListView().isItemChecked(position)).execute();
 	}
 	
 	@Override
@@ -63,7 +84,7 @@ public class LinkTriggerDeviceActivity extends ListActivity {
 	BroadcastReceiver serverTimeoutReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			new AlertDialog.Builder(LinkTriggerDeviceActivity.this).setMessage("OMG THE SERVER IS BROKEN?").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(LinkDeviceTriggerActivity.this).setMessage("OMG THE SERVER IS BROKEN?").setPositiveButton("Jahapp...", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					/* User clicked OK so do some stuff */
 				}

@@ -166,7 +166,7 @@ public class AddTriggerActivity extends Activity implements OnItemSelectedListen
 		switch (item.getItemId()) {
 		case Menu.FIRST:
 			Intent intent = new Intent(this, LinkTriggerDeviceActivity.class);
-			intent.putExtra("id", id);
+			intent.putExtra("triggerId", id);
 			startActivity(intent);
 			return true;
 		}

@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -13,11 +14,11 @@ import com.google.gson.reflect.TypeToken;
 import com.homeki.android.HomekiApplication;
 import com.homeki.android.communication.json.JsonTriggerDeviceLink;
 
-public class GetLinkedDevicesTask extends AsyncTask<Void, Void, List<JsonTriggerDeviceLink>> {
+public class GetLinkedTriggersTask extends AsyncTask<Void, Void, List<JsonTriggerDeviceLink>> {
 	private int id;
 	private final ListView lv;
 
-	public GetLinkedDevicesTask(ListView lv, int id) {
+	public GetLinkedTriggersTask(ListView lv, int id) {
 		this.lv = lv;
 		this.id = id;
 	}
@@ -27,7 +28,7 @@ public class GetLinkedDevicesTask extends AsyncTask<Void, Void, List<JsonTrigger
 	protected List<JsonTriggerDeviceLink> doInBackground(Void... params) {
 		String s = "";
 		try {
-			s = HomekiApplication.getInstance().remote().getLinkedDevices(id);
+			s = HomekiApplication.getInstance().remote().getLinkedTriggers(id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -35,6 +36,7 @@ public class GetLinkedDevicesTask extends AsyncTask<Void, Void, List<JsonTrigger
 			return null;
 		}
 		Type listType = new TypeToken<List<JsonTriggerDeviceLink>>() {}.getType();
+		Log.d("LOG", s);
 		return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(s, listType);
 	}
 	
