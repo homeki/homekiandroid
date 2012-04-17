@@ -36,8 +36,7 @@
         android:layout_below="@+id/buttons"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:layout_margin="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <!-- android:layout_margin="5dp" -->
 
@@ -49,8 +48,7 @@
         android:layout_below="@+id/timer_name"
         android:hint="Value"
         android:inputType="number"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:layout_margin="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
