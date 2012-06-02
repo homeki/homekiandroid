@@ -200,7 +200,7 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 		menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "Edit Prefs").setIcon(android.R.drawable.ic_menu_preferences);
 		menu.add(Menu.NONE, 2, Menu.NONE, "Refresh List").setIcon(android.R.drawable.ic_menu_rotate);
 		menu.add(Menu.NONE, 3, Menu.NONE, "Timers").setIcon(android.R.drawable.btn_star);
-		menu.add(Menu.NONE, 4, Menu.NONE, "broadcast").setIcon(android.R.drawable.btn_star_big_on);
+		menu.add(Menu.NONE, 4, Menu.NONE, "Broadcast").setIcon(android.R.drawable.btn_star_big_on);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -217,7 +217,7 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 			startActivity(new Intent(this, TriggerListActivity.class));
 			return true;
 		case 4:
-			testBroadCast();
+			broadcast();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -236,22 +236,24 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 		return InetAddress.getByAddress(quads);
 	}
 	
-	private void testBroadCast() {
+	private void broadcast() {
 		DatagramSocket socket;
+		
 		try {
 			socket = new DatagramSocket(53005);
 			socket.setBroadcast(true);
-			byte[] data = "trolol".getBytes();
-			DatagramPacket packet = new DatagramPacket(data, data.length, getBroadcastAddress(), 53005);
-			socket.send(packet);
-			socket.disconnect();
-			socket.close();
-			Log.d("LOG", "waiting for reply");
+			
 			dialog = ProgressDialog.show(this, "", "Searching for homekiserver...", true, true);
 			IntentFilter filter = new IntentFilter("FOUNDSERVER");
 			filter.addAction("NOSERVER");
 			registerReceiver(serverReceiver, filter);
 			startService(new Intent(this, ServerDetectorService.class));
+			
+			byte[] data = "HOMEKI".getBytes();
+			DatagramPacket packet = new DatagramPacket(data, data.length, getBroadcastAddress(), 53005);
+			socket.send(packet);
+			socket.disconnect();
+			socket.close();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -261,7 +263,6 @@ public class DeviceListActivity extends ListActivity implements OnItemLongClickL
 	
 	ProgressDialog dialog;
 	BroadcastReceiver serverReceiver = new BroadcastReceiver() {
-		
 		public void onReceive(Context context, Intent intent) {
 			unregisterReceiver(this);
 			dialog.cancel();

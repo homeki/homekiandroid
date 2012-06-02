@@ -8,6 +8,7 @@ import java.net.SocketTimeoutException;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 public class ServerDetectorService extends IntentService {
 	public ServerDetectorService() {
@@ -23,11 +24,16 @@ public class ServerDetectorService extends IntentService {
 		DatagramSocket replySocket;
 		try {
 			replySocket = new DatagramSocket(1337);
-			byte[] buf = new byte[1024];
+			byte[] buf = new byte[512];
 			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			replySocket.setSoTimeout(15000);
 			replySocket.receive(packet);
 			Intent retIntent = new Intent("FOUNDSERVER");
+			String response = new String(packet.getData(), 0, packet.getLength());
+			String[] vars = response.split("\\|");
+			Log.i("BROADCAST", "Count: " + vars.length);
+			Log.i("BROADCAST", "Server version: " + vars[0]);
+			Log.i("BROADCAST", "Server name: " + vars[1]);
 			retIntent.putExtra("ip", packet.getAddress().getHostAddress());
 			sendBroadcast(retIntent);
 		} catch (SocketTimeoutException e) {
