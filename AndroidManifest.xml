@@ -1,63 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.homeki.android"
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="15" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
     <application
-        android:name=".HomekiApplication"
-        android:icon="@drawable/icon"
+        uiOptions="splitActionBarWhenNarrow"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Homeki" >
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".DeviceListActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".communication.CommandSendingService" >
-        </service>
-
         <activity
-            android:name="SettingsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="SwitchActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="EditSwitchActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TimerTriggerActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TriggerListActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".AddTriggerActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".LinkTriggerDeviceActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <service android:name="ServerDetectorService"></service>
+            android:name=".DeviceDetailsActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
 </manifest>
