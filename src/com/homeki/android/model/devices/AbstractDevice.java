@@ -1,15 +1,21 @@
 package com.homeki.android.model.devices;
 
 import java.util.Date;
+import java.util.HashMap;
 
-public abstract class AbstractDevice<T> {
+public abstract class AbstractDevice {
+
 	protected DeviceTypes mType;
 	protected int mId;
 	protected String mName;
 	protected String mDescription;
-	protected Date mAdded;
+	protected String mAdded;
 	protected boolean mActive;
-	protected T mState;
+	protected HashMap<Integer, String> mChannels;
+
+	public AbstractDevice() {
+		mChannels = new HashMap<Integer, String>();
+	}
 
 	public DeviceTypes getType() {
 		return mType;
@@ -43,11 +49,11 @@ public abstract class AbstractDevice<T> {
 		this.mDescription = description;
 	}
 
-	public Date getAdded() {
+	public String getAdded() {
 		return mAdded;
 	}
 
-	public void setAdded(Date added) {
+	public void setAdded(String added) {
 		this.mAdded = added;
 	}
 
@@ -59,7 +65,11 @@ public abstract class AbstractDevice<T> {
 		this.mActive = active;
 	}
 
-	public abstract T getState();
+	public void setChannelValue(int key, String value) {
+		mChannels.put(key, value);	
+	}
 	
-	public abstract void setState(T state);
+	public String getChannelValue(int key) {
+		return mChannels.get(key);
+	}
 }

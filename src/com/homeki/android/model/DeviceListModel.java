@@ -1,6 +1,7 @@
 package com.homeki.android.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.util.Log;
@@ -20,11 +21,11 @@ public class DeviceListModel implements DeviceListProvider {
 		return mInstance;
 	}
 
-	private ArrayList<AbstractDevice<?>> mDevices;
+	private ArrayList<AbstractDevice> mDevices;
 	private OnDeviceListChangedListener mChangedListener;
 
 	private DeviceListModel() {
-		mDevices = new ArrayList<AbstractDevice<?>>();
+		mDevices = new ArrayList<AbstractDevice>();
 	}
 
 	@Override
@@ -33,11 +34,20 @@ public class DeviceListModel implements DeviceListProvider {
 	}
 
 	@Override
-	public AbstractDevice<?> getDeviceAtPosition(int position) {
+	public AbstractDevice getDeviceAtPosition(int position) {
 		return mDevices.get(position);
 	}
+	
+	public AbstractDevice getDeviceWithId(int id) {
+		for (AbstractDevice device : mDevices) {
+			if(device.getId() == id) {
+				return device;
+			}
+		}
+		return null;
+	}
 
-	public void setDeviceList(List<AbstractDevice<?>> devices) {
+	public void setDeviceList(List<AbstractDevice> devices) {
 		Log.d(TAG, "onDeviceListReceived()");
 		mDevices.clear();
 		mDevices.addAll(devices);

@@ -47,7 +47,7 @@ public class DeviceListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		AbstractDevice<?> item = (AbstractDevice<?>) getItem(position);
+		AbstractDevice item = (AbstractDevice) getItem(position);
 		AbstractDeviceListItemView<?> view = null;
 		switch (item.getType()) {
 		case DIMMER:

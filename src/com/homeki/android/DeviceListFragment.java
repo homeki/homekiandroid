@@ -11,14 +11,12 @@ import com.homeki.android.server.ServerActionPerformer;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.test.mock.MockApplication;
 
 public class DeviceListFragment extends ListFragment implements OnDeviceListReceivedListener {
 	private ActionPerformer mActionPerformer;
 	
 	private ProgressDialog mProgressDialog;
-	private DeviceListModel mModel;
-	
+	private DeviceListModel mModel;	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,7 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 	}
 
 	@Override
-	public void onDeviceListReceived(List<AbstractDevice<?>> devices) {
+	public void onDeviceListReceived(List<AbstractDevice> devices) {
 		mModel.setDeviceList(devices);
 		mProgressDialog.dismiss();
 	}

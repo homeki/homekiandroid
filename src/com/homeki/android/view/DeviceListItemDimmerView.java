@@ -32,16 +32,16 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 		mValueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
 		mValueText = (TextView) findViewById(R.id.device_list_dimmer_value_text);
 		mOnOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
-		
-		mOpenDetailsView = (ImageView)findViewById(R.id.device_list_dimmer_details_button);
-		
+
+		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_dimmer_details_button);
+
 		mValueBar.setOnSeekBarChangeListener(new SeekBarChangedListener());
 		mOnOffSwitch.setOnCheckedChangeListener(new OnOffChangedListener());
 	}
 
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {
-		mValueBar.setProgress(device.getState().level);
+		mValueBar.setProgress(device.getLevel());
 	}
 
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
@@ -56,6 +56,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
+			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
 		}
 	}
 
@@ -63,7 +64,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			
+			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}
 	}
 }

@@ -2,35 +2,26 @@ package com.homeki.android.model.devices;
 
 import java.util.Date;
 
-public class DimmerDevice extends AbstractDevice<DimmerDevice.State> {
+public class DimmerDevice extends AbstractDevice {
 
-	public DimmerDevice(DeviceTypes type, int id, String name, String description, Date added, boolean active, int level, int value) {
+	public static final int CHANNEL_ID_VALUE = 0;
+	public static final int CHANNEL_ID_LEVEL = 1;	
+	
+	public DimmerDevice(DeviceTypes type, int id, String name, String description, String added, boolean active) {
 		mType = type;
 		mId = id;
 		mName = name;
 		mDescription = description;
 		mAdded = added;
 		mActive = active;
-		mState = new State(level, value);
 	}
-
-	@Override
-	public State getState() {
-		return mState;
+	
+	public int getValue() {
+		return Integer.parseInt(getChannelValue(CHANNEL_ID_VALUE));
 	}
-
-	@Override
-	public void setState(State state) {
-		mState = state;
+	
+	public int getLevel() {
+		return Integer.parseInt(getChannelValue(CHANNEL_ID_LEVEL));
 	}
-
-	public class State {
-		public int level;
-		public int value;
-
-		public State(int level, int value) {
-			this.level = level;
-			this.value = value;
-		}
-	}
+	
 }

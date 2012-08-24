@@ -11,12 +11,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class AbstractDeviceListItemView<T extends AbstractDevice<?>> extends LinearLayout implements DeviceListItemView {
+public abstract class AbstractDeviceListItemView<T extends AbstractDevice> extends LinearLayout implements DeviceListItemView {
 
 	protected TextView mNameView;
 	protected TextView mDescriptionView;
 	protected View mOpenDetailsView;
-	protected AbstractDevice<?> mDevice;
+	protected AbstractDevice mDevice;
 	protected Context mContext;
 	protected ActionPerformer mActionPerformer;
 
@@ -33,7 +33,7 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice<?>> ex
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setDevice(AbstractDevice<?> device) {
+	public void setDevice(AbstractDevice device) {
 		mDevice = device;
 		mNameView.setText(mDevice.getName());
 		mDescriptionView.setText(mDevice.getDescription());
@@ -49,7 +49,9 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice<?>> ex
 
 		@Override
 		public void onClick(View v) {
-			mContext.startActivity(new Intent(mContext, DeviceDetailsActivity.class));
+			Intent intent = new Intent(mContext, DeviceDetailsActivity.class);
+			intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, mDevice.getId());
+			mContext.startActivity(intent);
 		}
 	}
 }
