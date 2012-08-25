@@ -19,7 +19,6 @@ import android.widget.TextView;
 public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerDevice> {
 
 	private SeekBar mValueBar;
-	private TextView mValueText;
 	private Switch mOnOffSwitch;
 
 	public DeviceListItemDimmerView(Context context, ActionPerformer actionPerformer) {
@@ -32,7 +31,6 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 		mNameView = (TextView) findViewById(R.id.device_list_dimmer_name);
 		mDescriptionView = (TextView) findViewById(R.id.device_list_dimmer_description);
 		mValueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
-		mValueText = (TextView) findViewById(R.id.device_list_dimmer_value_text);
 		mOnOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
 
 		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_dimmer_details_button);
@@ -50,7 +48,6 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			mValueText.setText("" + progress);
 		}
 
 		@Override
