@@ -95,15 +95,4 @@ public class RestClient {
 		}
 		return total.toString();
 	}
-
-	// private class Test implements JsonDeserializer<DeviceJSON> {
-	//
-	// @Override
-	// public DeviceJSON deserialize(JsonElement arg0, Type arg1,
-	// JsonDeserializationContext arg2) throws JsonParseException {
-	//
-	// }
-	//
-	// }
-
 }
