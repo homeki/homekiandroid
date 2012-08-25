@@ -2,7 +2,9 @@ package com.homeki.android.view;
 
 import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
+import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,6 +44,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {
 		mValueBar.setProgress(device.getLevel());
+		mOnOffSwitch.setChecked(device.getValue());
 	}
 
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
@@ -55,16 +58,32 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 		}
 
 		@Override
-		public void onStopTrackingTouch(SeekBar seekBar) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
+		public void onStopTrackingTouch(final SeekBar seekBar) {
+			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()), new OnChannelValueSetListener() {
+				@Override
+				public void result(boolean success) {
+					if (success && mDevice != null) {
+						DimmerDevice device = (DimmerDevice) mDevice;
+						device.setLevel(seekBar.getProgress());
+					}
+				}
+			});
 		}
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {
 
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
+		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
+				@Override
+				public void result(boolean success) {
+					if (success && mDevice != null) {
+						DimmerDevice device = (DimmerDevice) mDevice;
+						device.setValue(isChecked);
+					}
+				}
+			});
 		}
 	}
 }

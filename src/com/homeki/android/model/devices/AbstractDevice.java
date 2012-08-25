@@ -13,7 +13,13 @@ public abstract class AbstractDevice {
 	protected boolean mActive;
 	protected HashMap<Integer, String> mChannels;
 
-	public AbstractDevice() {
+	public AbstractDevice(DeviceTypes type, int id, String name, String description, String added, boolean active)  {
+		mType = type;
+		mId = id;
+		mName = name;
+		mDescription = description;
+		mAdded = added;
+		mActive = active;
 		mChannels = new HashMap<Integer, String>();
 	}
 
@@ -72,4 +78,5 @@ public abstract class AbstractDevice {
 	public String getChannelValue(int key) {
 		return mChannels.get(key);
 	}
+
 }

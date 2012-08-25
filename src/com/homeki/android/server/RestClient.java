@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.http.client.HttpClient;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,11 +27,27 @@ import com.homeki.android.model.devices.DeviceBuilder;
 import com.homeki.android.model.devices.DeviceTypes;
 import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.model.devices.SwitchDevice;
+import com.homeki.android.settings.Settings;
 
 public class RestClient {
 	private static String TAG = RestClient.class.getSimpleName();
 
-	private static String SERVER_URL = "http://192.168.0.12:5000/";
+	private Context mContext;
+
+	public RestClient(Context context) {
+		mContext = context;
+	}
+
+	private String getServerURL() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("http://");
+		builder.append(Settings.getServerPath(mContext));
+		builder.append(":");
+		builder.append(Settings.getServerPort(mContext));
+		builder.append("/");
+
+		return builder.toString();
+	}
 
 	public List<AbstractDevice> getAllDevices() {
 		Log.d(TAG, "getAllDevices()");
@@ -39,7 +56,7 @@ public class RestClient {
 		HttpURLConnection connection = null;
 
 		try {
-			connection = (HttpURLConnection) new URL(SERVER_URL + "device/list").openConnection();
+			connection = (HttpURLConnection) new URL(getServerURL() + "device/list").openConnection();
 			connection.setConnectTimeout(2000);
 
 			String response = readStreamToEnd(connection.getInputStream());
@@ -56,33 +73,33 @@ public class RestClient {
 			e.printStackTrace();
 		} finally {
 			Log.d(TAG, "getAllDevices() disconnect");
-			connection.disconnect();
+			if (connection != null) {
+				connection.disconnect();
+			}
 		}
 
 		return devices;
-	}
-
-	public DeviceData getDataForDevice(int deviceId, long start, long end) {
-		return new DeviceData();
 	}
 
 	public boolean setChannelValueForDevice(int deviceId, int channel, String value) {
 		HttpURLConnection connection = null;
 
 		try {
-			connection = (HttpURLConnection) new URL(SERVER_URL + "device/" + deviceId + "/channel/" + channel + "/set?value=" + value).openConnection();
+			connection = (HttpURLConnection) new URL(getServerURL() + "device/" + deviceId + "/channel/" + channel + "/set?value=" + value).openConnection();
 			connection.setConnectTimeout(2000);
 			connection.getInputStream();
 		} catch (Exception e) {
 			Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());
 			e.printStackTrace();
-			
+
 			return false;
 		} finally {
 			Log.d(TAG, "setChannelValueForDevice() disconnect");
-			connection.disconnect();
+			if (connection != null) {
+				connection.disconnect();
+			}
 		}
-		
+
 		return true;
 	}
 

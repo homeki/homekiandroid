@@ -4,6 +4,7 @@ import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,22 +29,30 @@ public class DeviceListItemSwitchView extends AbstractDeviceListItemView<SwitchD
 		mNameView = (TextView) findViewById(R.id.device_list_switch_name);
 		mDescriptionView = (TextView) findViewById(R.id.device_list_switch_description);
 		mOnOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
-		
-		mOpenDetailsView = (ImageView)findViewById(R.id.device_list_switch_details_button);
-		
+
+		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_switch_details_button);
+
 		mOnOffSwitch.setOnCheckedChangeListener(new OnOffChangedListener());
 	}
 
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
-
+		mOnOffSwitch.setChecked(device.getValue());
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {
 
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
+		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+			mActionPerformer.setChannelValueForDevice(mDevice.getId(), SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
+				@Override
+				public void result(boolean success) {
+					if (success && mDevice != null) {
+						SwitchDevice device = (SwitchDevice) mDevice;
+						device.setValue(isChecked);
+					}
+				}
+			});
 		}
 	}
 }
