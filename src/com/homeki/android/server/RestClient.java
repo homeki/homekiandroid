@@ -29,7 +29,7 @@ public class RestClient {
 	private String getServerURL() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("http://");
-		builder.append(Settings.getServerPath(mContext));
+		builder.append(Settings.getServerUrl(mContext));
 		builder.append(":");
 		builder.append(Settings.getServerPort(mContext));
 		builder.append("/");

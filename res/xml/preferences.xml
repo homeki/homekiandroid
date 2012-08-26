@@ -3,11 +3,11 @@
 
     <EditTextPreference
         android:key="server_path"
-        android:summary="Path to the homeki server (e.g. 192.168.0.100)"
-        android:title="Homeki Server Path" />
+        android:summary="URL to the Homeki Server (e.g. 192.168.0.100)."
+        android:title="Homeki Server URL" />
     <EditTextPreference
         android:key="server_port"
-        android:summary="Port to the homeki server (e.g. 5000)"
+        android:summary="Port to the Homeki Server (e.g. 5000)."
         android:title="Homeki Server Port" />
 
 </PreferenceScreen>
