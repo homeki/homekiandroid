@@ -5,28 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.apache.http.client.HttpClient;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.annotations.SerializedName;
 import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.model.devices.DeviceBuilder;
-import com.homeki.android.model.devices.DeviceTypes;
-import com.homeki.android.model.devices.DimmerDevice;
-import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.settings.Settings;
 
 public class RestClient {

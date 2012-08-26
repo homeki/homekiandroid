@@ -1,13 +1,11 @@
 package com.homeki.android.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.util.Log;
 
 import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 
 public class DeviceListModel implements DeviceListProvider {
 	private static String TAG = DeviceListModel.class.getSimpleName();

@@ -1,6 +1,5 @@
 package com.homeki.android.model.devices;
 
-import java.util.Date;
 import java.util.HashMap;
 
 public abstract class AbstractDevice {

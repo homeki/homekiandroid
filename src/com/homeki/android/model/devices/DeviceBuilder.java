@@ -1,7 +1,6 @@
 package com.homeki.android.model.devices;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
