@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public abstract class AbstractDevice {
 
-	protected DeviceTypes mType;
+	protected DeviceType mType;
 	protected int mId;
 	protected String mName;
 	protected String mDescription;
@@ -12,7 +12,7 @@ public abstract class AbstractDevice {
 	protected boolean mActive;
 	protected HashMap<Integer, String> mChannels;
 
-	public AbstractDevice(DeviceTypes type, int id, String name, String description, String added, boolean active)  {
+	public AbstractDevice(DeviceType type, int id, String name, String description, String added, boolean active)  {
 		mType = type;
 		mId = id;
 		mName = name;
@@ -22,11 +22,11 @@ public abstract class AbstractDevice {
 		mChannels = new HashMap<Integer, String>();
 	}
 
-	public DeviceTypes getType() {
+	public DeviceType getType() {
 		return mType;
 	}
 
-	public void setType(DeviceTypes type) {
+	public void setType(DeviceType type) {
 		this.mType = type;
 	}
 

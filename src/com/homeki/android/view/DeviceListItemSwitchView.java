@@ -16,10 +16,11 @@ import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 public class DeviceListItemSwitchView extends AbstractDeviceListItemView<SwitchDevice> {
 
 	private Switch mOnOffSwitch;
+	private OnOffChangedListener mOnOffChangedListener;
 
 	public DeviceListItemSwitchView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-
+		mOnOffChangedListener = new OnOffChangedListener();
 	}
 
 	@Override
@@ -31,12 +32,14 @@ public class DeviceListItemSwitchView extends AbstractDeviceListItemView<SwitchD
 
 		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_switch_details_button);
 
-		mOnOffSwitch.setOnCheckedChangeListener(new OnOffChangedListener());
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
-
+	
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
+		mOnOffSwitch.setOnCheckedChangeListener(null);
 		mOnOffSwitch.setChecked(device.getValue());
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {

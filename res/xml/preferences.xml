@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <EditTextPreference
-        android:key="server_path"
+        android:key="server_url"
         android:summary="URL to the Homeki Server (e.g. 192.168.0.100)."
         android:title="Homeki Server URL" />
     <EditTextPreference

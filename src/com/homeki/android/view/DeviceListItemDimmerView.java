@@ -16,12 +16,15 @@ import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerDevice> {
-
 	private SeekBar mValueBar;
 	private Switch mOnOffSwitch;
+	private OnOffChangedListener mOnOffChangedListener;
+	private SeekBarChangedListener mSeekBarChangedListener;
 
 	public DeviceListItemDimmerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
+		mOnOffChangedListener = new OnOffChangedListener();
+		mSeekBarChangedListener = new SeekBarChangedListener();
 	}
 
 	@Override
@@ -34,14 +37,19 @@ public class DeviceListItemDimmerView extends AbstractDeviceListItemView<DimmerD
 
 		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_dimmer_details_button);
 
-		mValueBar.setOnSeekBarChangeListener(new SeekBarChangedListener());
-		mOnOffSwitch.setOnCheckedChangeListener(new OnOffChangedListener());
+		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
 
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {
+		mValueBar.setOnSeekBarChangeListener(null);
 		mValueBar.setProgress(device.getLevel());
+		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
+		
+		mOnOffSwitch.setOnCheckedChangeListener(null);
 		mOnOffSwitch.setChecked(device.getValue());
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
 
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
