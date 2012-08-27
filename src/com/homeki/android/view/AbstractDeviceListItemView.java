@@ -9,6 +9,7 @@ import com.homeki.android.server.ActionPerformer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -62,6 +63,11 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 		}
 	}
 
+	public static void resetUnNamedTypeCount() {
+		Log.d("PPP","RESET");
+		TYPE_COUNT_MAP.clear();
+	}
+	
 	private static String getDeviceNameToShow(AbstractDevice device) {
 		String name = device.getName();
 
@@ -73,7 +79,7 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 				} else {
 					number = TYPE_COUNT_MAP.get(device.getType()) + 1;
 				}
-				TYPE_COUNT_MAP.put(device.getType(), 1);
+				TYPE_COUNT_MAP.put(device.getType(), number);
 				name = device.getType().toString() + " " + number;
 			}
 		}

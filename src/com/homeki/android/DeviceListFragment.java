@@ -7,6 +7,7 @@ import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
+import com.homeki.android.view.AbstractDeviceListItemView;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -51,6 +52,8 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 
 	@Override
 	public void onDeviceListReceived(List<AbstractDevice> devices) {
+		AbstractDeviceListItemView.resetUnNamedTypeCount();
+		
 		if (devices != null && devices.size() > 0) {
 			mModel.setDeviceList(devices);			
 		} else {
