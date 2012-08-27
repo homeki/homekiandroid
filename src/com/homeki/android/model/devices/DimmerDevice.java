@@ -5,7 +5,7 @@ public class DimmerDevice extends AbstractDevice {
 	public static final int CHANNEL_ID_VALUE = 0;
 	public static final int CHANNEL_ID_LEVEL = 1;
 
-	public DimmerDevice(DeviceTypes type, int id, String name, String description, String added, boolean active) {
+	public DimmerDevice(DeviceType type, int id, String name, String description, String added, boolean active) {
 		super(type, id, name, description, added, active);
 	}
 

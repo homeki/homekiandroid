@@ -1,14 +1,13 @@
 package com.homeki.android;
 
-import com.homeki.android.model.DeviceListModel;
-import com.homeki.android.model.devices.AbstractDevice;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.homeki.android.model.DeviceListModel;
+import com.homeki.android.model.devices.AbstractDevice;
 
 public class DeviceDetailsActivity extends Activity {
 

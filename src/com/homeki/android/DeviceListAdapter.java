@@ -1,5 +1,10 @@
 package com.homeki.android;
 
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
 import com.homeki.android.model.DeviceListProvider;
 import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
 import com.homeki.android.model.devices.AbstractDevice;
@@ -7,10 +12,7 @@ import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.view.AbstractDeviceListItemView;
 import com.homeki.android.view.DeviceListItemDimmerView;
 import com.homeki.android.view.DeviceListItemSwitchView;
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import com.homeki.android.view.DeviceListItemThermometerView;
 
 public class DeviceListAdapter extends BaseAdapter {
 
@@ -56,8 +58,11 @@ public class DeviceListAdapter extends BaseAdapter {
 		case SWITCH:
 			view = new DeviceListItemSwitchView(mContext, mActionPerformer);
 			break;
-		default:
+		case THERMOMETER:
+			view = new DeviceListItemThermometerView(mContext, mActionPerformer);
 			break;
+		default:
+			throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
 		}
 		view.setDevice(item);
 		return view;

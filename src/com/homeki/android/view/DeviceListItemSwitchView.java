@@ -1,26 +1,26 @@
 package com.homeki.android.view;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
+
 import com.homeki.android.R;
-import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-
 public class DeviceListItemSwitchView extends AbstractDeviceListItemView<SwitchDevice> {
 
 	private Switch mOnOffSwitch;
+	private OnOffChangedListener mOnOffChangedListener;
 
 	public DeviceListItemSwitchView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-
+		mOnOffChangedListener = new OnOffChangedListener();
 	}
 
 	@Override
@@ -32,12 +32,14 @@ public class DeviceListItemSwitchView extends AbstractDeviceListItemView<SwitchD
 
 		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_switch_details_button);
 
-		mOnOffSwitch.setOnCheckedChangeListener(new OnOffChangedListener());
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
-
+	
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
+		mOnOffSwitch.setOnCheckedChangeListener(null);
 		mOnOffSwitch.setChecked(device.getValue());
+		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {

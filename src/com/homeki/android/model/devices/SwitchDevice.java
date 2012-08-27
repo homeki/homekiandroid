@@ -4,7 +4,7 @@ public class SwitchDevice extends AbstractDevice {
 
 	public static final int CHANNEL_ID_VALUE = 0;
 
-	public SwitchDevice(DeviceTypes type, int id, String name, String description, String added, boolean active) {
+	public SwitchDevice(DeviceType type, int id, String name, String description, String added, boolean active) {
 		super(type,id,name,description,added,active);
 	}
 

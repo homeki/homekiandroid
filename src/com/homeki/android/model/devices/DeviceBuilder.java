@@ -1,7 +1,6 @@
 package com.homeki.android.model.devices;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,10 +8,13 @@ public class DeviceBuilder {
 
 	public static AbstractDevice build(String type, int id, String name, String description, String added, boolean active, ArrayList<ChannelValue> channels) {
 		AbstractDevice device = null;
+		
 		if ("dimmer".equals(type)) {
-			device = new DimmerDevice(DeviceTypes.DIMMER, id, name, description, added, active);
+			device = new DimmerDevice(DeviceType.DIMMER, id, name, description, added, active);
 		} else if ("switch".equals(type)) {
-			device = new SwitchDevice(DeviceTypes.SWITCH, id, name, description, added, active);
+			device = new SwitchDevice(DeviceType.SWITCH, id, name, description, added, active);
+		} else if ("thermometer".equals(type)) {
+			device = new ThermometerDevice(DeviceType.THERMOMETER, id, name, description, added, active);
 		}
 
 		for (int i = 0; i < channels.size(); i++) {
