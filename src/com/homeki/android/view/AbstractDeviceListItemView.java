@@ -1,7 +1,10 @@
 package com.homeki.android.view;
 
+import java.util.HashMap;
+
 import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.DeviceType;
 import com.homeki.android.server.ActionPerformer;
 
 import android.content.Context;
@@ -12,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public abstract class AbstractDeviceListItemView<T extends AbstractDevice> extends LinearLayout implements DeviceListItemView {
+
+	private static HashMap<DeviceType, Integer> TYPE_COUNT_MAP = new HashMap<DeviceType, Integer>();
 
 	protected TextView mNameView;
 	protected TextView mDescriptionView;
@@ -24,9 +29,9 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 		super(context);
 
 		mActionPerformer = actionPerformer;
-		
+
 		mContext = context;
-		inflate((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+		inflate((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
 
 		mOpenDetailsView.setOnClickListener(new OpenDetailsClickListener());
 	}
@@ -35,7 +40,9 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 	@Override
 	public void setDevice(AbstractDevice device) {
 		mDevice = device;
-		mNameView.setText(mDevice.getName());
+
+		String name = getDeviceNameToShow(mDevice);
+		mNameView.setText(name);
 		mDescriptionView.setText(mDevice.getDescription());
 
 		onDeviceSet((T) device);
@@ -53,5 +60,24 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 			intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, mDevice.getId());
 			mContext.startActivity(intent);
 		}
+	}
+
+	private static String getDeviceNameToShow(AbstractDevice device) {
+		String name = device.getName();
+
+		if (name == null || name.isEmpty()) {
+			synchronized (TYPE_COUNT_MAP) {
+				int number = 0;
+				if (!TYPE_COUNT_MAP.containsKey(device.getType())) {
+					number = 1;
+				} else {
+					number = TYPE_COUNT_MAP.get(device.getType()) + 1;
+				}
+				TYPE_COUNT_MAP.put(device.getType(), 1);
+				name = device.getType().toString() + " " + number;
+			}
+		}
+
+		return name;
 	}
 }

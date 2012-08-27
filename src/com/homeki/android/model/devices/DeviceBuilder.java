@@ -8,7 +8,7 @@ public class DeviceBuilder {
 
 	public static AbstractDevice build(String type, int id, String name, String description, String added, boolean active, ArrayList<ChannelValue> channels) {
 		AbstractDevice device = null;
-		
+				
 		if ("dimmer".equals(type)) {
 			device = new DimmerDevice(DeviceType.DIMMER, id, name, description, added, active);
 		} else if ("switch".equals(type)) {
@@ -22,7 +22,7 @@ public class DeviceBuilder {
 		}
 		return device;
 	}
-
+	
 	public class Device {
 		@SerializedName("type")
 		public String type;
@@ -30,7 +30,7 @@ public class DeviceBuilder {
 		@SerializedName("id")
 		public int id;
 
-		@SerializedName("name")
+		@SerializedName("names")
 		public String name;
 
 		@SerializedName("description")

@@ -24,5 +24,4 @@ public class DimmerDevice extends AbstractDevice {
 	public void setLevel(int level) {
 		setChannelValue(CHANNEL_ID_VALUE, String.valueOf(level));
 	}
-
 }
