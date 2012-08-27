@@ -50,6 +50,8 @@ public class RestClient {
 	}
 
 	public List<AbstractDevice> getAllDevices() {
+		ServerLocator.locateServerOnWifi();
+		
 		Log.d(TAG, "getAllDevices()");
 
 		ArrayList<AbstractDevice> devices = new ArrayList<AbstractDevice>();
