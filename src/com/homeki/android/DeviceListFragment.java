@@ -24,7 +24,7 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mModel = DeviceListModel.getModel();
+		mModel = DeviceListModel.getModel(getActivity());
 		mActionPerformer = new ServerActionPerformer(getActivity());
 
 		mProgressDialog = new ProgressDialog(getActivity());
@@ -51,9 +51,7 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 	}
 
 	@Override
-	public void onDeviceListReceived(List<AbstractDevice> devices) {
-		AbstractDeviceListItemView.resetUnNamedTypeCount();
-		
+	public void onDeviceListReceived(List<AbstractDevice> devices) {		
 		if (devices != null && devices.size() > 0) {
 			mModel.setDeviceList(devices);			
 		} else {

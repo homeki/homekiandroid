@@ -21,7 +21,7 @@ public class DeviceDetailsActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.containsKey(EXTRA_DEVICE_ID)) {
-			mDevice = DeviceListModel.getModel().getDeviceWithId(extras.getInt(EXTRA_DEVICE_ID));
+			mDevice = DeviceListModel.getModel(this).getDeviceWithId(extras.getInt(EXTRA_DEVICE_ID));
 		}
 
 		if (mDevice == null) {

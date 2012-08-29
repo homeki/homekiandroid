@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 public abstract class AbstractDeviceListItemView<T extends AbstractDevice> extends LinearLayout implements DeviceListItemView {
 
-	private static HashMap<DeviceType, Integer> TYPE_COUNT_MAP = new HashMap<DeviceType, Integer>();
-
 	protected TextView mNameView;
 	protected TextView mDescriptionView;
 	protected View mOpenDetailsView;
@@ -41,8 +39,7 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 	public void setDevice(AbstractDevice device) {
 		mDevice = device;
 
-		String name = getDeviceNameToShow(mDevice);
-		mNameView.setText(name);
+		mNameView.setText(device.getName());
 		mDescriptionView.setText(mDevice.getDescription());
 
 		onDeviceSet((T) device);
@@ -60,33 +57,5 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 			intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, mDevice.getId());
 			mContext.startActivity(intent);
 		}
-	}
-
-	public static void resetUnNamedTypeCount() {
-		TYPE_COUNT_MAP.clear();
-	}
-
-	private String getDeviceNameToShow(AbstractDevice device) {
-		String name = device.getName();
-
-		if (name == null || name.isEmpty()) {
-			int number = 0;
-			if (!TYPE_COUNT_MAP.containsKey(device.getType())) {
-				number = 1;
-			} else {
-				number = TYPE_COUNT_MAP.get(device.getType()) + 1;
-			}
-			TYPE_COUNT_MAP.put(device.getType(), number);
-			name = getTypeName(device) + " " + number;
-		}
-
-		return name;
-	}
-
-	private String getTypeName(AbstractDevice device) {
-		String name = mContext.getPackageName() + ":string/device_type_name_" + device.getType().toString();
-		int id = mContext.getResources().getIdentifier(name, null, null);
-
-		return mContext.getString(id);
 	}
 }
