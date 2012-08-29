@@ -1,4 +1,4 @@
-package com.homeki.android.view;
+package com.homeki.android.view.devicelist;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

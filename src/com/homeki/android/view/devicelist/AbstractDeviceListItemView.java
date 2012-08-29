@@ -1,4 +1,4 @@
-package com.homeki.android.view;
+package com.homeki.android.view.devicelist;
 
 import java.util.HashMap;
 
@@ -9,7 +9,6 @@ import com.homeki.android.server.ActionPerformer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -64,26 +63,30 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 	}
 
 	public static void resetUnNamedTypeCount() {
-		Log.d("PPP","RESET");
 		TYPE_COUNT_MAP.clear();
 	}
-	
-	private static String getDeviceNameToShow(AbstractDevice device) {
+
+	private String getDeviceNameToShow(AbstractDevice device) {
 		String name = device.getName();
 
 		if (name == null || name.isEmpty()) {
-			synchronized (TYPE_COUNT_MAP) {
-				int number = 0;
-				if (!TYPE_COUNT_MAP.containsKey(device.getType())) {
-					number = 1;
-				} else {
-					number = TYPE_COUNT_MAP.get(device.getType()) + 1;
-				}
-				TYPE_COUNT_MAP.put(device.getType(), number);
-				name = device.getType().toString() + " " + number;
+			int number = 0;
+			if (!TYPE_COUNT_MAP.containsKey(device.getType())) {
+				number = 1;
+			} else {
+				number = TYPE_COUNT_MAP.get(device.getType()) + 1;
 			}
+			TYPE_COUNT_MAP.put(device.getType(), number);
+			name = getTypeName(device) + " " + number;
 		}
 
 		return name;
+	}
+
+	private String getTypeName(AbstractDevice device) {
+		String name = mContext.getPackageName() + ":string/device_type_name_" + device.getType().toString();
+		int id = mContext.getResources().getIdentifier(name, null, null);
+
+		return mContext.getString(id);
 	}
 }

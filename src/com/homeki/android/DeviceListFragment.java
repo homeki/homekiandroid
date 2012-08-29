@@ -7,7 +7,7 @@ import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
-import com.homeki.android.view.AbstractDeviceListItemView;
+import com.homeki.android.view.devicelist.AbstractDeviceListItemView;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;

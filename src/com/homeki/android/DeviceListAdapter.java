@@ -9,10 +9,10 @@ import com.homeki.android.model.DeviceListProvider;
 import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
 import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.view.AbstractDeviceListItemView;
-import com.homeki.android.view.DeviceListItemDimmerView;
-import com.homeki.android.view.DeviceListItemSwitchView;
-import com.homeki.android.view.DeviceListItemThermometerView;
+import com.homeki.android.view.devicelist.AbstractDeviceListItemView;
+import com.homeki.android.view.devicelist.DeviceListItemDimmerView;
+import com.homeki.android.view.devicelist.DeviceListItemSwitchView;
+import com.homeki.android.view.devicelist.DeviceListItemThermometerView;
 
 public class DeviceListAdapter extends BaseAdapter {
 
