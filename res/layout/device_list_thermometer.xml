@@ -25,7 +25,7 @@
             style="@style/ListItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Switch" />
+            android:text="Name" />
 
         <TextView
             android:id="@+id/device_list_thermometer_description"

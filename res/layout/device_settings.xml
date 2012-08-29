@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginTop="20dip"
-        android:text="Large Text"
+        android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dip" />
 

@@ -1,5 +1,6 @@
 package com.homeki.android.server;
 
+import java.util.Date;
 import java.util.List;
 
 import com.homeki.android.model.devices.AbstractDevice;
@@ -66,5 +67,11 @@ public class ServerActionPerformer implements ActionPerformer {
 				}
 			}
 		}.execute(0);
+	}
+
+	@Override
+	public void getChannelHistoryForDevice(int deviceId, int channelId, Date start, Date end, OnChannelHistoryReceivedListener listener) {
+		
+		
 	}
 }
