@@ -52,9 +52,14 @@ public class DeviceDetailsActivity extends Activity {
 	 * When fragments are recreated by the system (e.g. on orientation changes) they need to have their device set again.
 	 */
 	private void resetFragments() {
-		Fragment detailsFragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG_SETTINGS);
-		if (detailsFragment != null) {
-			((DeviceSettingsFragment) detailsFragment).setDevice(mDevice);
+		Fragment settingsFragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG_SETTINGS);
+		if (settingsFragment != null) {
+			((DeviceSettingsFragment) settingsFragment).setDevice(mDevice);
+		}
+		
+		Fragment statsFragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG_STATISTICS);
+		if (statsFragment != null) {
+			((DeviceStatisticsFragment) statsFragment).setDevice(mDevice);
 		}
 	}
 
@@ -94,6 +99,7 @@ public class DeviceDetailsActivity extends Activity {
 				ft.replace(R.id.device_details_root, deviceFragment, FRAGMENT_TAG_SETTINGS);
 			} else {
 				DeviceStatisticsFragment deviceFragment = new DeviceStatisticsFragment();
+				deviceFragment.setDevice(mDevice);
 				ft.replace(R.id.device_details_root, deviceFragment, FRAGMENT_TAG_STATISTICS);
 			}
 		}

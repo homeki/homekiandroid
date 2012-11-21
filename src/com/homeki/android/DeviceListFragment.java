@@ -35,8 +35,6 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		mActionPerformer.setOnDeviceListReceivedListener(this);
 		setListAdapter(new DeviceListAdapter(getActivity(), mModel, mActionPerformer));
 	}
 
@@ -47,7 +45,7 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 		mProgressDialog.setMessage("Loading devices");
 		mProgressDialog.show();
 
-		mActionPerformer.requestDeviceList();
+		mActionPerformer.requestDeviceList(this);
 	}
 
 	@Override

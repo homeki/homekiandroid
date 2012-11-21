@@ -3,7 +3,11 @@ package com.homeki.android.server;
 import java.util.Date;
 import java.util.List;
 
+import com.homeki.android.model.DataPoint;
 import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.server.RestClient.Errors;
+import com.homeki.android.server.RestClient.OnErrorListener;
+import com.homeki.android.settings.Settings;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,38 +15,43 @@ import android.util.Log;
 
 public class ServerActionPerformer implements ActionPerformer {
 	private static String TAG = ServerActionPerformer.class.getSimpleName();
-	private OnDeviceListReceivedListener onDeviceListReceivedListener;
 
 	private RestClient mClient;
+	private Context mContext;
 
 	public ServerActionPerformer(Context context) {
-		mClient = new RestClient(context);
+		mContext = context;
+		mClient = new RestClient(mContext);
 	}
 
-	public void requestDeviceList() {
+	public void requestDeviceList(final OnDeviceListReceivedListener listener) {
 		Log.d(TAG, "requestDeviceList()");
 		new AsyncTask<Object, Integer, List<AbstractDevice>>() {
 			@Override
 			protected List<AbstractDevice> doInBackground(Object... params) {
 				Log.d(TAG, "requestDeviceList().doInBackground()");
 
-				return mClient.getAllDevices();
+				List<AbstractDevice> allDevices = mClient.getAllDevices();
+
+				if (allDevices == null || allDevices.isEmpty()) {
+					String serverPath = ServerLocator.locateServerOnWifi();
+					if (null != serverPath && !serverPath.isEmpty()) {
+						Settings.setServerUrl(mContext, serverPath);
+					}
+					allDevices = mClient.getAllDevices();
+				}
+				return allDevices;
 			}
 
 			@Override
 			protected void onPostExecute(List<AbstractDevice> result) {
 				super.onPostExecute(result);
 				Log.d(TAG, "requestDeviceList().onPostExecute()");
-				if (onDeviceListReceivedListener != null) {
-					onDeviceListReceivedListener.onDeviceListReceived(result);
+				if (listener != null) {
+					listener.onDeviceListReceived(result);
 				}
 			}
 		}.execute(0);
-	}
-
-	@Override
-	public void setOnDeviceListReceivedListener(OnDeviceListReceivedListener listener) {
-		onDeviceListReceivedListener = listener;
 	}
 
 	@Override
@@ -70,8 +79,26 @@ public class ServerActionPerformer implements ActionPerformer {
 	}
 
 	@Override
-	public void getChannelHistoryForDevice(int deviceId, int channelId, Date start, Date end, OnChannelHistoryReceivedListener listener) {
-		
-		
+	public void getChannelHistoryForDevice(final int deviceId, final int channelId, final Date start, final Date end, final OnChannelHistoryReceivedListener listener) {
+		Log.d(TAG, "getChannelHistoryForDevice()");
+		new AsyncTask<Object, Integer, List<DataPoint>>() {
+			@Override
+			protected List<DataPoint> doInBackground(Object... params) {
+				Log.d(TAG, "getChannelHistoryForDevice().doInBackground()");
+
+				return mClient.getChannelHistoryForDevice(deviceId, channelId, start, end);
+			}
+
+			@Override
+			protected void onPostExecute(List<DataPoint> result) {
+				super.onPostExecute(result);
+				Log.d(TAG, "getChannelHistoryForDevice().onPostExecute()");
+				Log.d(TAG, "Result: " + result);
+
+				if (listener != null) {
+					listener.onChannelHistoryReceived(result);
+				}
+			}
+		}.execute(0);
 	}
 }

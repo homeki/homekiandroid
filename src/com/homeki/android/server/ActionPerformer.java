@@ -3,13 +3,12 @@ package com.homeki.android.server;
 import java.util.Date;
 import java.util.List;
 
+import com.homeki.android.model.DataPoint;
 import com.homeki.android.model.devices.AbstractDevice;
 
 public interface ActionPerformer {
 
-	public void requestDeviceList();
-
-	public void setOnDeviceListReceivedListener(OnDeviceListReceivedListener listener);
+	public void requestDeviceList(OnDeviceListReceivedListener listener);
 
 	public void setChannelValueForDevice(int deviceId, int channelId, String value, OnChannelValueSetListener listener);
 
@@ -24,7 +23,7 @@ public interface ActionPerformer {
 	}
 	
 	public interface OnChannelHistoryReceivedListener {
-		void onChannelHistoryReceived(List<Integer> data);
+		void onChannelHistoryReceived(List<DataPoint> data);
 	}
 
 }
