@@ -1,10 +1,7 @@
 package com.homeki.android.view.devicelist;
 
-import java.util.HashMap;
-
 import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.DeviceType;
 import com.homeki.android.server.ActionPerformer;
 
 import android.content.Context;

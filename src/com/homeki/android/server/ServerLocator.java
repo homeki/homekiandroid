@@ -4,12 +4,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-
-import com.homeki.android.settings.Settings;
-
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
 /**

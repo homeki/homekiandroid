@@ -12,16 +12,10 @@ import com.homeki.android.server.ServerActionPerformer;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class DeviceStatisticsFragment extends Fragment implements OnChannelHistoryReceivedListener {

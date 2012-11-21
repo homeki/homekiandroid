@@ -13,10 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Pair;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.homeki.android.model.DataPoint;

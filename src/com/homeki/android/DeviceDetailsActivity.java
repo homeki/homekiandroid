@@ -3,13 +3,10 @@ package com.homeki.android;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.homeki.android.model.DeviceListModel;

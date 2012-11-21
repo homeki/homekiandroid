@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.homeki.android.model.DataPoint;
 import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.server.RestClient.Errors;
-import com.homeki.android.server.RestClient.OnErrorListener;
 import com.homeki.android.settings.Settings;
 
 import android.content.Context;
