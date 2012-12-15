@@ -1,6 +1,7 @@
 package com.homeki.android.model.devices;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public abstract class AbstractDevice {
 
@@ -76,6 +77,10 @@ public abstract class AbstractDevice {
 	
 	public String getChannelValue(int key) {
 		return mChannels.get(key);
+	}
+	
+	public Set<Integer> getChannels() {
+		return mChannels.keySet();
 	}
 
 }

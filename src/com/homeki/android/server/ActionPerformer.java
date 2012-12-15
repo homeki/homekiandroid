@@ -23,7 +23,7 @@ public interface ActionPerformer {
 	}
 	
 	public interface OnChannelHistoryReceivedListener {
-		void onChannelHistoryReceived(List<DataPoint> data);
+		void onChannelHistoryReceived(int deviceId, int channelId, List<DataPoint> data);
 	}
 
 }

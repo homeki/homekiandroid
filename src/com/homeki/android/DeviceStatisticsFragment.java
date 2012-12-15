@@ -1,6 +1,5 @@
 package com.homeki.android;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,24 +8,33 @@ import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelHistoryReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
+import com.homeki.android.view.chart.ChartView;
+import com.homeki.android.view.chart.TimeChartView;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 
 public class DeviceStatisticsFragment extends Fragment implements OnChannelHistoryReceivedListener {
 
 	private AbstractDevice mDevice;
-	private TextView mList;
+	private ChartView mChart;
+	private Context mContext;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.device_statistics, container, false);
-		mList = (TextView) view.findViewById(R.id.device_statistics_list);
+
+		mContext = view.getContext();
+
+		mChart = new TimeChartView(view.getContext());
+		LinearLayout chartLayout = (LinearLayout) view.findViewById(R.id.device_statistics_chart);
+		chartLayout.addView(mChart, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		return view;
 	}
 
@@ -34,30 +42,25 @@ public class DeviceStatisticsFragment extends Fragment implements OnChannelHisto
 		mDevice = device;
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-
+	private void requestData(Date start, Date end) {
 		if (mDevice != null) {
-			ActionPerformer performer = new ServerActionPerformer(activity);
-			performer.getChannelHistoryForDevice(mDevice.getId(), 0, new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 2), new Date(), this);
+			ActionPerformer performer = new ServerActionPerformer(mContext);
+			for (Integer channel : mDevice.getChannels()) {
+				performer.getChannelHistoryForDevice(mDevice.getId(), channel, start, end, this);
+			}
 		}
 	}
 
 	@Override
-	public void onChannelHistoryReceived(List<DataPoint> data) {
-		StringBuilder textBuilder = new StringBuilder();
+	public void onResume() {
+		super.onResume();
+		requestData(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24), new Date());
+	}
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+	@Override
+	public void onChannelHistoryReceived(int deviceId, int channelId, List<DataPoint> data) {
 		for (DataPoint dataPoint : data) {
-			textBuilder.append(format.format(dataPoint.getTime()));
-			textBuilder.append(": ");
-			textBuilder.append(dataPoint.getValue());
-			textBuilder.append("\n");
-
+			mChart.putValue(channelId, dataPoint.getTime(), dataPoint.getValue());
 		}
-
-		mList.setText(textBuilder.toString());
 	}
 }

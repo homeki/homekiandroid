@@ -94,7 +94,7 @@ public class ServerActionPerformer implements ActionPerformer {
 				Log.d(TAG, "Result: " + result);
 
 				if (listener != null) {
-					listener.onChannelHistoryReceived(result);
+					listener.onChannelHistoryReceived(deviceId, channelId, result);
 				}
 			}
 		}.execute(0);

@@ -155,6 +155,7 @@ public class RestClient {
 	}
 
 	private class JSONDataPoint {
+		@SuppressWarnings("unused")
 		@SerializedName("channel")
 		public int channel;
 
