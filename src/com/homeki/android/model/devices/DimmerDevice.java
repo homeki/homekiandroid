@@ -1,5 +1,7 @@
 package com.homeki.android.model.devices;
 
+import android.util.Log;
+
 public class DimmerDevice extends AbstractDevice {
 
 	public static final int CHANNEL_ID_VALUE = 0;
@@ -22,6 +24,6 @@ public class DimmerDevice extends AbstractDevice {
 	}
 	
 	public void setLevel(int level) {
-		setChannelValue(CHANNEL_ID_VALUE, String.valueOf(level));
+		setChannelValue(CHANNEL_ID_LEVEL, String.valueOf(level));
 	}
 }

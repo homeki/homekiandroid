@@ -12,6 +12,7 @@ public abstract class AbstractDevice {
 	protected String mAdded;
 	protected boolean mActive;
 	protected HashMap<Integer, String> mChannels;
+	private DeviceOwner mOwner;
 
 	public AbstractDevice(DeviceType type, int id, String name, String description, String added, boolean active)  {
 		mType = type;
@@ -73,6 +74,7 @@ public abstract class AbstractDevice {
 
 	public void setChannelValue(int key, String value) {
 		mChannels.put(key, value);	
+		notifyOwnerOfChange();
 	}
 	
 	public String getChannelValue(int key) {
@@ -82,5 +84,18 @@ public abstract class AbstractDevice {
 	public Set<Integer> getChannels() {
 		return mChannels.keySet();
 	}
-
+	
+	public void setOwner(DeviceOwner owner) {
+		mOwner = owner;
+	}
+	
+	protected void notifyOwnerOfChange() {
+		if(mOwner != null) {
+			mOwner.deviceDidChange(this);
+		}
+	}
+	
+	public interface DeviceOwner {
+		public void deviceDidChange(AbstractDevice device);
+	}
 }

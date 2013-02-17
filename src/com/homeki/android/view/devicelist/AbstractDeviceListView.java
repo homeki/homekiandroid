@@ -3,6 +3,7 @@ package com.homeki.android.view.devicelist;
 import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.view.DeviceItemView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class AbstractDeviceListItemView<T extends AbstractDevice> extends LinearLayout implements DeviceListItemView {
+public abstract class AbstractDeviceListView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
 
 	protected TextView mNameView;
 	protected TextView mDescriptionView;
@@ -20,7 +21,7 @@ public abstract class AbstractDeviceListItemView<T extends AbstractDevice> exten
 	protected Context mContext;
 	protected ActionPerformer mActionPerformer;
 
-	public AbstractDeviceListItemView(Context context, ActionPerformer actionPerformer) {
+	public AbstractDeviceListView(Context context, ActionPerformer actionPerformer) {
 		super(context);
 
 		mActionPerformer = actionPerformer;

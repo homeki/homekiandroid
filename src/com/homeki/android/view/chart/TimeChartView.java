@@ -30,7 +30,6 @@ public class TimeChartView extends ChartView {
 		TimeSeries series = mSeriesMap.get(channel);
 
 		if (series == null) {
-			Log.i("PPP", "Channel: " + mSeriesMap.size());
 			series = new TimeSeries("Channel: " + channel);
 			mSeriesMap.put(channel, series);
 			mDataSet.addSeries(series);

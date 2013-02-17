@@ -6,7 +6,8 @@ public interface DeviceListProvider {
 
 	public int getDeviceCount();
 	public AbstractDevice getDeviceAtPosition(int position);
-	public void setOnDeviceListChangedListener(OnDeviceListChangedListener listener);
+	public void addOnDeviceListChangedListener(OnDeviceListChangedListener listener);
+	public void removeOnDeviceListChangedListener(OnDeviceListChangedListener listener);
 	
 	public interface OnDeviceListChangedListener {
 		public void onDeviceListChanged();

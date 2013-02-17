@@ -12,7 +12,7 @@ import com.homeki.android.R;
 import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
 
-public class DeviceListItemThermometerView extends AbstractDeviceListItemView<ThermometerDevice> {
+public class DeviceListItemThermometerView extends AbstractDeviceListView<ThermometerDevice> {
 	private TextView mTemperatureView;
 	
 	public DeviceListItemThermometerView(Context context, ActionPerformer actionPerformer) {
@@ -36,6 +36,6 @@ public class DeviceListItemThermometerView extends AbstractDeviceListItemView<Th
 		DecimalFormat df = new DecimalFormat("0.0");
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);
-		mTemperatureView.setText(df.format(temp) + " Â°C");
+		mTemperatureView.setText(df.format(temp) + " °C");
 	}
 }

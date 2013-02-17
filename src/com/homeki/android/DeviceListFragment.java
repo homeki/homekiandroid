@@ -7,15 +7,17 @@ import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
-public class DeviceListFragment extends ListFragment implements OnDeviceListReceivedListener {
+public class DeviceListFragment extends ListFragment {
 	private ActionPerformer mActionPerformer;
 
-	private ProgressDialog mProgressDialog;
 	private DeviceListModel mModel;
 
 	@Override
@@ -24,35 +26,11 @@ public class DeviceListFragment extends ListFragment implements OnDeviceListRece
 
 		mModel = DeviceListModel.getModel(getActivity());
 		mActionPerformer = new ServerActionPerformer(getActivity());
-
-		mProgressDialog = new ProgressDialog(getActivity());
-		mProgressDialog.setIndeterminate(true);
-		mProgressDialog.setCanceledOnTouchOutside(false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setListAdapter(new DeviceListAdapter(getActivity(), mModel, mActionPerformer));
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		mProgressDialog.setMessage("Loading devices");
-		mProgressDialog.show();
-
-		mActionPerformer.requestDeviceList(this);
-	}
-
-	@Override
-	public void onDeviceListReceived(List<AbstractDevice> devices) {		
-		if (devices != null && devices.size() > 0) {
-			mModel.setDeviceList(devices);			
-		} else {
-			Toast.makeText(getActivity(), "Failed to get device list. Check server settings.", Toast.LENGTH_LONG).show();
-		}
-		mProgressDialog.dismiss();
 	}
 }

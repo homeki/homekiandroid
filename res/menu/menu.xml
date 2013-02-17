@@ -6,10 +6,4 @@
         android:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_preferences">
     </item>
-    <item
-        android:id="@+id/menu_reload"
-        android:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_popup_sync">
-    </item>
-
 </menu>

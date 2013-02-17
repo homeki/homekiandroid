@@ -1,40 +1,36 @@
-package com.homeki.android.view.devicelist;
+package com.homeki.android.view.devicegrid;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.homeki.android.R;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
-public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevice> {
-
-	private Switch mOnOffSwitch;
+public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevice> {
+	private ToggleButton mOnOffSwitch;
 	private OnOffChangedListener mOnOffChangedListener;
 
-	public DeviceListItemSwitchView(Context context, ActionPerformer actionPerformer) {
+	public DeviceGridItemSwitchView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
 		mOnOffChangedListener = new OnOffChangedListener();
 	}
 
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
-		layoutInflater.inflate(R.layout.device_list_switch, this);
-		mNameView = (TextView) findViewById(R.id.device_list_switch_name);
-		mDescriptionView = (TextView) findViewById(R.id.device_list_switch_description);
-		mOnOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
+		layoutInflater.inflate(R.layout.device_grid_switch, this);
 
-		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_switch_details_button);
+		mNameView = (TextView) findViewById(R.id.device_grid_switch_name);
+		mOnOffSwitch = (ToggleButton) findViewById(R.id.device_grid_switch_button);
 
 		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
-	
+
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
 		mOnOffSwitch.setOnCheckedChangeListener(null);

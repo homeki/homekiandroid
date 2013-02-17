@@ -8,9 +8,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.ThermometerDevice;
+import com.homeki.android.model.devices.AbstractDevice.DeviceOwner;
 import com.homeki.android.model.devices.DeviceType;
 
-public class DeviceListModel implements DeviceListProvider {
+public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 	private static String TAG = DeviceListModel.class.getSimpleName();
 
 	private static DeviceListModel mInstance;
@@ -23,12 +25,13 @@ public class DeviceListModel implements DeviceListProvider {
 	}
 
 	private ArrayList<AbstractDevice> mDevices;
-	private OnDeviceListChangedListener mChangedListener;
+	private List<OnDeviceListChangedListener> mChangedListeners;
 	private Context mContext;
 
 	private DeviceListModel(Context context) {
 		mDevices = new ArrayList<AbstractDevice>();
 		mContext = context;
+		mChangedListeners = new ArrayList<OnDeviceListChangedListener>();
 	}
 
 	@Override
@@ -56,14 +59,25 @@ public class DeviceListModel implements DeviceListProvider {
 
 		HashMap<DeviceType, Integer> typeCountMap = new HashMap<DeviceType, Integer>();
 		for (AbstractDevice device : devices) {
+			device.setOwner(this);
 			if (device.getName() == null || device.getName().isEmpty()) {
 				device.setName(getDeviceName(typeCountMap, device));
 			}
 		}
 		mDevices.addAll(devices);
 
-		if (mChangedListener != null) {
-			mChangedListener.onDeviceListChanged();
+		ThermometerDevice temp = new ThermometerDevice(DeviceType.THERMOMETER, 10000, "THERMO", "This is a thermometer", "20120101", true);
+		temp.setChannelValue(0, "22");
+		
+		mDevices.add(temp);
+		notifyListeners();
+	}
+
+	private void notifyListeners() {
+		if (mChangedListeners != null) {
+			for (OnDeviceListChangedListener listener : mChangedListeners) {
+				listener.onDeviceListChanged();
+			}
 		}
 	}
 
@@ -74,7 +88,7 @@ public class DeviceListModel implements DeviceListProvider {
 		} else {
 			number = typeCountMap.get(device.getType()) + 1;
 		}
-		typeCountMap.put(device.getType(), number);	
+		typeCountMap.put(device.getType(), number);
 
 		return getTypeName(device) + " " + number;
 	}
@@ -87,7 +101,17 @@ public class DeviceListModel implements DeviceListProvider {
 	}
 
 	@Override
-	public void setOnDeviceListChangedListener(OnDeviceListChangedListener listener) {
-		mChangedListener = listener;
+	public void addOnDeviceListChangedListener(OnDeviceListChangedListener listener) {
+		mChangedListeners.add(listener);
+	}
+	
+	@Override
+	public void removeOnDeviceListChangedListener(OnDeviceListChangedListener listener) {
+		mChangedListeners.remove(listener);
+	}
+
+	@Override
+	public void deviceDidChange(AbstractDevice device) {
+		notifyListeners();
 	}
 }
