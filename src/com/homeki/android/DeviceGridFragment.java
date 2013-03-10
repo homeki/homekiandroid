@@ -26,22 +26,30 @@ public class DeviceGridFragment extends Fragment {
 	private DeviceListModel mModel;
 	private ActionPerformer mActionPerformer;
 	private GridView mGridView;
-	
+
 	private Context mContext;
 
+	private DeviceGridAdapter mGridAdapter;
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-		View view = inflater.inflate(R.layout.devices_grid, container, false);
+		mContext = getActivity();
 
-		mContext = view.getContext();
-		
 		mModel = DeviceListModel.getModel(mContext);
 		mActionPerformer = new ServerActionPerformer(mContext);
 
-		mGridView = (GridView) view.findViewById(R.id.devices_grid_view);
-	    mGridView.setAdapter(new DeviceGridAdapter(mContext, mModel, mActionPerformer));
+		mGridAdapter = new DeviceGridAdapter(mContext, mModel, mActionPerformer);
+	}
 
-		return view;		
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.devices_grid, container, false);
+
+		mGridView = (GridView) view.findViewById(R.id.devices_grid_view);
+		mGridView.setAdapter(mGridAdapter);
+
+		return view;
 	}
 }

@@ -34,7 +34,7 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 
 		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
 	}
-	
+
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
 		mOnOffSwitch.setOnCheckedChangeListener(null);
@@ -46,15 +46,10 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						SwitchDevice device = (SwitchDevice) mDevice;
-						device.setValue(isChecked);
-					}
-				}
-			});
+			SwitchDevice device = (SwitchDevice) mDevice;
+			device.setValue(isChecked);
+
+			setChannelValue(SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}
 	}
 }

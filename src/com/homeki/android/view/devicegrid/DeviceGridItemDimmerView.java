@@ -9,10 +9,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
+import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
@@ -61,15 +63,10 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 
 		@Override
 		public void onStopTrackingTouch(final SeekBar seekBar) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()), new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						DimmerDevice device = (DimmerDevice) mDevice;
-						device.setLevel(seekBar.getProgress());
-					}
-				}
-			});
+			DimmerDevice device = (DimmerDevice) mDevice;
+			device.setLevel(seekBar.getProgress());
+			
+			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
 		}
 	}
 
@@ -77,15 +74,9 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						DimmerDevice device = (DimmerDevice) mDevice;
-						device.setValue(isChecked);
-					}
-				}
-			});
+			DimmerDevice device = (DimmerDevice) mDevice;
+			device.setValue(isChecked);
+			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}
 	}
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -42,15 +43,10 @@ public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevic
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						SwitchDevice device = (SwitchDevice) mDevice;
-						device.setValue(isChecked);
-					}
-				}
-			});
+			SwitchDevice device = (SwitchDevice) mDevice;
+			device.setValue(isChecked);
+
+			setChannelValue(SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}
 	}
 }

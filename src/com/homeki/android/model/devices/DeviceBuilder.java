@@ -30,7 +30,7 @@ public class DeviceBuilder {
 		@SerializedName("id")
 		public int id;
 
-		@SerializedName("names")
+		@SerializedName("name")
 		public String name;
 
 		@SerializedName("description")

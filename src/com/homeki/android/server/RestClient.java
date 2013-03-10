@@ -87,7 +87,7 @@ public class RestClient {
 
 		try {
 			connection = (HttpURLConnection) new URL(getServerURL() + "device/" + deviceId + "/channel/" + channel + "/set?value=" + value).openConnection();
-			connection.setConnectTimeout(2000);
+			connection.setConnectTimeout(1000);
 			connection.getInputStream();
 		} catch (Exception e) {
 			Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());

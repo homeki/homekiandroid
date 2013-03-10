@@ -16,9 +16,10 @@ import android.view.View;
 import android.widget.Toast;
 
 public class DeviceListFragment extends ListFragment {
-	private ActionPerformer mActionPerformer;
 
+	private ActionPerformer mActionPerformer;
 	private DeviceListModel mModel;
+	private DeviceListAdapter mListAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,13 @@ public class DeviceListFragment extends ListFragment {
 
 		mModel = DeviceListModel.getModel(getActivity());
 		mActionPerformer = new ServerActionPerformer(getActivity());
+		mListAdapter = new DeviceListAdapter(getActivity(), mModel, mActionPerformer);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		setListAdapter(new DeviceListAdapter(getActivity(), mModel, mActionPerformer));
+
+		setListAdapter(mListAdapter);
 	}
 }

@@ -25,10 +25,11 @@ public abstract class DeviceCollectionAdapter extends BaseAdapter {
 		mContext = context;
 		mActionPerformer = actionPerformer;
 		mListProvider = listProvider;
+
 		mListProvider.addOnDeviceListChangedListener(new OnDeviceListChangedListener() {
 			@Override
 			public void onDeviceListChanged() {
-				notifyDataSetChanged();
+					notifyDataSetChanged();
 			}
 		});
 	}

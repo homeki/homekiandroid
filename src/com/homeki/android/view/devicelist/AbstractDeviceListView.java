@@ -3,6 +3,7 @@ package com.homeki.android.view.devicelist;
 import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 import com.homeki.android.view.DeviceItemView;
 
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public abstract class AbstractDeviceListView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
 
@@ -47,6 +49,17 @@ public abstract class AbstractDeviceListView<T extends AbstractDevice> extends L
 
 	protected abstract void onDeviceSet(T device);
 
+	protected void setChannelValue(int channel, String value) {
+		mActionPerformer.setChannelValueForDevice(mDevice.getId(), channel, value, new OnChannelValueSetListener() {
+			@Override
+			public void result(boolean success) {
+				if (!success && mDevice != null) {
+					Toast.makeText(mContext, "Failed to set value for " + mDevice.getName(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+	
 	private class OpenDetailsClickListener implements OnClickListener {
 
 		@Override

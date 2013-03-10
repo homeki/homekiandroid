@@ -64,15 +64,10 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 
 		@Override
 		public void onStopTrackingTouch(final SeekBar seekBar) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()), new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						DimmerDevice device = (DimmerDevice) mDevice;
-						device.setLevel(seekBar.getProgress());
-					}
-				}
-			});
+			DimmerDevice device = (DimmerDevice) mDevice;
+			device.setLevel(seekBar.getProgress());
+			
+			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
 		}
 	}
 
@@ -80,15 +75,9 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			mActionPerformer.setChannelValueForDevice(mDevice.getId(), DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0", new OnChannelValueSetListener() {
-				@Override
-				public void result(boolean success) {
-					if (success && mDevice != null) {
-						DimmerDevice device = (DimmerDevice) mDevice;
-						device.setValue(isChecked);
-					}
-				}
-			});
+			DimmerDevice device = (DimmerDevice) mDevice;
+			device.setValue(isChecked);
+			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}
 	}
 }
