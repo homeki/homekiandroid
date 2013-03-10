@@ -66,10 +66,6 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 		}
 		mDevices.addAll(devices);
 
-		ThermometerDevice temp = new ThermometerDevice(DeviceType.THERMOMETER, 10000, "THERMO", "This is a thermometer", "20120101", true);
-		temp.setChannelValue(0, "22");
-		
-		mDevices.add(temp);
 		notifyListeners();
 	}
 
