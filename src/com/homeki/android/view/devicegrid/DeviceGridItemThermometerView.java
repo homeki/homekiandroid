@@ -18,6 +18,7 @@ import com.homeki.android.server.ActionPerformer;
 
 public class DeviceGridItemThermometerView extends AbstractDeviceGridView<ThermometerDevice> {
 	private TextView mTemperatureView;
+	private TextView mNameView;
 
 	public DeviceGridItemThermometerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
@@ -46,5 +47,7 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);
 		mTemperatureView.setText(df.format(temp) + " °C");
+		
+		mNameView.setText(device.getName());
 	}
 }

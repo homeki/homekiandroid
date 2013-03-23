@@ -25,8 +25,6 @@ public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevic
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_grid_switch, this);
-
-		mNameView = (TextView) findViewById(R.id.device_grid_switch_name);
 		mOnOffSwitch = (ToggleButton) findViewById(R.id.device_grid_switch_button);
 
 		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
@@ -34,6 +32,8 @@ public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevic
 
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
+		mOnOffSwitch.setTextOff(device.getName());
+		mOnOffSwitch.setTextOn(device.getName());
 		mOnOffSwitch.setOnCheckedChangeListener(null);
 		mOnOffSwitch.setChecked(device.getValue());
 		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);

@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" android:padding="@dimen/padding_medium" >
 
-    <TextView
-        android:id="@+id/device_grid_dimmer_name"
-        style="@style/ListItemName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" />
-
     <ToggleButton
         android:id="@+id/device_grid_dimmer_button"
         android:layout_width="match_parent"

@@ -33,7 +33,6 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_grid_dimmer, this);
-		mNameView = (TextView) findViewById(R.id.device_grid_dimmer_name);
 		mValueBar = (SeekBar) findViewById(R.id.device_grid_dimmer_value_bar);
 		mOnOffSwitch = (ToggleButton) findViewById(R.id.device_grid_dimmer_button);
 
@@ -43,6 +42,9 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {
+		mOnOffSwitch.setTextOff(device.getName());
+		mOnOffSwitch.setTextOn(device.getName());
+		
 		mValueBar.setOnSeekBarChangeListener(null);
 		mValueBar.setProgress(device.getLevel());
 		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);

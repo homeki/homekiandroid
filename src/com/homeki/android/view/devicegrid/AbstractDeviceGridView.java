@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
 
-	protected TextView mNameView;
 	protected AbstractDevice mDevice;
 	protected Context mContext;
 	protected ActionPerformer mActionPerformer;
@@ -32,8 +31,6 @@ public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends L
 	@Override
 	public void setDevice(AbstractDevice device) {
 		mDevice = device;
-
-		mNameView.setText(device.getName());
 
 		onDeviceSet((T) device);
 	}
