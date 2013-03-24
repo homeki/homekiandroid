@@ -20,4 +20,9 @@ public class Settings {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		return prefs.getString("server_port", "5000");
 	}
+	
+	public static boolean isClientRegisteringEnabled(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean("client_registering", false);
+	}
 }

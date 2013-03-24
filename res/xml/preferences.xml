@@ -9,5 +9,9 @@
         android:key="server_port"
         android:summary="Port to the Homeki Server (e.g. 5000)."
         android:title="Homeki Server Port" />
+    <CheckBoxPreference
+        android:key="client_registering"
+        android:summary="If this device should try to register as a client when connecting to wifi."
+        android:title="Client Registering" />
 
 </PreferenceScreen>

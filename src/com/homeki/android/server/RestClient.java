@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -81,6 +82,32 @@ public class RestClient {
 		}
 
 		return devices;
+	}
+	
+	public void registerClient(String ip) {
+		HttpURLConnection connection = null;
+
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "client/register").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
+			
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONClient(ip));
+			writer.write(json);
+			writer.flush();
+			
+			connection.getInputStream();
+		} catch (Exception e) {
+			Log.e(TAG, "registerClient() " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			Log.d(TAG, "registerClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 	}
 
 	public boolean setChannelValueForDevice(int deviceId, int channel, String value) {
@@ -164,5 +191,13 @@ public class RestClient {
 		
 		@SerializedName("registered")
 		public String registered;		
+	}
+	
+	private class JSONClient {
+		public String ipAddress;
+		
+		public JSONClient(String ipAddress) {
+			this.ipAddress = ipAddress;
+		}
 	}
 }
