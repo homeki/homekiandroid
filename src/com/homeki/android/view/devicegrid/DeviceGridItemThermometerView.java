@@ -5,10 +5,8 @@ import java.text.DecimalFormat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.homeki.android.DeviceDetailsActivity;
@@ -46,7 +44,7 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 		DecimalFormat df = new DecimalFormat("0.0");
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);
-		mTemperatureView.setText(df.format(temp) + " °C");
+		mTemperatureView.setText(df.format(temp) + " ï¿½C");
 		
 		mNameView.setText(device.getName());
 	}

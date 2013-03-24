@@ -1,19 +1,11 @@
 package com.homeki.android;
 
-import java.util.List;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 
 import com.homeki.android.model.DeviceListModel;
-import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
-import android.support.v4.app.ListFragment;
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
 public class DeviceListFragment extends ListFragment {
 

@@ -14,6 +14,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.homeki.android.model.DataPoint;
@@ -155,7 +156,6 @@ public class RestClient {
 	}
 
 	private class JSONDataPoint {
-		@SuppressWarnings("unused")
 		@SerializedName("channel")
 		public int channel;
 

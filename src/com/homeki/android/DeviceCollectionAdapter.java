@@ -1,19 +1,13 @@
 package com.homeki.android;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.homeki.android.model.DeviceListProvider;
 import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
-import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.view.devicelist.AbstractDeviceListView;
-import com.homeki.android.view.devicelist.DeviceListItemDimmerView;
-import com.homeki.android.view.devicelist.DeviceListItemSwitchView;
-import com.homeki.android.view.devicelist.DeviceListItemThermometerView;
 
 public abstract class DeviceCollectionAdapter extends BaseAdapter {
 

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.model.devices.AbstractDevice.DeviceOwner;
 import com.homeki.android.model.devices.DeviceType;
 

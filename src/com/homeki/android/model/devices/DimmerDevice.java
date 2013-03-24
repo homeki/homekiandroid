@@ -1,6 +1,5 @@
 package com.homeki.android.model.devices;
 
-import android.util.Log;
 
 public class DimmerDevice extends AbstractDevice {
 

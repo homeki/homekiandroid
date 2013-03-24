@@ -4,19 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
-import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevice> {
 	private SeekBar mValueBar;

@@ -6,16 +6,11 @@ import android.view.ViewGroup;
 
 import com.homeki.android.model.DeviceListProvider;
 import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.view.devicegrid.AbstractDeviceGridView;
 import com.homeki.android.view.devicegrid.DeviceGridItemDimmerView;
 import com.homeki.android.view.devicegrid.DeviceGridItemSwitchView;
 import com.homeki.android.view.devicegrid.DeviceGridItemThermometerView;
-import com.homeki.android.view.devicelist.AbstractDeviceListView;
-import com.homeki.android.view.devicelist.DeviceListItemDimmerView;
-import com.homeki.android.view.devicelist.DeviceListItemSwitchView;
-import com.homeki.android.view.devicelist.DeviceListItemThermometerView;
 
 public class DeviceGridAdapter extends DeviceCollectionAdapter {
 
