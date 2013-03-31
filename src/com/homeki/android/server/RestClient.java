@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -84,7 +85,7 @@ public class RestClient {
 		return devices;
 	}
 	
-	public void registerClient(String id) {
+	public void registerClient(String id) throws Exception {
 		HttpURLConnection connection = null;
 
 		try {
@@ -99,9 +100,6 @@ public class RestClient {
 			writer.flush();
 			
 			connection.getInputStream();
-		} catch (Exception e) {
-			Log.e(TAG, "registerClient() " + e.getMessage());
-			e.printStackTrace();
 		} finally {
 			Log.d(TAG, "registerClient() disconnect");
 			if (connection != null) {
@@ -110,7 +108,7 @@ public class RestClient {
 		}
 	}
 	
-	public void unregisterClient(String id) {
+	public void unregisterClient(String id) throws Exception {
 		HttpURLConnection connection = null;
 
 		try {
@@ -125,11 +123,8 @@ public class RestClient {
 			writer.flush();
 			
 			connection.getInputStream();
-		} catch (Exception e) {
-			Log.e(TAG, "registerClient() " + e.getMessage());
-			e.printStackTrace();
 		} finally {
-			Log.d(TAG, "registerClient() disconnect");
+			Log.d(TAG, "unregisterClient() disconnect");
 			if (connection != null) {
 				connection.disconnect();
 			}
