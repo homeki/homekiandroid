@@ -84,7 +84,7 @@ public class RestClient {
 		return devices;
 	}
 	
-	public void registerClient(String ip) {
+	public void registerClient(String id) {
 		HttpURLConnection connection = null;
 
 		try {
@@ -94,7 +94,33 @@ public class RestClient {
 			connection.setConnectTimeout(1000);
 			
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			String json = gson.toJson(new JSONClient(ip));
+			String json = gson.toJson(new JSONClient(id));
+			writer.write(json);
+			writer.flush();
+			
+			connection.getInputStream();
+		} catch (Exception e) {
+			Log.e(TAG, "registerClient() " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			Log.d(TAG, "registerClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
+	
+	public void unregisterClient(String id) {
+		HttpURLConnection connection = null;
+
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "client/unregister").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
+			
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONClient(id));
 			writer.write(json);
 			writer.flush();
 			
@@ -194,10 +220,11 @@ public class RestClient {
 	}
 	
 	private class JSONClient {
-		public String ipAddress;
+		@SuppressWarnings("unused")
+		public String id;
 		
-		public JSONClient(String ipAddress) {
-			this.ipAddress = ipAddress;
+		public JSONClient(String id) {
+			this.id = id;
 		}
 	}
 }

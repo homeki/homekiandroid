@@ -13,5 +13,10 @@
         android:key="client_registering"
         android:summary="If this device should try to register as a client when connecting to wifi."
         android:title="Client Registering" />
+	<Preference 
+        android:key="set_home_ssid"
+        android:onClick=""
+        android:summary="Set the SSID for currently connected WLAN as the home network."
+        android:title="Set home network" />
 
 </PreferenceScreen>

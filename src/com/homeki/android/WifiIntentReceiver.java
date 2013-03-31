@@ -1,5 +1,7 @@
 package com.homeki.android;
 
+import java.util.UUID;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,39 +27,62 @@ public class WifiIntentReceiver extends BroadcastReceiver {
 			return;
 		
 		NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-	    if (!networkInfo.isConnected())
-	    	return;
 	    
-	    Log.d(TAG, "Device connected to WLAN");
-	    
-	    final String ip = getWifiIPAddress(context);
-	    Log.d(TAG, "IP address on WLAN: " + getWifiIPAddress(context));
-	    
+		if (networkInfo.isConnected())
+	    	reportHome(context);
+	    else
+	    	reportNotHome(context);
+	}
+	
+	private void reportHome(final Context context) {
+		String ssid = getSsid(context);
+		String homeSsid = Settings.getHomeSsid(context);
+		final String guid = UUID.randomUUID().toString();
+		
+		Log.d(TAG, "SSID: " + ssid + ", home SSID: " + homeSsid + ".");
+		
+		if (!homeSsid.equals(ssid))
+			return;
+			
 	    new Thread() {
 	    	public void run() {
 	    		Log.i(TAG, "Registering client to Homeki server.");
 	    		try {
 		    	    RestClient client = new RestClient(context);
-		    	    client.registerClient(ip);
+		    	    client.registerClient(guid);
+		    	    Settings.setOnHomeNetwork(context, guid);
 	    		}
 	    		catch (Exception e) {
 	    			Log.e(TAG, "Failed to register client to Homeki server, message: " + e.getMessage());
 	    		}
 	    	};
-	    }.start();
+	    }.start();			
 	}
 	
-	public String getWifiIPAddress(Context context) {
+	private void reportNotHome(final Context context) {
+		final String guid = Settings.getOnHomeNetwork(context);
+		
+		if (guid == null)
+			return;
+		
+	    new Thread() {
+	    	public void run() {
+	    		Log.i(TAG, "Unregistering client to Homeki server.");
+	    		try {
+		    	    RestClient client = new RestClient(context);
+		    	    client.unregisterClient(guid);
+		    	    Settings.setOnHomeNetwork(context, null);
+	    		}
+	    		catch (Exception e) {
+	    			Log.e(TAG, "Failed to unregister client to Homeki server, message: " + e.getMessage());
+	    		}
+	    	};
+	    }.start();		
+	}
+	
+	public String getSsid(Context context) {
 	   WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 	   WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-	   int ip = wifiInfo.getIpAddress();
-
-	   String ipString = String.format("%d.%d.%d.%d",
-			   (ip & 0xff),
-			   (ip >> 8 & 0xff),
-			   (ip >> 16 & 0xff),
-			   (ip >> 24 & 0xff));
-
-	   return ipString;
+	   return wifiInfo.getSSID();
 	}
 }
