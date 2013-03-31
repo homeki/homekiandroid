@@ -16,7 +16,7 @@
 	<Preference 
         android:key="set_home_ssid"
         android:onClick=""
-        android:summary="Set the SSID for currently connected WLAN as the home network."
-        android:title="Set home network" />
+        android:summary="Set the connected WLAN as the home WLAN."
+        android:title="Set home WLAN" />
 
 </PreferenceScreen>
