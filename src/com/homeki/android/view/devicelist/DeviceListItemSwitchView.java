@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.homeki.android.R;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevice> {
 

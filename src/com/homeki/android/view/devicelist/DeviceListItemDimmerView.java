@@ -1,7 +1,6 @@
 package com.homeki.android.view.devicelist;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 
 public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevice> {
 	private SeekBar mValueBar;

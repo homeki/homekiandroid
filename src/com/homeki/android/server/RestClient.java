@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.homeki.android.model.DataPoint;
@@ -80,6 +83,52 @@ public class RestClient {
 		}
 
 		return devices;
+	}
+	
+	public void registerClient(String id) throws Exception {
+		HttpURLConnection connection = null;
+
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "client/register").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
+			
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONClient(id));
+			writer.write(json);
+			writer.flush();
+			
+			connection.getInputStream();
+		} finally {
+			Log.d(TAG, "registerClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
+	
+	public void unregisterClient(String id) throws Exception {
+		HttpURLConnection connection = null;
+
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "client/unregister").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
+			
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONClient(id));
+			writer.write(json);
+			writer.flush();
+			
+			connection.getInputStream();
+		} finally {
+			Log.d(TAG, "unregisterClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 	}
 
 	public boolean setChannelValueForDevice(int deviceId, int channel, String value) {
@@ -155,7 +204,6 @@ public class RestClient {
 	}
 
 	private class JSONDataPoint {
-		@SuppressWarnings("unused")
 		@SerializedName("channel")
 		public int channel;
 
@@ -164,5 +212,14 @@ public class RestClient {
 		
 		@SerializedName("registered")
 		public String registered;		
+	}
+	
+	private class JSONClient {
+		@SuppressWarnings("unused")
+		public String id;
+		
+		public JSONClient(String id) {
+			this.id = id;
+		}
 	}
 }

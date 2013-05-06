@@ -1,16 +1,14 @@
 package com.homeki.android.view.devicegrid;
 
-import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.SwitchDevice;
-import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
-import com.homeki.android.view.DeviceItemView;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
+import com.homeki.android.view.DeviceItemView;
 
 public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
 

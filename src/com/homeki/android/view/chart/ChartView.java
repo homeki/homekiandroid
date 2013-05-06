@@ -5,10 +5,10 @@ import java.util.Date;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 public abstract class ChartView extends LinearLayout {

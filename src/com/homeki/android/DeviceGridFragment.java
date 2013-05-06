@@ -1,25 +1,16 @@
 package com.homeki.android;
 
-import java.util.List;
-
-import com.homeki.android.model.DeviceListModel;
-import com.homeki.android.model.DeviceListProvider;
-import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
-import com.homeki.android.server.ServerActionPerformer;
-
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.Toast;
+
+import com.homeki.android.model.DeviceListModel;
+import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ServerActionPerformer;
 
 public class DeviceGridFragment extends Fragment {
 
