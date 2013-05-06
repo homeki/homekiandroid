@@ -6,14 +6,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class DeviceBuilder {
 
+	private static final String DEVICE_TYPE_DIMMER = "dimmer";
+	private static final String DEVICE_TYPE_SWITCH = "switch";
+	private static final String DEVICE_TYPE_THERMOMETER = "thermometer";
+	
 	public static AbstractDevice build(String type, int id, String name, String description, String added, boolean active, ArrayList<ChannelValue> channels) {
 		AbstractDevice device = null;
 				
-		if ("dimmer".equals(type)) {
+		if (DEVICE_TYPE_DIMMER.equals(type)) {
 			device = new DimmerDevice(DeviceType.DIMMER, id, name, description, added, active);
-		} else if ("switch".equals(type)) {
+		} else if (DEVICE_TYPE_SWITCH.equals(type)) {
 			device = new SwitchDevice(DeviceType.SWITCH, id, name, description, added, active);
-		} else if ("thermometer".equals(type)) {
+		} else if (DEVICE_TYPE_THERMOMETER.equals(type)) {
 			device = new ThermometerDevice(DeviceType.THERMOMETER, id, name, description, added, active);
 		}
 
