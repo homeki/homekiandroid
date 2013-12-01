@@ -1,12 +1,15 @@
 package com.homeki.android.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import android.content.Context;
+import android.util.Log;
+import com.google.gson.Gson;
+import com.homeki.android.model.DataPoint;
+import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.DeviceBuilder;
+import com.homeki.android.settings.Settings;
+
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -14,37 +17,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-import com.homeki.android.model.DataPoint;
-import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.DeviceBuilder;
-import com.homeki.android.settings.Settings;
-
 public class RestClient {
 	private static String TAG = RestClient.class.getSimpleName();
-
 	private static SimpleDateFormat FORMAT_DATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	public enum Errors {
-		RequestFailed
-	}
-
-	private Context mContext;
+	private Context context;
 
 	public RestClient(Context context) {
-		mContext = context;
+		this.context = context;
 	}
 
 	private String getServerURL() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("http://");
-		builder.append(Settings.getServerUrl(mContext));
+		builder.append(Settings.getServerUrl(context));
 		builder.append(":");
-		builder.append(Settings.getServerPort(mContext));
+		builder.append(Settings.getServerPort(context));
 		builder.append("/");
 
 		return builder.toString();
@@ -199,23 +187,13 @@ public class RestClient {
 		return total.toString();
 	}
 
-	public interface OnErrorListener {
-		public void onError(Errors errorCode);
-	}
-
 	private class JSONDataPoint {
-		@SerializedName("channel")
 		public int channel;
-
-		@SerializedName("value")
 		public double value;
-		
-		@SerializedName("registered")
-		public String registered;		
+		public String registered;
 	}
 	
 	private class JSONClient {
-		@SuppressWarnings("unused")
 		public String id;
 		
 		public JSONClient(String id) {

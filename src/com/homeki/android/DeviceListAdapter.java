@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class DeviceListAdapter extends DeviceCollectionAdapter {
-
 	public DeviceListAdapter(Context context, DeviceListProvider listProvider, ActionPerformer actionPerformer) {
 		super(context, listProvider, actionPerformer);
 	}
@@ -21,7 +20,8 @@ public class DeviceListAdapter extends DeviceCollectionAdapter {
 	@Override
 	public View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent) {
 		AbstractDevice item = (AbstractDevice) getItem(position);
-		AbstractDeviceListView<?> view = null;
+		AbstractDeviceListView<?> view;
+
 		switch (item.getType()) {
 		case DIMMER:
 			view = new DeviceListItemDimmerView(context, actionPerformer);
@@ -35,6 +35,7 @@ public class DeviceListAdapter extends DeviceCollectionAdapter {
 		default:
 			throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
 		}
+
 		view.setDevice(item);
 		return view;
 	}

@@ -1,66 +1,64 @@
 package com.homeki.android.view.chart;
 
-import java.util.Date;
-
-import org.achartengine.GraphicalView;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.widget.LinearLayout;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+
+import java.util.Date;
 
 public abstract class ChartView extends LinearLayout {
+	protected XYMultipleSeriesDataset dataSet;
+	protected XYMultipleSeriesRenderer renderer;
 
-	protected XYMultipleSeriesDataset mDataSet;
-	protected XYMultipleSeriesRenderer mRenderer;
+	protected double maxValue, minValue;
+	protected Date startValue, endValue;
 
-	protected double mMaxValue, mMinValue;
-	protected Date mStartValue, mEndValue;
-
-	private GraphicalView mGraphView;
+	private GraphicalView graphView;
 
 	public ChartView(Context context) {
 		super(context);
 		
-		mMaxValue = 0;
-		mMinValue = 0;
-		mStartValue = new Date();
-		mEndValue = new Date(0);
+		maxValue = 0;
+		minValue = 0;
+		startValue = new Date();
+		endValue = new Date(0);
 
-		mDataSet = new XYMultipleSeriesDataset();
-		mRenderer = new XYMultipleSeriesRenderer();
-		mGraphView = onCreateGraphicalView(context, mDataSet, mRenderer);
-		this.addView(mGraphView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		dataSet = new XYMultipleSeriesDataset();
+		renderer = new XYMultipleSeriesRenderer();
+		graphView = onCreateGraphicalView(context, dataSet, renderer);
+		this.addView(graphView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
 	protected void updateScale() {
-		mRenderer.setAxisTitleTextSize(16);
-		mRenderer.setChartTitleTextSize(48);
-		mRenderer.setLabelsTextSize(15);
-		mRenderer.setLegendTextSize(15);
-		mRenderer.setAxesColor(Color.argb(255, 0, 128, 172));
-		mRenderer.setXLabelsAlign(Align.LEFT);
-		mRenderer.setShowLegend(false);
-		mRenderer.setYAxisMax(mMaxValue);
-		mRenderer.setYAxisMin(mMinValue);
-		mRenderer.setXAxisMax(mEndValue.getTime());
-		mRenderer.setXAxisMin(mStartValue.getTime());
+		renderer.setAxisTitleTextSize(16);
+		renderer.setChartTitleTextSize(48);
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		renderer.setAxesColor(Color.argb(255, 0, 128, 172));
+		renderer.setXLabelsAlign(Align.LEFT);
+		renderer.setShowLegend(false);
+		renderer.setYAxisMax(maxValue);
+		renderer.setYAxisMin(minValue);
+		renderer.setXAxisMax(endValue.getTime());
+		renderer.setXAxisMin(startValue.getTime());
 	}
 
 	public void putValue(int channel, Date time, double value) {
-		mMaxValue = value > mMaxValue ? value : mMaxValue;
-		mMinValue = value < mMinValue ? value : mMinValue;
-		mStartValue = mStartValue.after(time) ? time : mStartValue;
-		mEndValue = mEndValue.before(time) ? time : mEndValue;
+		maxValue = value > maxValue ? value : maxValue;
+		minValue = value < minValue ? value : minValue;
+		startValue = startValue.after(time) ? time : startValue;
+		endValue = endValue.before(time) ? time : endValue;
 		
 		putValueToChart(channel, time, value);
 
 		updateScale();
-		if (mGraphView != null) {
-			if (mDataSet.getSeriesCount() > 0) {
-				mGraphView.repaint();
+		if (graphView != null) {
+			if (dataSet.getSeriesCount() > 0) {
+				graphView.repaint();
 			}
 		}
 	}

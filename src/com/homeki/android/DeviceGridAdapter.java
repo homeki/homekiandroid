@@ -13,7 +13,6 @@ import com.homeki.android.view.devicegrid.DeviceGridItemSwitchView;
 import com.homeki.android.view.devicegrid.DeviceGridItemThermometerView;
 
 public class DeviceGridAdapter extends DeviceCollectionAdapter {
-
 	public DeviceGridAdapter(Context context, DeviceListProvider listProvider, ActionPerformer actionPerformer) {
 		super(context, listProvider, actionPerformer);
 	}
@@ -21,7 +20,8 @@ public class DeviceGridAdapter extends DeviceCollectionAdapter {
 	@Override
 	public View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent) {
 		AbstractDevice item = (AbstractDevice) getItem(position);
-		AbstractDeviceGridView<?> view = null;
+		AbstractDeviceGridView<?> view;
+
 		switch (item.getType()) {
 		case DIMMER:
 			view = new DeviceGridItemDimmerView(context, actionPerformer);
@@ -35,8 +35,8 @@ public class DeviceGridAdapter extends DeviceCollectionAdapter {
 		default:
 			throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
 		}
+
 		view.setDevice(item);
 		return view;
 	}
-
 }

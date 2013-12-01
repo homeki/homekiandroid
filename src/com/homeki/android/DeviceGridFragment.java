@@ -13,33 +13,30 @@ import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ServerActionPerformer;
 
 public class DeviceGridFragment extends Fragment {
-
-	private DeviceListModel mModel;
-	private ActionPerformer mActionPerformer;
-	private GridView mGridView;
-
-	private Context mContext;
-
-	private DeviceGridAdapter mGridAdapter;
+	private DeviceListModel model;
+	private ActionPerformer actionPerformer;
+	private GridView gridView;
+	private Context context;
+	private DeviceGridAdapter gridAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mContext = getActivity();
+		context = getActivity();
 
-		mModel = DeviceListModel.getModel(mContext);
-		mActionPerformer = new ServerActionPerformer(mContext);
+		model = DeviceListModel.getModel(context);
+		actionPerformer = new ServerActionPerformer(context);
 
-		mGridAdapter = new DeviceGridAdapter(mContext, mModel, mActionPerformer);
+		gridAdapter = new DeviceGridAdapter(context, model, actionPerformer);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.devices_grid, container, false);
 
-		mGridView = (GridView) view.findViewById(R.id.devices_grid_view);
-		mGridView.setAdapter(mGridAdapter);
+		gridView = (GridView) view.findViewById(R.id.devices_grid_view);
+		gridView.setAdapter(gridAdapter);
 
 		return view;
 	}

@@ -15,32 +15,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class AbstractDeviceListView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
-
-	protected TextView mNameView;
-	protected TextView mDescriptionView;
-	protected View mOpenDetailsView;
-	protected AbstractDevice mDevice;
-	protected Context mContext;
-	protected ActionPerformer mActionPerformer;
+	protected TextView nameView;
+	protected TextView descriptionView;
+	protected View openDetailsView;
+	protected AbstractDevice device;
+	protected Context context;
+	protected ActionPerformer actionPerformer;
 
 	public AbstractDeviceListView(Context context, ActionPerformer actionPerformer) {
 		super(context);
-
-		mActionPerformer = actionPerformer;
-
-		mContext = context;
-		inflate((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-
-		mOpenDetailsView.setOnClickListener(new OpenDetailsClickListener());
+		this.actionPerformer = actionPerformer;
+		this.context = context;
+		inflate((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+		openDetailsView.setOnClickListener(new OpenDetailsClickListener());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setDevice(AbstractDevice device) {
-		mDevice = device;
+		this.device = device;
 
-		mNameView.setText(device.getName());
-		mDescriptionView.setText(mDevice.getDescription());
+		nameView.setText(device.getName());
+		descriptionView.setText(this.device.getDescription());
 
 		onDeviceSet((T) device);
 	}
@@ -50,23 +46,22 @@ public abstract class AbstractDeviceListView<T extends AbstractDevice> extends L
 	protected abstract void onDeviceSet(T device);
 
 	protected void setChannelValue(int channel, String value) {
-		mActionPerformer.setChannelValueForDevice(mDevice.getId(), channel, value, new OnChannelValueSetListener() {
-			@Override
-			public void result(boolean success) {
-				if (!success && mDevice != null) {
-					Toast.makeText(mContext, "Failed to set value for " + mDevice.getName(), Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+		actionPerformer.setChannelValueForDevice(device.getId(), channel, value, new OnChannelValueSetListener() {
+      @Override
+      public void result(boolean success) {
+        if (!success && device != null) {
+          Toast.makeText(context, "Failed to set value for " + device.getName(), Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
 	}
 	
 	private class OpenDetailsClickListener implements OnClickListener {
-
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(mContext, DeviceDetailsActivity.class);
-			intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, mDevice.getId());
-			mContext.startActivity(intent);
+			Intent intent = new Intent(context, DeviceDetailsActivity.class);
+			intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, device.getId());
+			context.startActivity(intent);
 		}
 	}
 }

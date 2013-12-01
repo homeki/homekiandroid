@@ -4,94 +4,93 @@ import java.util.HashMap;
 import java.util.Set;
 
 public abstract class AbstractDevice {
-
-	protected DeviceType mType;
-	protected int mId;
-	protected String mName;
-	protected String mDescription;
-	protected String mAdded;
-	protected boolean mActive;
-	protected HashMap<Integer, String> mChannels;
-	private DeviceOwner mOwner;
+	protected DeviceType type;
+	protected int id;
+	protected String name;
+	protected String description;
+	protected String added;
+	protected boolean active;
+	protected HashMap<Integer, String> channels;
+	private DeviceOwner owner;
 
 	public AbstractDevice(DeviceType type, int id, String name, String description, String added, boolean active)  {
-		mType = type;
-		mId = id;
-		mName = name;
-		mDescription = description;
-		mAdded = added;
-		mActive = active;
-		mChannels = new HashMap<Integer, String>();
+		this.type = type;
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.added = added;
+		this.active = active;
+		this.channels = new HashMap<Integer, String>();
 	}
 
 	public DeviceType getType() {
-		return mType;
+		return type;
 	}
 
 	public void setType(DeviceType type) {
-		this.mType = type;
+		this.type = type;
 	}
 
 	public int getId() {
-		return mId;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.mId = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return mName;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.mName = name;
+		this.name = name;
 	}
 
 	public String getDescription() {
-		return mDescription;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		this.mDescription = description;
+		this.description = description;
 	}
 
 	public String getAdded() {
-		return mAdded;
+		return added;
 	}
 
 	public void setAdded(String added) {
-		this.mAdded = added;
+		this.added = added;
 	}
 
 	public boolean isActive() {
-		return mActive;
+		return active;
 	}
 
 	public void setActive(boolean active) {
-		this.mActive = active;
+		this.active = active;
 	}
 
 	public void setChannelValue(int key, String value) {
-		mChannels.put(key, value);	
+		channels.put(key, value);
 		notifyOwnerOfChange();
 	}
 	
 	public String getChannelValue(int key) {
-		return mChannels.get(key);
+		return channels.get(key);
 	}
 	
 	public Set<Integer> getChannels() {
-		return mChannels.keySet();
+		return channels.keySet();
 	}
 	
 	public void setOwner(DeviceOwner owner) {
-		mOwner = owner;
+		this.owner = owner;
 	}
 	
 	protected void notifyOwnerOfChange() {
-		if(mOwner != null) {
-			mOwner.deviceDidChange(this);
+		if(owner != null) {
+			owner.deviceDidChange(this);
 		}
 	}
 	

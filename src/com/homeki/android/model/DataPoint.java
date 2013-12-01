@@ -3,35 +3,33 @@ package com.homeki.android.model;
 import java.util.Date;
 
 public class DataPoint {
-
-	private Date mTime;
-	private double mValue;
+	private Date time;
+	private double value;
 
 	public DataPoint(Date time, double value) {
 		super();
-		this.mTime = time;
-		this.mValue = value;
+		this.time = time;
+		this.value = value;
 	}
 
 	public Date getTime() {
-		return mTime;
+		return time;
 	}
 
 	public void setTime(Date time) {
-		this.mTime = time;
+		this.time = time;
 	}
 
 	public double getValue() {
-		return mValue;
+		return value;
 	}
 
 	public void setValue(double value) {
-		this.mValue = value;
+		this.value = value;
 	}
 
 	@Override
 	public String toString() {
-		return mTime.getTime() + " : " + mValue;
-
+		return time.getTime() + " : " + value;
 	}
 }

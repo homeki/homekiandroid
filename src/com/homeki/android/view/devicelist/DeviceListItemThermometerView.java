@@ -1,19 +1,17 @@
 package com.homeki.android.view.devicelist;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.homeki.android.R;
 import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class DeviceListItemThermometerView extends AbstractDeviceListView<ThermometerDevice> {
-	private TextView mTemperatureView;
+	private TextView temperatureView;
 	
 	public DeviceListItemThermometerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
@@ -23,11 +21,11 @@ public class DeviceListItemThermometerView extends AbstractDeviceListView<Thermo
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_list_thermometer, this);
 		
-		mNameView = (TextView) findViewById(R.id.device_list_thermometer_name);
-		mDescriptionView = (TextView) findViewById(R.id.device_list_thermometer_description);
-		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_thermometer_details_button);
+		nameView = (TextView) findViewById(R.id.device_list_thermometer_name);
+		descriptionView = (TextView) findViewById(R.id.device_list_thermometer_description);
+		openDetailsView = findViewById(R.id.device_list_thermometer_details_button);
 		
-		mTemperatureView = (TextView) findViewById(R.id.device_list_thermometer_temperature);
+		temperatureView = (TextView) findViewById(R.id.device_list_thermometer_temperature);
 	}
 	
 	@Override
@@ -36,6 +34,6 @@ public class DeviceListItemThermometerView extends AbstractDeviceListView<Thermo
 		DecimalFormat df = new DecimalFormat("0.0");
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);
-		mTemperatureView.setText(df.format(temp) + " °C");
+		temperatureView.setText(df.format(temp) + " Â°C");
 	}
 }

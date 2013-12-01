@@ -1,22 +1,21 @@
 package com.homeki.android.view.devicegrid;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.TextView;
-
 import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.R;
 import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class DeviceGridItemThermometerView extends AbstractDeviceGridView<ThermometerDevice> {
-	private TextView mTemperatureView;
-	private TextView mNameView;
+	private TextView temperatureView;
+	private TextView nameView;
 
 	public DeviceGridItemThermometerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
@@ -24,9 +23,9 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Intent intent = new Intent(mContext, DeviceDetailsActivity.class);
-		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, mDevice.getId());
-		mContext.startActivity(intent);
+		Intent intent = new Intent(context, DeviceDetailsActivity.class);
+		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, device.getId());
+		context.startActivity(intent);
 		return super.onTouchEvent(event);
 	}
 
@@ -34,8 +33,8 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_grid_thermometer, this);
 
-		mNameView = (TextView) findViewById(R.id.device_grid_thermometer_name);
-		mTemperatureView = (TextView) findViewById(R.id.device_grid_thermometer_temperature);
+		nameView = (TextView) findViewById(R.id.device_grid_thermometer_name);
+		temperatureView = (TextView) findViewById(R.id.device_grid_thermometer_temperature);
 	}
 
 	@Override
@@ -44,8 +43,8 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 		DecimalFormat df = new DecimalFormat("0.0");
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);
-		mTemperatureView.setText(df.format(temp) + " �C");
+		temperatureView.setText(df.format(temp) + " °C");
 		
-		mNameView.setText(device.getName());
+		nameView.setText(device.getName());
 	}
 }

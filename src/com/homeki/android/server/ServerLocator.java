@@ -1,19 +1,13 @@
 package com.homeki.android.server;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import android.util.Log;
 
-/**
- * Class to locate server on the local network using UDP broadcast
- * 
- * @author Patrik
- * 
- */
 public class ServerLocator {
-
 	private static String TAG = ServerLocator.class.getSimpleName();
 	
 	private static int PORT_RECEIVE = 1337;

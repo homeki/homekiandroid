@@ -4,51 +4,49 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.homeki.android.R;
 import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.server.ActionPerformer;
 
 public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevice> {
-	private SeekBar mValueBar;
-	private Switch mOnOffSwitch;
-	private OnOffChangedListener mOnOffChangedListener;
-	private SeekBarChangedListener mSeekBarChangedListener;
+	private SeekBar valueBar;
+	private Switch onOffSwitch;
+	private OnOffChangedListener onOffChangedListener;
+	private SeekBarChangedListener seekBarChangedListener;
 
 	public DeviceListItemDimmerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-		mOnOffChangedListener = new OnOffChangedListener();
-		mSeekBarChangedListener = new SeekBarChangedListener();
+		onOffChangedListener = new OnOffChangedListener();
+		seekBarChangedListener = new SeekBarChangedListener();
 	}
 
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_list_dimmer, this);
-		mNameView = (TextView) findViewById(R.id.device_list_dimmer_name);
-		mDescriptionView = (TextView) findViewById(R.id.device_list_dimmer_description);
-		mValueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
-		mOnOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
+		nameView = (TextView) findViewById(R.id.device_list_dimmer_name);
+		descriptionView = (TextView) findViewById(R.id.device_list_dimmer_description);
+		valueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
+		onOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
 
-		mOpenDetailsView = (ImageView) findViewById(R.id.device_list_dimmer_details_button);
+		openDetailsView = findViewById(R.id.device_list_dimmer_details_button);
 
-		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
-		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
+		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
+		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {		
-		mValueBar.setOnSeekBarChangeListener(null);
-		mValueBar.setProgress(device.getLevel());
-		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
+		valueBar.setOnSeekBarChangeListener(null);
+		valueBar.setProgress(device.getLevel());
+		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
 		
-		mOnOffSwitch.setOnCheckedChangeListener(null);
-		mOnOffSwitch.setChecked(device.getValue());
-		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
+		onOffSwitch.setOnCheckedChangeListener(null);
+		onOffSwitch.setChecked(device.getValue());
+		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
@@ -62,7 +60,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 
 		@Override
 		public void onStopTrackingTouch(final SeekBar seekBar) {
-			DimmerDevice device = (DimmerDevice) mDevice;
+			DimmerDevice device = (DimmerDevice) DeviceListItemDimmerView.this.device;
 			device.setLevel(seekBar.getProgress());
 			
 			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
@@ -70,10 +68,9 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {
-
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			DimmerDevice device = (DimmerDevice) mDevice;
+			DimmerDevice device = (DimmerDevice) DeviceListItemDimmerView.this.device;
 			device.setValue(isChecked);
 			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}

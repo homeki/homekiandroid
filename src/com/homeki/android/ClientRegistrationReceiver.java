@@ -12,5 +12,4 @@ public class ClientRegistrationReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Log.i(TAG, "OnReceive(): " + intent.getAction() + " isHome: " + intent.getExtras().getBoolean("isHome"));
 	}
-
 }

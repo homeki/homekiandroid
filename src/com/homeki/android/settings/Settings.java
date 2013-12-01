@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Settings {
-
 	public static void setServerUrl(Context context, String serverUrl) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		prefs.edit().putString("server_url", serverUrl).commit();

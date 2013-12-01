@@ -1,7 +1,5 @@
 package com.homeki.android;
 
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,55 +16,54 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.homeki.android.model.DeviceListModel;
 import com.homeki.android.model.devices.AbstractDevice;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
 
-public class DeviceCollectionActivity extends FragmentActivity {
+import java.util.List;
 
+public class DeviceCollectionActivity extends FragmentActivity {
 	private static String PREFERENCES = "com.homeki.android.ui.preferences";
 	private static String PREFFERED_PAGE = "com.homeki.android.ui.preferences.preffered_page";
 	
-	private DeviceFragmentsPagerAdapter mPagerAdapter;
-	private ViewPager mViewPager;
-	private ProgressDialog mProgressDialog;
-	private DeviceListModel mModel;
-	private Context mContext;
+	private DeviceFragmentsPagerAdapter pagerAdapter;
+	private ViewPager viewPager;
+	private ProgressDialog progressDialog;
+	private DeviceListModel model;
+	private Context context;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		mContext = this;
+		context = this;
 		
-		mModel = DeviceListModel.getModel(this);
+		model = DeviceListModel.getModel(this);
 
-		mProgressDialog = new ProgressDialog(mContext);
-		mProgressDialog.setIndeterminate(true);
-		mProgressDialog.setCanceledOnTouchOutside(false);
+		progressDialog = new ProgressDialog(context);
+		progressDialog.setIndeterminate(true);
+		progressDialog.setCanceledOnTouchOutside(false);
 		
 		final SharedPreferences prefs = getSharedPreferences(PREFERENCES, 0);
 		
-		mPagerAdapter = new DeviceFragmentsPagerAdapter(getSupportFragmentManager());
-		mViewPager = (ViewPager) findViewById(R.id.main_pager);
-		mViewPager.setAdapter(mPagerAdapter);
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				mViewPager.getAdapter().notifyDataSetChanged();
-				Editor editor = prefs.edit();
-				editor.putInt(PREFFERED_PAGE, position);
-				editor.commit();
-			}
-		});
+		pagerAdapter = new DeviceFragmentsPagerAdapter(getSupportFragmentManager());
+		viewPager = (ViewPager) findViewById(R.id.main_pager);
+		viewPager.setAdapter(pagerAdapter);
+		viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+      @Override
+      public void onPageSelected(int position) {
+        viewPager.getAdapter().notifyDataSetChanged();
+        Editor editor = prefs.edit();
+        editor.putInt(PREFFERED_PAGE, position);
+        editor.commit();
+      }
+    });
 		
 		int prefferedPage = prefs.getInt(PREFFERED_PAGE, 0);
-		mViewPager.setCurrentItem(prefferedPage);
-		
+		viewPager.setCurrentItem(prefferedPage);
 	}
 
 	@Override
@@ -85,13 +82,13 @@ public class DeviceCollectionActivity extends FragmentActivity {
 			public void onDeviceListReceived(List<AbstractDevice> devices) {
 				Log.i("DeviceCollectionActivity", "onResume() -> onDeviceListReceived()");
 				if (devices != null && devices.size() > 0) {
-					mModel.setDeviceList(devices);
+					model.setDeviceList(devices);
 				} else {
-					Toast.makeText(mContext, "Failed to get device list. Check server settings.", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "Failed to get device list. Check server settings.", Toast.LENGTH_LONG).show();
 				}
 				
-				if (mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
+				if (progressDialog.isShowing()) {
+					progressDialog.dismiss();
 				}
 			}
 		});
@@ -113,7 +110,6 @@ public class DeviceCollectionActivity extends FragmentActivity {
 	}
 
 	public class DeviceFragmentsPagerAdapter extends FragmentPagerAdapter {
-
 		private static final int LIST_INDEX = 0;
 		private static final int GRID_INDEX = 1;
 
@@ -141,6 +137,5 @@ public class DeviceCollectionActivity extends FragmentActivity {
 		public int getCount() {
 			return 2;
 		}
-
 	}
 }

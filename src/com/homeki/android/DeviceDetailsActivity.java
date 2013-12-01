@@ -13,13 +13,12 @@ import com.homeki.android.model.DeviceListModel;
 import com.homeki.android.model.devices.AbstractDevice;
 
 public class DeviceDetailsActivity extends Activity {
-
 	public static final String EXTRA_DEVICE_ID = "deviceId";
 
 	private static final String FRAGMENT_TAG_SETTINGS = "settings";
 	private static final String FRAGMENT_TAG_STATISTICS = "statistics";
 
-	private AbstractDevice mDevice;
+	private AbstractDevice device;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +26,10 @@ public class DeviceDetailsActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.containsKey(EXTRA_DEVICE_ID)) {
-			mDevice = DeviceListModel.getModel(this).getDeviceWithId(extras.getInt(EXTRA_DEVICE_ID));
+			device = DeviceListModel.getModel(this).getDeviceWithId(extras.getInt(EXTRA_DEVICE_ID));
 		}
 
-		if (mDevice == null) {
+		if (device == null) {
 			Toast toast = Toast.makeText(this, "No device id provided", Toast.LENGTH_SHORT);
 			toast.show();
 			finish();
@@ -51,12 +50,12 @@ public class DeviceDetailsActivity extends Activity {
 	private void resetFragments() {
 		Fragment settingsFragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG_SETTINGS);
 		if (settingsFragment != null) {
-			((DeviceSettingsFragment) settingsFragment).setDevice(mDevice);
+			((DeviceSettingsFragment) settingsFragment).setDevice(device);
 		}
 		
 		Fragment statsFragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG_STATISTICS);
 		if (statsFragment != null) {
-			((DeviceStatisticsFragment) statsFragment).setDevice(mDevice);
+			((DeviceStatisticsFragment) statsFragment).setDevice(device);
 		}
 	}
 
@@ -64,7 +63,7 @@ public class DeviceDetailsActivity extends Activity {
 		TabClickedListener tabListener = new TabClickedListener();
 
 		ActionBar actionBar = getActionBar();
-		actionBar.setTitle(mDevice.getName());
+		actionBar.setTitle(device.getName());
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		Tab tabStats = actionBar.newTab();
@@ -82,7 +81,6 @@ public class DeviceDetailsActivity extends Activity {
 	}
 
 	private class TabClickedListener implements TabListener {
-
 		@Override
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
@@ -92,11 +90,11 @@ public class DeviceDetailsActivity extends Activity {
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
 			if (tab.getTag().equals(FRAGMENT_TAG_SETTINGS)) {
 				DeviceSettingsFragment deviceFragment = new DeviceSettingsFragment();
-				deviceFragment.setDevice(mDevice);
+				deviceFragment.setDevice(device);
 				ft.replace(R.id.device_details_root, deviceFragment, FRAGMENT_TAG_SETTINGS);
 			} else {
 				DeviceStatisticsFragment deviceFragment = new DeviceStatisticsFragment();
-				deviceFragment.setDevice(mDevice);
+				deviceFragment.setDevice(device);
 				ft.replace(R.id.device_details_root, deviceFragment, FRAGMENT_TAG_STATISTICS);
 			}
 		}
@@ -105,6 +103,5 @@ public class DeviceDetailsActivity extends Activity {
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 
 		}
-
 	}
 }

@@ -8,24 +8,22 @@ import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ServerActionPerformer;
 
 public class DeviceListFragment extends ListFragment {
-
-	private ActionPerformer mActionPerformer;
-	private DeviceListModel mModel;
-	private DeviceListAdapter mListAdapter;
+	private ActionPerformer actionPerformer;
+	private DeviceListModel model;
+	private DeviceListAdapter listAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mModel = DeviceListModel.getModel(getActivity());
-		mActionPerformer = new ServerActionPerformer(getActivity());
-		mListAdapter = new DeviceListAdapter(getActivity(), mModel, mActionPerformer);
+		model = DeviceListModel.getModel(getActivity());
+		actionPerformer = new ServerActionPerformer(getActivity());
+		listAdapter = new DeviceListAdapter(getActivity(), model, actionPerformer);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		setListAdapter(mListAdapter);
+		setListAdapter(listAdapter);
 	}
 }

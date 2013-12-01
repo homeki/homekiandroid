@@ -13,39 +13,39 @@ import com.homeki.android.model.devices.DimmerDevice;
 import com.homeki.android.server.ActionPerformer;
 
 public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevice> {
-	private SeekBar mValueBar;
-	private ToggleButton mOnOffSwitch;
-	private OnOffChangedListener mOnOffChangedListener;
-	private SeekBarChangedListener mSeekBarChangedListener;
+	private SeekBar valueBar;
+	private ToggleButton onOffSwitch;
+	private OnOffChangedListener onOffChangedListener;
+	private SeekBarChangedListener seekBarChangedListener;
 
 	public DeviceGridItemDimmerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-		mOnOffChangedListener = new OnOffChangedListener();
-		mSeekBarChangedListener = new SeekBarChangedListener();
+		onOffChangedListener = new OnOffChangedListener();
+		seekBarChangedListener = new SeekBarChangedListener();
 	}
 
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_grid_dimmer, this);
-		mValueBar = (SeekBar) findViewById(R.id.device_grid_dimmer_value_bar);
-		mOnOffSwitch = (ToggleButton) findViewById(R.id.device_grid_dimmer_button);
+		valueBar = (SeekBar) findViewById(R.id.device_grid_dimmer_value_bar);
+		onOffSwitch = (ToggleButton) findViewById(R.id.device_grid_dimmer_button);
 
-		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
-		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
+		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
+		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	@Override
 	protected void onDeviceSet(DimmerDevice device) {
-		mOnOffSwitch.setTextOff(device.getName());
-		mOnOffSwitch.setTextOn(device.getName());
+		onOffSwitch.setTextOff(device.getName());
+		onOffSwitch.setTextOn(device.getName());
 		
-		mValueBar.setOnSeekBarChangeListener(null);
-		mValueBar.setProgress(device.getLevel());
-		mValueBar.setOnSeekBarChangeListener(mSeekBarChangedListener);
+		valueBar.setOnSeekBarChangeListener(null);
+		valueBar.setProgress(device.getLevel());
+		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
 		
-		mOnOffSwitch.setOnCheckedChangeListener(null);
-		mOnOffSwitch.setChecked(device.getValue());
-		mOnOffSwitch.setOnCheckedChangeListener(mOnOffChangedListener);
+		onOffSwitch.setOnCheckedChangeListener(null);
+		onOffSwitch.setChecked(device.getValue());
+		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	private class SeekBarChangedListener implements OnSeekBarChangeListener {
@@ -59,7 +59,7 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 
 		@Override
 		public void onStopTrackingTouch(final SeekBar seekBar) {
-			DimmerDevice device = (DimmerDevice) mDevice;
+			DimmerDevice device = (DimmerDevice) DeviceGridItemDimmerView.this.device;
 			device.setLevel(seekBar.getProgress());
 			
 			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, String.valueOf(seekBar.getProgress()));
@@ -67,10 +67,9 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {
-
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			DimmerDevice device = (DimmerDevice) mDevice;
+			DimmerDevice device = (DimmerDevice) DeviceGridItemDimmerView.this.device;
 			device.setValue(isChecked);
 			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
 		}

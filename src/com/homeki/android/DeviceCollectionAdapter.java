@@ -10,44 +10,41 @@ import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
 import com.homeki.android.server.ActionPerformer;
 
 public abstract class DeviceCollectionAdapter extends BaseAdapter {
-
-	private DeviceListProvider mListProvider;
-	private ActionPerformer mActionPerformer;
-	private Context mContext;
+	private DeviceListProvider listProvider;
+	private ActionPerformer actionPerformer;
+	private Context context;
 
 	public DeviceCollectionAdapter(Context context, DeviceListProvider listProvider, ActionPerformer actionPerformer) {
-		mContext = context;
-		mActionPerformer = actionPerformer;
-		mListProvider = listProvider;
-
-		mListProvider.addOnDeviceListChangedListener(new OnDeviceListChangedListener() {
-			@Override
-			public void onDeviceListChanged() {
-					notifyDataSetChanged();
-			}
-		});
+		this.context = context;
+		this.actionPerformer = actionPerformer;
+		this.listProvider = listProvider;
+		this.listProvider.addOnDeviceListChangedListener(new OnDeviceListChangedListener() {
+      @Override
+      public void onDeviceListChanged() {
+        notifyDataSetChanged();
+      }
+    });
 	}
 
 	@Override
 	public int getCount() {
-		return mListProvider.getDeviceCount();
+		return listProvider.getDeviceCount();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mListProvider.getDeviceAtPosition(position);
+		return listProvider.getDeviceAtPosition(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return mListProvider.getDeviceAtPosition(position).getId();
+		return listProvider.getDeviceAtPosition(position).getId();
 	}
 
 	@Override
 	public View getView(int pos, View view, ViewGroup parent) {
-		return getView(mContext, mActionPerformer, pos, view, parent);
+		return getView(context, actionPerformer, pos, view, parent);
 	}
 
 	protected abstract View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent);
-
 }

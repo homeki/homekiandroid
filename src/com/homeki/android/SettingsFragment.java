@@ -16,14 +16,14 @@ public class SettingsFragment extends PreferenceFragment {
 		super.onCreate(savedInstanceState);		
 		addPreferencesFromResource(R.xml.preferences);
 		
-		Preference button = (Preference)findPreference("set_home_ssid");
+		Preference button = findPreference("set_home_ssid");
 		button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-		                @Override
-		                public boolean onPreferenceClick(Preference pref) { 
-		                	setHomeSsid_Click(pref.getContext());
-		                    return true;
-		                }
-		            });
+      @Override
+      public boolean onPreferenceClick(Preference pref) {
+        setHomeSsid_Click(pref.getContext());
+        return true;
+      }
+    });
 	}
 	
 	private void setHomeSsid_Click(Context context) {
