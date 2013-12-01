@@ -44,4 +44,14 @@ public class Settings {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		return prefs.getString("home_client_guid", null);
 	}
+
+  public static long getAlarmStartTime(Context context) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    return prefs.getLong("alarm_start_time", -1);
+  }
+
+  public static void setAlarmStartTime(Context context, long ms) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    prefs.edit().putLong("alarm_start_time", ms).commit();
+  }
 }

@@ -55,8 +55,7 @@ public class RestClient {
 			DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
 
 			for (int i = 0; i < deviceArray.length; i++) {
-				AbstractDevice device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].id, deviceArray[i].name, deviceArray[i].description, deviceArray[i].added, deviceArray[i].active,
-						deviceArray[i].channelValues);
+				AbstractDevice device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].id, deviceArray[i].name, deviceArray[i].description, deviceArray[i].added, deviceArray[i].active, deviceArray[i].channelValues);
 				devices.add(device);
 			}
 		} catch (Exception e) {
@@ -195,7 +194,7 @@ public class RestClient {
 	
 	private class JSONClient {
 		public String id;
-		
+
 		public JSONClient(String id) {
 			this.id = id;
 		}
