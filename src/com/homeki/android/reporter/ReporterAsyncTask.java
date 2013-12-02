@@ -14,7 +14,8 @@ import com.homeki.android.settings.Settings;
 import java.util.UUID;
 
 public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
-  private static String TAG = ReporterAsyncTask.class.getSimpleName();
+  private static final int RETRY_THRESHOLD_MINUTES = 120;
+  private static final String TAG = ReporterAsyncTask.class.getSimpleName();
 
   private final Context context;
 
@@ -25,7 +26,11 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
   @Override
   protected Void doInBackground(Void... params) {
     try {
-      if (notifyThresholdPassed()) return null;
+      if (retryThresholdPassed()) {
+        postFailureNotification();
+        ReporterAlarmReceiver.cancelAlarm(context);
+        return null;
+      }
 
       String ssid = getSsid(context);
       String homeSsid = Settings.getHomeSsid(context);
@@ -33,13 +38,12 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
       boolean stateHome = Settings.getOnHomeNetwork(context) != null;
       Log.i(TAG, "stateHome is " + stateHome);
 
-      if (stateHome && !homeSsid.equals(ssid)) {
+      if (stateHome && !homeSsid.equals(ssid))
         reportNotHome(context);
-        ReporterAlarmReceiver.cancelAlarm(context);
-      } else if (!stateHome && homeSsid.equals(ssid)) {
+      else if (!stateHome && homeSsid.equals(ssid))
         reportHome(context);
-        ReporterAlarmReceiver.cancelAlarm(context);
-      }
+
+      ReporterAlarmReceiver.cancelAlarm(context);
     } catch (Exception e) {
       Log.e(TAG, "Failed to run ReporterAsyncTask.", e);
     }
@@ -47,24 +51,19 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
     return null;
   }
 
-  private boolean notifyThresholdPassed() {
-    if (Settings.getAlarmStartTime(context) == -1) return true;
-
+  private boolean retryThresholdPassed() {
     long diff = System.currentTimeMillis() - Settings.getAlarmStartTime(context);
     diff /= 60000;
+    return diff > RETRY_THRESHOLD_MINUTES;
+  }
 
-    if (diff > 120) {
-      NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-          .setSmallIcon(R.drawable.ic_launcher)
-          .setContentTitle("Homeki")
-          .setContentText("Failed to register/unregister client to Homeki server for 2 hours, giving up.");
-      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-      notificationManager.notify(1221, builder.getNotification());
-      ReporterAlarmReceiver.cancelAlarm(context);
-      return true;
-    }
-
-    return false;
+  private void postFailureNotification() {
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+           .setSmallIcon(R.drawable.ic_launcher)
+           .setContentTitle("Homeki")
+           .setContentText("Failed to register/unregister client to Homeki server for 2 hours, giving up.");
+    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    notificationManager.notify(1221, builder.getNotification());
   }
 
   private void reportHome(Context context) {
@@ -90,6 +89,7 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
     Settings.setOnHomeNetwork(context, null);
     Log.i(TAG, "Successfully unregistered client as home with guid " + guid + ".");
   }
+
   private String getSsid(Context context) {
     WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
