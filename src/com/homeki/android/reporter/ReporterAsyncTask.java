@@ -48,6 +48,8 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
   }
 
   private boolean notifyThresholdPassed() {
+    if (Settings.getAlarmStartTime(context) == -1) return true;
+
     long diff = System.currentTimeMillis() - Settings.getAlarmStartTime(context);
     diff /= 60000;
 
