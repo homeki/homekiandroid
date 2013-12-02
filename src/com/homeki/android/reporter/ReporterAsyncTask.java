@@ -26,6 +26,8 @@ public class ReporterAsyncTask extends AsyncTask<Void, Void, Void> {
   @Override
   protected Void doInBackground(Void... params) {
     try {
+      if (Settings.getAlarmStartTime(context) == -1) return null;
+
       if (retryThresholdPassed()) {
         postFailureNotification();
         ReporterAlarmReceiver.cancelAlarm(context);

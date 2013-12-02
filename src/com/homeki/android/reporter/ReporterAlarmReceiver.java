@@ -38,6 +38,6 @@ public class ReporterAlarmReceiver extends BroadcastReceiver {
 
   private static PendingIntent getPendingIntent(Context context) {
     Intent reporterIntent = new Intent(context, ReporterAlarmReceiver.class);
-    return PendingIntent.getBroadcast(context, 0, reporterIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    return PendingIntent.getBroadcast(context, 0, reporterIntent, PendingIntent.FLAG_CANCEL_CURRENT);
   }
 }
