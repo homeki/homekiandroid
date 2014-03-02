@@ -27,7 +27,7 @@ public class DeviceBuilder {
 	
 	public class Device {
 		public String type;
-		public int id;
+		public int deviceId;
 		public String name;
 		public String description;
 		public String added;

@@ -42,7 +42,7 @@ public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevic
 			SwitchDevice device = (SwitchDevice) DeviceGridItemSwitchView.this.device;
 			device.setValue(isChecked);
 
-			setChannelValue(SwitchDevice.CHANNEL_ID_VALUE, isChecked ? "1" : "0");
+			setChannelValue(SwitchDevice.CHANNEL_ID_VALUE, isChecked ? 1 : 0);
 		}
 	}
 }

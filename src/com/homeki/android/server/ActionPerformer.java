@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ActionPerformer {
 	public void requestDeviceList(OnDeviceListReceivedListener listener);
-	public void setChannelValueForDevice(int deviceId, int channelId, String value, OnChannelValueSetListener listener);
+	public void setChannelValueForDevice(int deviceId, int channelId, int value, OnChannelValueSetListener listener);
 	public void getChannelHistoryForDevice(int deviceId, int channelId, Date start, Date end, OnChannelHistoryReceivedListener listener);
 
 	public interface OnDeviceListReceivedListener {

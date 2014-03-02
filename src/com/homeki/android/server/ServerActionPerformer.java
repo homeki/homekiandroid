@@ -52,7 +52,7 @@ public class ServerActionPerformer implements ActionPerformer {
 	}
 
 	@Override
-	public void setChannelValueForDevice(final int deviceId, final int channelId, final String value, final OnChannelValueSetListener listener) {
+	public void setChannelValueForDevice(final int deviceId, final int channelId, final int value, final OnChannelValueSetListener listener) {
 		Log.d(TAG, "setChannelValueForDevice()");
 		new AsyncTask<Object, Integer, Boolean>() {
 			@Override

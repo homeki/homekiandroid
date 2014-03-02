@@ -29,7 +29,7 @@ public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends L
 		onDeviceSet((T) device);
 	}
 
-	protected void setChannelValue(int channel, String value) {
+	protected void setChannelValue(int channel, int value) {
 		actionPerformer.setChannelValueForDevice(device.getId(), channel, value, new OnChannelValueSetListener() {
       @Override
       public void result(boolean success) {

@@ -33,8 +33,7 @@ public class RestClient {
 		builder.append(Settings.getServerUrl(context));
 		builder.append(":");
 		builder.append(Settings.getServerPort(context));
-		builder.append("/");
-
+		builder.append("/api");
 		return builder.toString();
 	}
 
@@ -45,7 +44,7 @@ public class RestClient {
 		HttpURLConnection connection = null;
 
 		try {
-			connection = (HttpURLConnection) new URL(getServerURL() + "device/list").openConnection();
+			connection = (HttpURLConnection) new URL(getServerURL() + "/devices").openConnection();
 			connection.setConnectTimeout(2000);
 
 			InputStream stream = connection.getInputStream();
@@ -55,7 +54,7 @@ public class RestClient {
 			DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
 
 			for (int i = 0; i < deviceArray.length; i++) {
-				AbstractDevice device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].id, deviceArray[i].name, deviceArray[i].description, deviceArray[i].added, deviceArray[i].active, deviceArray[i].channelValues);
+				AbstractDevice device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].added, deviceArray[i].active, deviceArray[i].channelValues);
 				devices.add(device);
 			}
 		} catch (Exception e) {
@@ -77,7 +76,8 @@ public class RestClient {
 
 		try {
 			Gson gson = new Gson();
-			connection = (HttpURLConnection) new URL(getServerURL() + "client/register").openConnection();
+			connection = (HttpURLConnection) new URL(getServerURL() + "/clients").openConnection();
+      connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 			connection.setRequestMethod("POST");
 			connection.setConnectTimeout(1000);
 			
@@ -99,16 +99,10 @@ public class RestClient {
 		HttpURLConnection connection = null;
 
 		try {
-			Gson gson = new Gson();
-			connection = (HttpURLConnection) new URL(getServerURL() + "client/unregister").openConnection();
-			connection.setRequestMethod("POST");
+			connection = (HttpURLConnection) new URL(getServerURL() + "/clients/" + id).openConnection();
+			connection.setRequestMethod("DELETE");
 			connection.setConnectTimeout(1000);
-			
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			String json = gson.toJson(new JSONClient(id));
-			writer.write(json);
-			writer.flush();
-			
+
 			connection.getInputStream();
 		} finally {
 			Log.d(TAG, "unregisterClient() disconnect");
@@ -118,12 +112,21 @@ public class RestClient {
 		}
 	}
 
-	public boolean setChannelValueForDevice(int deviceId, int channel, String value) {
+	public boolean setChannelValueForDevice(int deviceId, int channel, int value) {
 		HttpURLConnection connection = null;
 
 		try {
-			connection = (HttpURLConnection) new URL(getServerURL() + "device/" + deviceId + "/channel/" + channel + "/set?value=" + value).openConnection();
+      Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "/devices/" + deviceId + "/channels/" + channel).openConnection();
+      connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+      connection.setRequestMethod("POST");
 			connection.setConnectTimeout(1000);
+
+      OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+      String json = gson.toJson(new JSONChannelValue(value));
+      writer.write(json);
+      writer.flush();
+
 			connection.getInputStream();
 		} catch (Exception e) {
 			Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());
@@ -149,7 +152,7 @@ public class RestClient {
 		try {
 			String from = URLEncoder.encode(FORMAT_DATE.format(start), "utf-8");
 			String to = URLEncoder.encode(FORMAT_DATE.format(end), "utf-8");
-			String url = getServerURL() + String.format("device/%d/channel/%d/list?from=%s&to=%s", deviceId, channelId, from, to);
+			String url = getServerURL() + String.format("/devices/%d/channels/%d?from=%s&to=%s", deviceId, channelId, from, to);
 			connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setConnectTimeout(2000);
 
@@ -199,4 +202,12 @@ public class RestClient {
 			this.id = id;
 		}
 	}
+
+  private class JSONChannelValue {
+    public int value;
+
+    public JSONChannelValue(int value) {
+      this.value = value;
+    }
+  }
 }
