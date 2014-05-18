@@ -1,7 +1,7 @@
 package com.homeki.android.view;
 
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 
 public interface DeviceItemView {
-	public void setDevice(AbstractDevice device);
+	public void setDevice(Device device);
 }

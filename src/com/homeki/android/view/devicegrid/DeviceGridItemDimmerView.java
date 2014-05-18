@@ -62,7 +62,7 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 			DimmerDevice device = (DimmerDevice) DeviceGridItemDimmerView.this.device;
 			device.setLevel(seekBar.getProgress());
 			
-			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, seekBar.getProgress());
+			setChannelValue("Level", seekBar.getProgress());
 		}
 	}
 
@@ -71,7 +71,7 @@ public class DeviceGridItemDimmerView extends AbstractDeviceGridView<DimmerDevic
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
 			DimmerDevice device = (DimmerDevice) DeviceGridItemDimmerView.this.device;
 			device.setValue(isChecked);
-			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? 1 : 0);
+			setChannelValue("Switch", isChecked ? 1 : 0);
 		}
 	}
 }

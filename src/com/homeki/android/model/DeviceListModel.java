@@ -2,12 +2,10 @@ package com.homeki.android.model;
 
 import android.content.Context;
 import android.util.Log;
-import com.homeki.android.model.devices.AbstractDevice;
-import com.homeki.android.model.devices.AbstractDevice.DeviceOwner;
-import com.homeki.android.model.devices.DeviceType;
+import com.homeki.android.model.devices.Device;
+import com.homeki.android.model.devices.Device.DeviceOwner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DeviceListModel implements DeviceListProvider, DeviceOwner {
@@ -20,12 +18,12 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 		return instance;
 	}
 
-	private ArrayList<AbstractDevice> devices;
+	private ArrayList<Device> devices;
 	private List<OnDeviceListChangedListener> changedListeners;
 	private Context context;
 
 	private DeviceListModel(Context context) {
-		this.devices = new ArrayList<AbstractDevice>();
+		this.devices = new ArrayList<Device>();
 		this.context = context;
 		this.changedListeners = new ArrayList<OnDeviceListChangedListener>();
 	}
@@ -36,12 +34,12 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 	}
 
 	@Override
-	public AbstractDevice getDeviceAtPosition(int position) {
+	public Device getDeviceAtPosition(int position) {
 		return devices.get(position);
 	}
 
-	public AbstractDevice getDeviceWithId(int id) {
-		for (AbstractDevice device : devices) {
+	public Device getDeviceWithId(int id) {
+		for (Device device : devices) {
 			if (device.getId() == id) {
 				return device;
 			}
@@ -49,17 +47,14 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 		return null;
 	}
 
-	public void setDeviceList(List<AbstractDevice> devices) {
+	public void setDeviceList(List<Device> devices) {
 		Log.d(TAG, "onDeviceListReceived()");
 		this.devices.clear();
 
-		HashMap<DeviceType, Integer> typeCountMap = new HashMap<DeviceType, Integer>();
-		for (AbstractDevice device : devices) {
+		for (Device device : devices) {
 			device.setOwner(this);
-			if (device.getName() == null || device.getName().isEmpty()) {
-				device.setName(getDeviceName(typeCountMap, device));
-			}
 		}
+
 		this.devices.addAll(devices);
 
 		notifyListeners();
@@ -73,25 +68,6 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 		}
 	}
 
-	private String getDeviceName(HashMap<DeviceType, Integer> typeCountMap, AbstractDevice device) {
-		int number;
-		if (!typeCountMap.containsKey(device.getType())) {
-			number = 1;
-		} else {
-			number = typeCountMap.get(device.getType()) + 1;
-		}
-		typeCountMap.put(device.getType(), number);
-
-		return getTypeName(device) + " " + number;
-	}
-
-	private String getTypeName(AbstractDevice device) {
-		String name = context.getPackageName() + ":string/device_type_name_" + device.getType().toString();
-		int id = context.getResources().getIdentifier(name, null, null);
-
-		return context.getString(id);
-	}
-
 	@Override
 	public void addOnDeviceListChangedListener(OnDeviceListChangedListener listener) {
 		changedListeners.add(listener);
@@ -103,7 +79,7 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 	}
 
 	@Override
-	public void deviceDidChange(AbstractDevice device) {
+	public void deviceDidChange(Device device) {
 		notifyListeners();
 	}
 }

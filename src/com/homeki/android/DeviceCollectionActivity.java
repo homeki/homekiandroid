@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.homeki.android.model.DeviceListModel;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnDeviceListReceivedListener;
 import com.homeki.android.server.ServerActionPerformer;
@@ -79,7 +79,7 @@ public class DeviceCollectionActivity extends FragmentActivity {
 		ActionPerformer actionPerformer = new ServerActionPerformer(this);
 		actionPerformer.requestDeviceList(new OnDeviceListReceivedListener() {
 			@Override
-			public void onDeviceListReceived(List<AbstractDevice> devices) {
+			public void onDeviceListReceived(List<Device> devices) {
 				Log.i("DeviceCollectionActivity", "onResume() -> onDeviceListReceived()");
 				if (devices != null && devices.size() > 0) {
 					model.setDeviceList(devices);

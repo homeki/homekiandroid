@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.homeki.android.model.DeviceListProvider;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.view.devicegrid.AbstractDeviceGridView;
 import com.homeki.android.view.devicegrid.DeviceGridItemDimmerView;
@@ -19,7 +19,7 @@ public class DeviceGridAdapter extends DeviceCollectionAdapter {
 
 	@Override
 	public View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent) {
-		AbstractDevice item = (AbstractDevice) getItem(position);
+		Device item = (Device) getItem(position);
 		AbstractDeviceGridView<?> view;
 
 		switch (item.getType()) {

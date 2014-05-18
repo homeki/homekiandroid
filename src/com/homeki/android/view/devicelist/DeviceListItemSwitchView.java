@@ -26,8 +26,6 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 		descriptionView = (TextView) findViewById(R.id.device_list_switch_description);
 		onOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
 
-		openDetailsView = findViewById(R.id.device_list_switch_details_button);
-
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
@@ -44,7 +42,7 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 			SwitchDevice device = (SwitchDevice) DeviceListItemSwitchView.this.device;
 			device.setValue(isChecked);
 
-			setChannelValue(SwitchDevice.CHANNEL_ID_VALUE, isChecked ? 1 : 0);
+			setChannelValue("Switch", isChecked ? 1 : 0);
 		}
 	}
 }

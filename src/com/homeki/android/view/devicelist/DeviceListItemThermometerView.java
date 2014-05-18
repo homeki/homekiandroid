@@ -23,7 +23,6 @@ public class DeviceListItemThermometerView extends AbstractDeviceListView<Thermo
 		
 		nameView = (TextView) findViewById(R.id.device_list_thermometer_name);
 		descriptionView = (TextView) findViewById(R.id.device_list_thermometer_description);
-		openDetailsView = findViewById(R.id.device_list_thermometer_details_button);
 		
 		temperatureView = (TextView) findViewById(R.id.device_list_thermometer_temperature);
 	}

@@ -32,8 +32,6 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 		valueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
 		onOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
 
-		openDetailsView = findViewById(R.id.device_list_dimmer_details_button);
-
 		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
@@ -63,7 +61,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 			DimmerDevice device = (DimmerDevice) DeviceListItemDimmerView.this.device;
 			device.setLevel(seekBar.getProgress());
 			
-			setChannelValue(DimmerDevice.CHANNEL_ID_LEVEL, seekBar.getProgress());
+			setChannelValue("Level", seekBar.getProgress());
 		}
 	}
 
@@ -72,7 +70,7 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
 			DimmerDevice device = (DimmerDevice) DeviceListItemDimmerView.this.device;
 			device.setValue(isChecked);
-			setChannelValue(DimmerDevice.CHANNEL_ID_VALUE, isChecked ? 1 : 0);
+			setChannelValue("Switch", isChecked ? 1 : 0);
 		}
 	}
 }

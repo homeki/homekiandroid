@@ -1,5 +1,4 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
     <style name="AppTheme" parent="android:Theme.Holo" />
 
     <style name="ListItemName">
@@ -15,5 +14,4 @@
     <style name="ListItemValue">
         <item name="android:textSize">20sp</item>
     </style>
-
 </resources>

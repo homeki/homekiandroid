@@ -3,11 +3,9 @@ package com.homeki.android.server;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.homeki.android.model.DataPoint;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.settings.Settings;
 
-import java.util.Date;
 import java.util.List;
 
 public class ServerActionPerformer implements ActionPerformer {
@@ -23,12 +21,12 @@ public class ServerActionPerformer implements ActionPerformer {
 
 	public void requestDeviceList(final OnDeviceListReceivedListener listener) {
 		Log.d(TAG, "requestDeviceList()");
-		new AsyncTask<Object, Integer, List<AbstractDevice>>() {
+		new AsyncTask<Object, Integer, List<Device>>() {
 			@Override
-			protected List<AbstractDevice> doInBackground(Object... params) {
+			protected List<Device> doInBackground(Object... params) {
 				Log.d(TAG, "requestDeviceList().doInBackground()");
 
-				List<AbstractDevice> allDevices = client.getAllDevices();
+				List<Device> allDevices = client.getAllDevices();
 
 				if (allDevices == null || allDevices.isEmpty()) {
 					String serverPath = ServerLocator.locateServerOnWifi();
@@ -41,7 +39,7 @@ public class ServerActionPerformer implements ActionPerformer {
 			}
 
 			@Override
-			protected void onPostExecute(List<AbstractDevice> result) {
+			protected void onPostExecute(List<Device> result) {
 				super.onPostExecute(result);
 				Log.d(TAG, "requestDeviceList().onPostExecute()");
 				if (listener != null) {
@@ -70,30 +68,6 @@ public class ServerActionPerformer implements ActionPerformer {
 
 				if (listener != null) {
 					listener.result(result);
-				}
-			}
-		}.execute(0);
-	}
-
-	@Override
-	public void getChannelHistoryForDevice(final int deviceId, final int channelId, final Date start, final Date end, final OnChannelHistoryReceivedListener listener) {
-		Log.d(TAG, "getChannelHistoryForDevice()");
-		new AsyncTask<Object, Integer, List<DataPoint>>() {
-			@Override
-			protected List<DataPoint> doInBackground(Object... params) {
-				Log.d(TAG, "getChannelHistoryForDevice().doInBackground()");
-
-				return client.getChannelHistoryForDevice(deviceId, channelId, start, end);
-			}
-
-			@Override
-			protected void onPostExecute(List<DataPoint> result) {
-				super.onPostExecute(result);
-				Log.d(TAG, "getChannelHistoryForDevice().onPostExecute()");
-				Log.d(TAG, "Result: " + result);
-
-				if (listener != null) {
-					listener.onChannelHistoryReceived(deviceId, channelId, result);
 				}
 			}
 		}.execute(0);

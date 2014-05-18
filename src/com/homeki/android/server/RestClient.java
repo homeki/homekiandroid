@@ -3,18 +3,15 @@ package com.homeki.android.server;
 import android.content.Context;
 import android.util.Log;
 import com.google.gson.Gson;
-import com.homeki.android.model.DataPoint;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.model.devices.DeviceBuilder;
 import com.homeki.android.settings.Settings;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RestClient {
@@ -37,10 +34,10 @@ public class RestClient {
 		return builder.toString();
 	}
 
-	public List<AbstractDevice> getAllDevices() {
+	public List<Device> getAllDevices() {
 		Log.d(TAG, "getAllDevices()");
 
-		ArrayList<AbstractDevice> devices = new ArrayList<AbstractDevice>();
+		ArrayList<Device> devices = new ArrayList<Device>();
 		HttpURLConnection connection = null;
 
 		try {
@@ -54,13 +51,12 @@ public class RestClient {
 			DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
 
 			for (int i = 0; i < deviceArray.length; i++) {
-				AbstractDevice device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].added, deviceArray[i].active, deviceArray[i].channelValues);
+				Device device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].active, deviceArray[i].channels);
 				devices.add(device);
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "getAllDevices() " + e.getMessage());
 			e.printStackTrace();
-
 		} finally {
 			Log.d(TAG, "getAllDevices() disconnect");
 			if (connection != null) {
@@ -141,42 +137,6 @@ public class RestClient {
 		}
 
 		return true;
-	}
-
-	public List<DataPoint> getChannelHistoryForDevice(int deviceId, int channelId, Date start, Date end) {
-		Log.d(TAG, "getChannelHistoryForDevice()");
-
-		ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
-		HttpURLConnection connection = null;
-
-		try {
-			String from = URLEncoder.encode(FORMAT_DATE.format(start), "utf-8");
-			String to = URLEncoder.encode(FORMAT_DATE.format(end), "utf-8");
-			String url = getServerURL() + String.format("/devices/%d/channels/%d?from=%s&to=%s", deviceId, channelId, from, to);
-			connection = (HttpURLConnection) new URL(url).openConnection();
-			connection.setConnectTimeout(2000);
-
-			InputStream stream = connection.getInputStream();
-
-			String response = readStreamToEnd(stream);
-			Gson gson = new Gson();
-			JSONDataPoint[] points = gson.fromJson(response, JSONDataPoint[].class);
-			for (int i = 0; i < points.length; i++) {
-				dataPoints.add(new DataPoint(FORMAT_DATE.parse(points[i].registered), points[i].value));
-			}
-
-		} catch (Exception e) {
-			Log.e(TAG, "getChannelHistoryForDevice() " + e.getMessage());
-			e.printStackTrace();
-
-		} finally {
-			Log.d(TAG, "getChannelHistoryForDevice() disconnect");
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-
-		return dataPoints;
 	}
 
 	private String readStreamToEnd(InputStream inputStream) throws IOException {

@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
 import com.homeki.android.view.DeviceItemView;
 
-public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends LinearLayout implements DeviceItemView {
-	protected AbstractDevice device;
+public abstract class AbstractDeviceGridView<T extends Device> extends LinearLayout implements DeviceItemView {
+	protected Device device;
 	protected Context context;
 	protected ActionPerformer actionPerformer;
 
@@ -24,13 +24,13 @@ public abstract class AbstractDeviceGridView<T extends AbstractDevice> extends L
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setDevice(AbstractDevice device) {
+	public void setDevice(Device device) {
 		this.device = device;
 		onDeviceSet((T) device);
 	}
 
-	protected void setChannelValue(int channel, int value) {
-		actionPerformer.setChannelValueForDevice(device.getId(), channel, value, new OnChannelValueSetListener() {
+	protected void setChannelValue(String channelName, int value) {
+		actionPerformer.setChannelValueForDevice(device.getId(), device.getChannelId(channelName), value, new OnChannelValueSetListener() {
       @Override
       public void result(boolean success) {
         if (!success && device != null) {

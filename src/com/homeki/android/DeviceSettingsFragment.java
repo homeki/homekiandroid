@@ -1,6 +1,6 @@
 package com.homeki.android;
 
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DeviceSettingsFragment extends Fragment {
-	private AbstractDevice device;
+	private Device device;
 	private TextView titleView;
 
 	@Override
@@ -31,7 +31,7 @@ public class DeviceSettingsFragment extends Fragment {
 		}
 	}
 
-	public void setDevice(AbstractDevice device) {
+	public void setDevice(Device device) {
 		this.device = device;
 	}
 }

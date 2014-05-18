@@ -1,27 +1,24 @@
 package com.homeki.android.model.devices;
 
 
-public class DimmerDevice extends AbstractDevice {
-	public static final int CHANNEL_ID_VALUE = 0;
-	public static final int CHANNEL_ID_LEVEL = 1;
-
-	public DimmerDevice(DeviceType type, int id, String name, String description, String added, boolean active) {
-		super(type, id, name, description, added, active);
+public class DimmerDevice extends Device {
+	public DimmerDevice(DeviceType type, int id, String name, String description, boolean active) {
+		super(type, id, name, description, active);
 	}
 
 	public boolean getValue() {
-		return "1".equals(getChannelValue(CHANNEL_ID_VALUE));
+		return "1".equals(getChannelValue("Switch"));
 	}
 	
 	public void setValue(boolean value) {
-		setChannelValue(CHANNEL_ID_VALUE, value ? "1" : "0");
+		setChannelValue("Switch", value ? "1" : "0");
 	}
 
 	public int getLevel() {
-		return Integer.parseInt(getChannelValue(CHANNEL_ID_LEVEL));
+		return Integer.parseInt(getChannelValue("Level"));
 	}
 	
 	public void setLevel(int level) {
-		setChannelValue(CHANNEL_ID_LEVEL, String.valueOf(level));
+		setChannelValue("Level", String.valueOf(level));
 	}
 }

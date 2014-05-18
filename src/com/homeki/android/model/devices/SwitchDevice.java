@@ -1,17 +1,15 @@
 package com.homeki.android.model.devices;
 
-public class SwitchDevice extends AbstractDevice {
-	public static final int CHANNEL_ID_VALUE = 0;
-
-	public SwitchDevice(DeviceType type, int id, String name, String description, String added, boolean active) {
-		super(type,id,name,description,added,active);
+public class SwitchDevice extends Device {
+	public SwitchDevice(DeviceType type, int id, String name, String description, boolean active) {
+		super(type, id, name, description, active);
 	}
 
 	public boolean getValue() {
-		return "1".equals(getChannelValue(CHANNEL_ID_VALUE));
+		return "1".equals(getChannelValue("Switch"));
 	}
 
 	public void setValue(boolean isChecked) {
-		setChannelValue(CHANNEL_ID_VALUE, isChecked ? "1" : "0");
+		setChannelValue("Switch", isChecked ? "1" : "0");
 	}
 }

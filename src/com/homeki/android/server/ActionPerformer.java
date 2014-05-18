@@ -1,25 +1,18 @@
 package com.homeki.android.server;
 
-import com.homeki.android.model.DataPoint;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ActionPerformer {
 	public void requestDeviceList(OnDeviceListReceivedListener listener);
 	public void setChannelValueForDevice(int deviceId, int channelId, int value, OnChannelValueSetListener listener);
-	public void getChannelHistoryForDevice(int deviceId, int channelId, Date start, Date end, OnChannelHistoryReceivedListener listener);
 
 	public interface OnDeviceListReceivedListener {
-		void onDeviceListReceived(List<AbstractDevice> devices);
+		void onDeviceListReceived(List<Device> devices);
 	}
 
 	public interface OnChannelValueSetListener {
 		void result(boolean success);
-	}
-	
-	public interface OnChannelHistoryReceivedListener {
-		void onChannelHistoryReceived(int deviceId, int channelId, List<DataPoint> data);
 	}
 }

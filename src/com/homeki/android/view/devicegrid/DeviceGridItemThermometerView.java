@@ -1,11 +1,8 @@
 package com.homeki.android.view.devicegrid;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.widget.TextView;
-import com.homeki.android.DeviceDetailsActivity;
 import com.homeki.android.R;
 import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
@@ -19,14 +16,6 @@ public class DeviceGridItemThermometerView extends AbstractDeviceGridView<Thermo
 
 	public DeviceGridItemThermometerView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		Intent intent = new Intent(context, DeviceDetailsActivity.class);
-		intent.putExtra(DeviceDetailsActivity.EXTRA_DEVICE_ID, device.getId());
-		context.startActivity(intent);
-		return super.onTouchEvent(event);
 	}
 
 	@Override

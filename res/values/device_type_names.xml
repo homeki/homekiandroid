@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="device_type_name_DIMMER">Dimmer</string>
-     <string name="device_type_name_SWITCH">Switch</string>
-      <string name="device_type_name_THERMOMETER">Thermometer</string>
-</resources>

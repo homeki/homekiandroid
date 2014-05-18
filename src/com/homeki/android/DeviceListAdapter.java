@@ -1,7 +1,7 @@
 package com.homeki.android;
 
 import com.homeki.android.model.DeviceListProvider;
-import com.homeki.android.model.devices.AbstractDevice;
+import com.homeki.android.model.devices.Device;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.view.devicelist.AbstractDeviceListView;
 import com.homeki.android.view.devicelist.DeviceListItemDimmerView;
@@ -19,7 +19,7 @@ public class DeviceListAdapter extends DeviceCollectionAdapter {
 
 	@Override
 	public View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent) {
-		AbstractDevice item = (AbstractDevice) getItem(position);
+		Device item = (Device) getItem(position);
 		AbstractDeviceListView<?> view;
 
 		switch (item.getType()) {
