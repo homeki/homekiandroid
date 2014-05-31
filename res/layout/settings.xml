@@ -5,8 +5,8 @@
     android:orientation="vertical" >
 
     <fragment
-        android:name="com.homeki.android.SettingsFragment"
         android:id="@+id/settings_fragment"
+        android:name="com.homeki.android.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -1,7 +1,5 @@
 package com.homeki.android;
 
-import com.homeki.android.settings.Settings;
-
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -9,6 +7,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
+
+import com.homeki.android.settings.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
 	@Override
