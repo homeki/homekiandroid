@@ -2,47 +2,64 @@ package com.homeki.android.view.devicegrid;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ToggleButton;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.homeki.android.R;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
 
 public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevice> {
-	private ToggleButton onOffSwitch;
-	private OnOffChangedListener onOffChangedListener;
+
+	private TextView nameView;
+	private ImageView indicatorView;
+
+	private boolean isOn;
 
 	public DeviceGridItemSwitchView(Context context, ActionPerformer actionPerformer) {
 		super(context, actionPerformer);
-		onOffChangedListener = new OnOffChangedListener();
+		isOn = false;
 	}
 
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_grid_switch, this);
-		onOffSwitch = (ToggleButton) findViewById(R.id.device_grid_switch_button);
+		nameView = (TextView) findViewById(R.id.switch_text);
+		indicatorView = (ImageView) findViewById(R.id.switch_indicator_view);
 
-		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	@Override
 	protected void onDeviceSet(SwitchDevice device) {
-		onOffSwitch.setTextOff(device.getName());
-		onOffSwitch.setTextOn(device.getName());
-		onOffSwitch.setOnCheckedChangeListener(null);
-		onOffSwitch.setChecked(device.getValue());
-		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
+		nameView.setText(device.getName());
+		isOn = device.getValue();
+		this.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				isOn = !isOn;
+
+				SwitchDevice device = (SwitchDevice) DeviceGridItemSwitchView.this.device;
+				device.setValue(isOn);
+
+				setChannelValue("Switch", isOn ? 1 : 0);
+
+				updateView();
+			}
+		});
+		
+		updateView(); 
 	}
 
-	private class OnOffChangedListener implements OnCheckedChangeListener {
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			SwitchDevice device = (SwitchDevice) DeviceGridItemSwitchView.this.device;
-			device.setValue(isChecked);
-
-			setChannelValue("Switch", isChecked ? 1 : 0);
+	private void updateView() {
+		if (isOn) {
+			indicatorView.setImageResource(R.drawable.switch_indicator_on);
+			this.setBackgroundResource(R.drawable.switch_background_on);
+		} else {
+			indicatorView.setImageResource(R.drawable.switch_indicator_off);
+			this.setBackgroundResource(R.drawable.switch_background_off);
 		}
 	}
+
 }

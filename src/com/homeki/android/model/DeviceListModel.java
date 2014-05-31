@@ -1,12 +1,13 @@
 package com.homeki.android.model;
 
-import android.content.Context;
-import android.util.Log;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.model.devices.Device.DeviceOwner;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.homeki.android.model.devices.Device;
+import com.homeki.android.model.devices.Device.DeviceOwner;
 
 public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 	private static String TAG = DeviceListModel.class.getSimpleName();
@@ -50,13 +51,13 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 	public void setDeviceList(List<Device> devices) {
 		Log.d(TAG, "onDeviceListReceived()");
 		this.devices.clear();
-
+		
 		for (Device device : devices) {
 			device.setOwner(this);
 		}
-
+		
 		this.devices.addAll(devices);
-
+		
 		notifyListeners();
 	}
 

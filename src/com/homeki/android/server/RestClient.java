@@ -1,18 +1,23 @@
 package com.homeki.android.server;
 
-import android.content.Context;
-import android.util.Log;
-import com.google.gson.Gson;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.model.devices.DeviceBuilder;
-import com.homeki.android.settings.Settings;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.homeki.android.model.devices.Device;
+import com.homeki.android.model.devices.DeviceBuilder;
+import com.homeki.android.settings.Settings;
 
 public class RestClient {
 	private static String TAG = RestClient.class.getSimpleName();
@@ -54,6 +59,7 @@ public class RestClient {
 				Device device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].active, deviceArray[i].channels);
 				devices.add(device);
 			}
+			
 		} catch (Exception e) {
 			Log.e(TAG, "getAllDevices() " + e.getMessage());
 			e.printStackTrace();

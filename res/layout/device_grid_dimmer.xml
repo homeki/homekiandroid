@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="@dimen/padding_medium" >
+    android:layout_margin="@dimen/padding_small"
+    android:minHeight="100dp"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium" >
 
-    <ToggleButton
-        android:id="@+id/device_grid_dimmer_button"
+    <ImageView
+        android:id="@+id/switch_indicator_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/switch_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <SeekBar
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/switch_indicator_view"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <SeekBar
         android:id="@+id/device_grid_dimmer_value_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:max="255" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -31,15 +31,16 @@ public abstract class AbstractDeviceGridView<T extends Device> extends LinearLay
 
 	protected void setChannelValue(String channelName, int value) {
 		actionPerformer.setChannelValueForDevice(device.getId(), device.getChannelId(channelName), value, new OnChannelValueSetListener() {
-      @Override
-      public void result(boolean success) {
-        if (!success && device != null) {
-          Toast.makeText(context, "Failed to set value for " + device.getName(), Toast.LENGTH_SHORT).show();
-        }
-      }
-    });
+			@Override
+			public void result(boolean success) {
+				if (!success && device != null) {
+					Toast.makeText(context, "Failed to set value for " + device.getName(), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 	}
 
 	protected abstract void inflate(LayoutInflater inflater);
+
 	protected abstract void onDeviceSet(T device);
 }

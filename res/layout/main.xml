@@ -13,7 +13,7 @@
         android:id="@+id/main_drawer_frame"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/white"
         android:layout_gravity="start"
         android:orientation="vertical" >
     </LinearLayout>

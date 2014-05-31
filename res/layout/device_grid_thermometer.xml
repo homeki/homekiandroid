@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="@dimen/padding_medium"  >
+    android:layout_margin="@dimen/padding_small"
+    android:minHeight="100dp"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium" >
+
+    <ImageView
+        android:id="@+id/thermometer_indicator_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/device_grid_thermometer_name"
-        style="@style/ListItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" />
-    
+        android:layout_toRightOf="@id/thermometer_indicator_view"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/device_grid_thermometer_temperature"
-        style="@style/ListItemValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" />
-  
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/device_grid_thermometer_name"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+</RelativeLayout>

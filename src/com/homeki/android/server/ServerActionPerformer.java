@@ -1,12 +1,13 @@
 package com.homeki.android.server;
 
+import java.util.List;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.homeki.android.model.devices.Device;
 import com.homeki.android.settings.Settings;
-
-import java.util.List;
 
 public class ServerActionPerformer implements ActionPerformer {
 	private static String TAG = ServerActionPerformer.class.getSimpleName();
@@ -35,6 +36,7 @@ public class ServerActionPerformer implements ActionPerformer {
 					}
 					allDevices = client.getAllDevices();
 				}
+								
 				return allDevices;
 			}
 

@@ -37,14 +37,12 @@ public class DeviceCollectionActivity extends ActionBarActivity {
 		model = DeviceListModel.getModel(this);
 
 		DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_root);
-
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name);
-
 		drawerLayout.setDrawerListener(drawerToggle);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-
+		
 		progressDialog = new ProgressDialog(context);
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCanceledOnTouchOutside(false);
