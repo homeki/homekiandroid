@@ -5,14 +5,15 @@
     android:layout_margin="@dimen/padding_small"
     android:minHeight="100dp"
     android:orientation="vertical"
-    android:padding="@dimen/padding_medium" >
+    android:padding="@dimen/padding_medium" xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/thermometer_indicator_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/device_grid_thermometer_name"

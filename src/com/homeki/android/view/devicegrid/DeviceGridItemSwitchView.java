@@ -1,5 +1,6 @@
 package com.homeki.android.view.devicegrid;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.homeki.android.R;
 import com.homeki.android.model.devices.SwitchDevice;
 import com.homeki.android.server.ActionPerformer;
 
+@SuppressLint("ViewConstructor")
 public class DeviceGridItemSwitchView extends AbstractDeviceGridView<SwitchDevice> {
 
 	private TextView nameView;

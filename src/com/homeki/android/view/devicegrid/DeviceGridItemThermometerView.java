@@ -3,6 +3,7 @@ package com.homeki.android.view.devicegrid;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.homeki.android.R;
 import com.homeki.android.model.devices.ThermometerDevice;
 import com.homeki.android.server.ActionPerformer;
 
+@SuppressLint("ViewConstructor")
 public class DeviceGridItemThermometerView extends AbstractDeviceGridView<ThermometerDevice> {
 	private TextView temperatureView;
 	private TextView nameView;
