@@ -55,6 +55,18 @@ public class GeofencingIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
-        new ReporterTask(this, event.getGeofenceTransition()).run();
+
+        if (event.getGeofenceTransition() == Geofence.GEOFENCE_TRANSITION_ENTER) {
+            Log.i(TAG, "Received geofencing event TRANSITION_ENTER.");
+            Settings.setHome(this, true);
+        } else if (event.getGeofenceTransition() == Geofence.GEOFENCE_TRANSITION_EXIT) {
+            Log.i(TAG, "Received geofencing event TRANSITION_EXIT.");
+            Settings.setHome(this, false);
+        } else {
+            Log.i(TAG, "Geofence transition not used, no action taken.");
+            return;
+        }
+
+        new ReporterTask(this).run();
     }
 }

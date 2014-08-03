@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import com.homeki.android.reporter.GeofencingIntentService;
+import com.homeki.android.reporter.ReporterTask;
 import com.homeki.android.server.RestClient;
 import com.homeki.android.settings.Settings;
 
@@ -34,6 +35,10 @@ public class SettingsFragment extends PreferenceFragment {
                 if (enabled) {
                     RestClient client = new RestClient(context);
                     Settings.setServerLocation(context, client.getServerLocation());
+                } else {
+                    // unregister one last time
+                    Settings.setHome(context, false);
+                    new ReporterTask(context).run();
                 }
 
                 GeofencingIntentService.configureGeofence(context, enabled);

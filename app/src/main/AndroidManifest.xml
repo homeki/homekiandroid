@@ -24,6 +24,7 @@
       android:label="@string/title_activity_main">
     </activity>
     <service android:name=".reporter.GeofencingIntentService"/>
+    <service android:name=".reporter.RetryIntentService"/>
     <receiver
       android:name=".reporter.BootBroadcastReceiver"
       android:enabled="true"

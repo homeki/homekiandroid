@@ -1,10 +1,11 @@
 package com.homeki.android.reporter;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import com.google.android.gms.location.Geofence;
 import com.homeki.android.R;
 import com.homeki.android.server.RestClient;
 import com.homeki.android.settings.Settings;
@@ -15,20 +16,20 @@ public class ReporterTask implements Runnable {
     private static final String TAG = ReporterTask.class.getSimpleName();
 
     private final Context context;
-    private final int transition;
 
-    public ReporterTask(Context context, int transition) {
+    public ReporterTask(Context context) {
         this.context = context;
-        this.transition = transition;
     }
 
     private void postFailureNotification() {
+        Intent intent = new Intent(context, RetryIntentService.class);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Homeki")
-                .setContentText("Failed to register/unregister client to Homeki server.");
+                .setContentText("Failed to register/unregister client to Homeki server.")
+                .addAction(R.drawable.ic_launcher, "Retry", PendingIntent.getService(context, 0, intent, 0));
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1221, builder.getNotification());
+        notificationManager.notify(1221, builder.build());
     }
 
     private void reportHome(Context context) {
@@ -68,12 +69,10 @@ public class ReporterTask implements Runnable {
     @Override
     public void run() {
         try {
-            if (transition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+            if (Settings.isHome(context)) {
                 reportHome(context);
-            } else if (transition == Geofence.GEOFENCE_TRANSITION_EXIT) {
-                reportNotHome(context);
             } else {
-                Log.i(TAG, "Received transition not handled.");
+                reportNotHome(context);
             }
         } catch (Exception e) {
             postFailureNotification();

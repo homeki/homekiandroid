@@ -41,6 +41,16 @@ public class Settings {
         return prefs.getFloat("client_registering_radius", 150);
     }
 
+    public static void setHome(Context context, boolean home) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putBoolean("is_home", home).commit();
+    }
+
+    public static boolean isHome(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean("is_home", false);
+    }
+
     public static void setServerLocation(Context context, LatLng serverLocation) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
