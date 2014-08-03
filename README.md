@@ -21,4 +21,4 @@ The project uses gradle for building. In IntelliJ (or Android Studio), simply lo
  3. Increment `versionCode` and `versionName`.
  4. Run `./gradlew assembleRelease`.
  5. Upload the release APK found in `app/build/apk/app-release.apk` to Google Play Developer Console.
- 6. *DO NOT* commit the passwords (restore everything except version increments in `app/build.gradle`).
+ 6. **DO NOT** commit the passwords (restore everything except version increments in `app/build.gradle`).
