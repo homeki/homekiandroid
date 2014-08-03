@@ -25,20 +25,18 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-    private void setClientRegistering_Click(Context context) {
-        final Context applicationContext = context.getApplicationContext();
-
+    private void setClientRegistering_Click(final Context context) {
         AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                boolean enabled = Settings.isClientRegisteringEnabled(applicationContext);
+                boolean enabled = Settings.isClientRegisteringEnabled(context);
 
                 if (enabled) {
-                    RestClient client = new RestClient(applicationContext);
-                    Settings.setServerLocation(applicationContext, client.getServerLocation());
+                    RestClient client = new RestClient(context);
+                    Settings.setServerLocation(context, client.getServerLocation());
                 }
 
-                GeofencingIntentService.configureGeofence(applicationContext, enabled);
+                GeofencingIntentService.configureGeofence(context, enabled);
             }
         });
     }
