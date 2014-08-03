@@ -22,12 +22,7 @@
       android:name=".SettingsActivity"
       android:label="@string/title_activity_main">
     </activity>
-    <receiver android:name=".reporter.GeofencingReceiver">
-        <intent-filter>
-            <action android:name="homeki_geofence" />
-        </intent-filter>
-    </receiver>
-    <receiver android:name=".reporter.ReporterAlarmReceiver"></receiver>
+    <service android:name=".reporter.GeofencingIntentService"/>
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
   </application>
 </manifest>

@@ -1,7 +1,7 @@
 package com.homeki.android.reporter;
 
+import android.app.IntentService;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,37 +14,42 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GeofencingReceiver extends BroadcastReceiver {
-	private static String TAG = GeofencingReceiver.class.getSimpleName();
+public class GeofencingIntentService extends IntentService {
+	private static String TAG = GeofencingIntentService.class.getSimpleName();
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-        GeofencingEvent event = GeofencingEvent.fromIntent(intent);
-	}
+    public GeofencingIntentService() {
+        super("Homeki Geofencing Intent Service");
+    }
 
     public static void configureGeofence(Context context, boolean enable) {
-        GoogleApiClient gc = new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
+        GoogleApiClient client = new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
 
-        gc.blockingConnect();
+        client.blockingConnect();
 
         if (enable) {
             Log.i(TAG, "Enabling geofence for Homeki server location.");
 
-            Intent intent = new Intent("homeki_geofence");
             List<Geofence> geofences = new ArrayList<>();
             geofences.add(new Geofence.Builder()
                     .setRequestId("homeki_geofence")
-                    .setCircularRegion(59.327643, 18.049979, 150f)
+                    .setCircularRegion(59.336385, 18.013760, 150f)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build());
 
-            LocationServices.GeofencingApi.addGeofences(gc, geofences, PendingIntent.getBroadcast(context, 0, intent, 0));
+            Intent intent = new Intent(context, GeofencingIntentService.class);
+            LocationServices.GeofencingApi.addGeofences(client, geofences, PendingIntent.getService(context, 0, intent, 0));
         } else {
             Log.i(TAG, "Disabling geofence for Homeki server location.");
-            LocationServices.GeofencingApi.removeGeofences(gc, Arrays.asList("homeki_geofence"));
+            LocationServices.GeofencingApi.removeGeofences(client, Arrays.asList("homeki_geofence"));
         }
 
-        gc.disconnect();
+        client.disconnect();
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        GeofencingEvent event = GeofencingEvent.fromIntent(intent);
+        new ReporterTask(this, event.getGeofenceTransition()).run();
     }
 }
