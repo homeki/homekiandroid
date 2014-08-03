@@ -27,7 +27,7 @@ public class ReporterTask implements Runnable {
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Homeki")
                 .setContentText("Failed to register/unregister client to Homeki server.")
-                .addAction(R.drawable.ic_launcher, "Retry", PendingIntent.getService(context, 0, intent, 0));
+                .addAction(R.drawable.ic_action_refresh, "Retry", PendingIntent.getService(context, 0, intent, 0));
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1221, builder.build());
     }
