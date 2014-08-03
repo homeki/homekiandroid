@@ -1,9 +1,12 @@
 package com.homeki.android;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import com.homeki.android.reporter.GeofencingReceiver;
+import com.homeki.android.settings.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
     @Override
@@ -21,7 +24,13 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-    private void setClientRegistering_Click(Context context) {
-
+    private void setClientRegistering_Click(final Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                GeofencingReceiver.configureGeofence(context, Settings.isClientRegisteringEnabled(context));
+                return null;
+            }
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 }
