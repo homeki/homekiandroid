@@ -3,6 +3,7 @@ package com.homeki.android.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.google.android.gms.maps.model.LatLng;
 
 public class Settings {
 	public static void setServerUrl(Context context, String serverUrl) {
@@ -35,13 +36,23 @@ public class Settings {
         return prefs.getBoolean("client_registering", false);
     }
 
-    public static long getAlarmStartTime(Context context) {
+    public static float getClientRegisteringRadius(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getLong("alarm_start_time", -1);
+        return prefs.getFloat("client_registering_radius", 150);
     }
 
-    public static void setAlarmStartTime(Context context, long ms) {
+    public static void setServerLocation(Context context, LatLng serverLocation) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().putLong("alarm_start_time", ms).commit();
+        prefs.edit()
+            .putLong("server_location_latitude", Double.doubleToRawLongBits(serverLocation.latitude))
+            .putLong("server_location_longitude", Double.doubleToRawLongBits(serverLocation.longitude))
+            .commit();
+    }
+
+    public static LatLng getServerLocation(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        long latBits = prefs.getLong("server_location_latitude", Double.doubleToRawLongBits(0.0));
+        long lonBits = prefs.getLong("server_location_longitude", Double.doubleToRawLongBits(0.0));
+        return new LatLng(Double.longBitsToDouble(latBits), Double.longBitsToDouble(lonBits));
     }
 }

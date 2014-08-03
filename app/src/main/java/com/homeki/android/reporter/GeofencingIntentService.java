@@ -9,6 +9,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.homeki.android.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +29,15 @@ public class GeofencingIntentService extends IntentService {
         client.blockingConnect();
 
         if (enable) {
-            Log.i(TAG, "Enabling geofence for Homeki server location.");
+            LatLng location = Settings.getServerLocation(context);
+            float radius = Settings.getClientRegisteringRadius(context);
+
+            Log.i(TAG, "Enabling geofence for Homeki server location " + location + ".");
 
             List<Geofence> geofences = new ArrayList<>();
             geofences.add(new Geofence.Builder()
                     .setRequestId("homeki_geofence")
-                    .setCircularRegion(59.336385, 18.013760, 150f)
+                    .setCircularRegion(location.latitude, location.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                     .build());

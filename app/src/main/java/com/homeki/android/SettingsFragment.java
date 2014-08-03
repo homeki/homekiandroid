@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import com.homeki.android.reporter.GeofencingIntentService;
+import com.homeki.android.server.RestClient;
 import com.homeki.android.settings.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
@@ -24,13 +25,21 @@ public class SettingsFragment extends PreferenceFragment {
         });
     }
 
-    private void setClientRegistering_Click(final Context context) {
-        new AsyncTask<Void, Void, Void>() {
+    private void setClientRegistering_Click(Context context) {
+        final Context applicationContext = context.getApplicationContext();
+
+        AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
             @Override
-            protected Void doInBackground(Void... params) {
-                GeofencingIntentService.configureGeofence(context, Settings.isClientRegisteringEnabled(context));
-                return null;
+            public void run() {
+                boolean enabled = Settings.isClientRegisteringEnabled(applicationContext);
+
+                if (enabled) {
+                    RestClient client = new RestClient(applicationContext);
+                    Settings.setServerLocation(applicationContext, client.getServerLocation());
+                }
+
+                GeofencingIntentService.configureGeofence(applicationContext, enabled);
             }
-        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        });
     }
 }

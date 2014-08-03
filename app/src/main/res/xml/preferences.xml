@@ -13,10 +13,9 @@
         android:key="client_registering"
         android:summary="If this device should try to register as a client when connecting to wifi."
         android:title="Client Registering" />
-	<Preference 
-        android:key="set_home_ssid"
-        android:onClick=""
-        android:summary="Set the connected WLAN as the home WLAN."
-        android:title="Set home WLAN" />
+    <EditTextPreference
+        android:key="client_registering_radius"
+        android:summary="The radius (in meters) from the server location for which the device is considered to be home."
+        android:title="Client Registering Radius" />
 
 </PreferenceScreen>
