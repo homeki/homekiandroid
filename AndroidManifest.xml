@@ -29,11 +29,7 @@
       android:name=".SettingsActivity"
       android:label="@string/title_activity_main">
     </activity>
-    <receiver android:name=".reporter.ConnectivityIntentReceiver">
-      <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-      </intent-filter>
-    </receiver>
+    <receiver android:name=".reporter.GeofencingReceiver"></receiver>
     <receiver android:name=".reporter.ReporterAlarmReceiver"></receiver>
   </application>
 </manifest>
