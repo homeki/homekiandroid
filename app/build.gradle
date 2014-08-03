@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 apply plugin: 'android'
@@ -19,18 +19,29 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 12
-        versionName "0.0.12"
+        versionCode 13
+        versionName "0.0.13"
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+//    signingConfigs {
+//        myConfig {
+//            storeFile file("<PATH>/homekikeystore")
+//            storePassword "<PASSWORD>"
+//            keyAlias "homekideveloperkey"
+//            keyPassword "<PASSWORD>"
+//        }
+//    }
+
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+//            signingConfig signingConfigs.myConfig
         }
     }
 }
