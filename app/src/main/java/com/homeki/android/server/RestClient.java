@@ -24,13 +24,7 @@ public class RestClient {
     }
 
     private String getServerURL() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("http://");
-        builder.append(Settings.getServerUrl(context));
-        builder.append(":");
-        builder.append(Settings.getServerPort(context));
-        builder.append("/api");
-        return builder.toString();
+        return "http://" + Settings.getServerUrl(context) + ":" + Settings.getServerPort(context) + "/api";
     }
 
     public List<Device> getAllDevices() {
