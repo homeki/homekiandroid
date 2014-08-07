@@ -40,7 +40,7 @@ android {
     buildTypes {
         release {
             runProguard false
-            signingConfig signingConfigs.myConfig
+//            signingConfig signingConfigs.myConfig
         }
     }
 }
