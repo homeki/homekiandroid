@@ -16,7 +16,7 @@ public class ServerLocator {
 
 	public static String locateServerOnWifi() {
 		Log.d(TAG, "locateServerOnWifi()");
-		String serverPath = "";
+		String hostname = "";
 		
 		new Thread(new SendBroadcastTask()).start();
 		
@@ -29,11 +29,19 @@ public class ServerLocator {
 			socket.setSoTimeout(TIMEOUT_RECEIVE);
 			socket.receive(pack);
 
-			serverPath = pack.getAddress().getHostAddress();
-			
-			Log.i(TAG, "Received" );
-			Log.i(TAG, "Server address: " + serverPath);
-			
+			String[] data = new String(receiveData, 0, pack.getLength()).split("\\|");
+			String name = data[0];
+			if (data.length > 1) hostname = data[1].trim();
+
+			Log.i(TAG, "Server " + name + " (" + pack.getAddress().getHostAddress() + ") answered.");
+
+			if (hostname.isEmpty()) {
+				Log.i(TAG, "No hostname received in broadcast response, using source IP as hostname.");
+				hostname = pack.getAddress().getHostAddress();
+			}
+
+			if (hostname.startsWith("http://")) hostname = hostname.replace("http://", "");
+			if (hostname.endsWith("/")) hostname = hostname.substring(0, hostname.length() - 2);
 		} catch (IOException e) {
 			Log.i(TAG, "Exception: " + e);
 		} finally {
@@ -42,7 +50,7 @@ public class ServerLocator {
 			}
 		}
 
-		return serverPath;
+		return hostname;
 	}
 
 	private static class SendBroadcastTask implements Runnable {
@@ -50,7 +58,7 @@ public class ServerLocator {
 		public void run() {
 			Log.i(TAG, "SendBroadcastTask.run()");
 			try {
-				//Send a broadcast in a few ms. This to avoid a racing scenario on sending request and starting to listen for response.
+				// Send a broadcast in a few ms. This to avoid a racing scenario on sending request and starting to listen for response.
 				Thread.sleep(500);
 				
 				byte[] data = "HOMEKI".getBytes("utf-8");

@@ -29,11 +29,19 @@ public class ServerActionPerformer implements ActionPerformer {
 				List<Device> allDevices = client.getAllDevices();
 
 				if (allDevices == null || allDevices.isEmpty()) {
-					String serverPath = ServerLocator.locateServerOnWifi();
-					if (null != serverPath && !serverPath.isEmpty()) {
-						Settings.setServerUrl(context, serverPath);
+					String hostname = ServerLocator.locateServerOnWifi();
+					if (!hostname.isEmpty()) {
+						if (hostname.contains(":")) {
+							String[] hostPort = hostname.split(":");
+							Settings.setServerUrl(context, hostPort[0]);
+							Settings.setServerPort(context, Integer.parseInt(hostPort[1]));
+						} else {
+							Settings.setServerUrl(context, hostname);
+							Settings.setServerPort(context, 5000);
+						}
+
+						allDevices = client.getAllDevices();
 					}
-					allDevices = client.getAllDevices();
 				}
 				return allDevices;
 			}
