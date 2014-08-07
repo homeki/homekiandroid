@@ -4,18 +4,20 @@
     <EditTextPreference
         android:key="server_url"
         android:summary="URL to the Homeki Server (e.g. 192.168.0.100)."
-        android:title="Homeki Server URL" />
+        android:title="Homeki server URL" />
     <EditTextPreference
         android:key="server_port"
-        android:summary="Port to the Homeki Server (e.g. 5000)."
-        android:title="Homeki Server Port" />
+        android:inputType="number"
+        android:summary="Port to the Homeki Server (default 5000)."
+        android:title="Homeki server port" />
     <CheckBoxPreference
         android:key="client_registering"
-        android:summary="If this device should try to register as a client when connecting to wifi."
-        android:title="Client Registering" />
+        android:summary="If this device should try to register as a client when close to Homeki server."
+        android:title="Client registering" />
     <EditTextPreference
         android:key="client_registering_radius"
+        android:inputType="number"
         android:summary="The radius (in meters) from the server location for which the device is considered to be home."
-        android:title="Client Registering Radius" />
+        android:title="Client registering radius" />
 
 </PreferenceScreen>

@@ -38,7 +38,7 @@ public class Settings {
 
     public static float getClientRegisteringRadius(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getFloat("client_registering_radius", 150);
+        return Float.valueOf(prefs.getString("client_registering_radius", "150"));
     }
 
     public static void setHome(Context context, boolean home) {
