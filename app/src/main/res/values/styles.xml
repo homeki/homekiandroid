@@ -1,17 +1,25 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="AppTheme" parent="android:Theme.Holo" />
 
-    <style name="ListItemName">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+	<style name="AppTheme" parent="Theme.AppCompat.Light">
+		<item name="android:actionBarStyle">@style/MyActionBar</item>
+	</style>
 
-    <style name="ListItemDescription">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">italic</item>
-    </style>
-    
-    <style name="ListItemValue">
-        <item name="android:textSize">20sp</item>
-    </style>
+	<style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+		<item name="android:background">#2ba0ff</item>
+	</style>
+
+	<style name="ListItemName">
+		<item name="android:textSize">20sp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="ListItemDescription">
+		<item name="android:textSize">16sp</item>
+		<item name="android:textStyle">italic</item>
+	</style>
+
+	<style name="ListItemValue">
+		<item name="android:textSize">20sp</item>
+	</style>
+
 </resources>

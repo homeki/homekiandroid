@@ -1,4 +1,4 @@
-package com.homeki.android.view.devicelist;
+package com.homeki.android.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;

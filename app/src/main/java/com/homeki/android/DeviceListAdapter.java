@@ -1,42 +1,71 @@
 package com.homeki.android;
 
-import com.homeki.android.model.DeviceListProvider;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.view.devicelist.AbstractDeviceListView;
-import com.homeki.android.view.devicelist.DeviceListItemDimmerView;
-import com.homeki.android.view.devicelist.DeviceListItemSwitchView;
-import com.homeki.android.view.devicelist.DeviceListItemThermometerView;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
-public class DeviceListAdapter extends DeviceCollectionAdapter {
+import com.homeki.android.model.DeviceListProvider;
+import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
+import com.homeki.android.model.devices.Device;
+import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.view.AbstractDeviceListView;
+import com.homeki.android.view.DeviceListItemDimmerView;
+import com.homeki.android.view.DeviceListItemSwitchView;
+import com.homeki.android.view.DeviceListItemThermometerView;
+
+public class DeviceListAdapter extends BaseAdapter {
+	private DeviceListProvider listProvider;
+	private ActionPerformer actionPerformer;
+	private Context context;
+
 	public DeviceListAdapter(Context context, DeviceListProvider listProvider, ActionPerformer actionPerformer) {
-		super(context, listProvider, actionPerformer);
+		this.context = context;
+		this.actionPerformer = actionPerformer;
+		this.listProvider = listProvider;
+		this.listProvider.addOnDeviceListChangedListener(new OnDeviceListChangedListener() {
+      @Override
+      public void onDeviceListChanged() {
+        notifyDataSetChanged();
+      }
+    });
 	}
 
 	@Override
-	public View getView(Context context, ActionPerformer actionPerformer, int position, View convertView, ViewGroup parent) {
-		Device item = (Device) getItem(position);
-		AbstractDeviceListView<?> view;
+	public int getCount() {
+		return listProvider.getDeviceCount();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return listProvider.getDeviceAtPosition(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return listProvider.getDeviceAtPosition(position).getId();
+	}
+
+	@Override
+	public View getView(int pos, View view, ViewGroup parent) {
+		Device item = (Device) getItem(pos);
+		AbstractDeviceListView<?> deviceView = null;
 
 		switch (item.getType()) {
-		case DIMMER:
-			view = new DeviceListItemDimmerView(context, actionPerformer);
-			break;
-		case SWITCH:
-			view = new DeviceListItemSwitchView(context, actionPerformer);
-			break;
-		case THERMOMETER:
-			view = new DeviceListItemThermometerView(context, actionPerformer);
-			break;
-		default:
-			throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
+			case DIMMER:
+				view = new DeviceListItemDimmerView(context, actionPerformer);
+				break;
+			case SWITCH:
+				view = new DeviceListItemSwitchView(context, actionPerformer);
+				break;
+			case THERMOMETER:
+				view = new DeviceListItemThermometerView(context, actionPerformer);
+				break;
+			default:
+				throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
 		}
 
-		view.setDevice(item);
+		deviceView.setDevice(item);
 		return view;
 	}
 }

@@ -11,38 +11,38 @@ import com.homeki.android.server.RestClient;
 import com.homeki.android.settings.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.preferences);
 
-        Preference button = findPreference("client_registering");
-        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference pref) {
-                setClientRegistering_Click(pref.getContext());
-                return true;
-            }
-        });
-    }
+		Preference button = findPreference("client_registering");
+		button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference pref) {
+				setClientRegistering_Click(pref.getContext());
+				return true;
+			}
+		});
+	}
 
-    private void setClientRegistering_Click(final Context context) {
-        AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
-            @Override
-            public void run() {
-                boolean enabled = Settings.isClientRegisteringEnabled(context);
+	private void setClientRegistering_Click(final Context context) {
+		AsyncTask.SERIAL_EXECUTOR.execute(new Runnable() {
+			@Override
+			public void run() {
+				boolean enabled = Settings.isClientRegisteringEnabled(context);
 
-                if (enabled) {
-                    RestClient client = new RestClient(context);
-                    Settings.setServerLocation(context, client.getServerLocation());
-                } else {
-                    // unregister one last time
-                    Settings.setHome(context, false);
-                    new ReporterTask(context).run();
-                }
+				if (enabled) {
+					RestClient client = new RestClient(context);
+					Settings.setServerLocation(context, client.getServerLocation());
+				} else {
+					// unregister one last time
+					Settings.setHome(context, false);
+					new ReporterTask(context).run();
+				}
 
-                GeofencingIntentService.configureGeofence(context, enabled);
-            }
-        });
-    }
+				GeofencingIntentService.configureGeofence(context, enabled);
+			}
+		});
+	}
 }

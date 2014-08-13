@@ -1,17 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="@dimen/padding_medium" >
-
-    <ToggleButton
-        android:id="@+id/device_grid_dimmer_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <SeekBar
-        android:id="@+id/device_grid_dimmer_value_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="255" />
-
-</LinearLayout>
