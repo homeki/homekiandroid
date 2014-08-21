@@ -23,7 +23,6 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_list_switch, this);
 		nameView = (TextView) findViewById(R.id.device_list_switch_name);
-		descriptionView = (TextView) findViewById(R.id.device_list_switch_description);
 		onOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
 
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);

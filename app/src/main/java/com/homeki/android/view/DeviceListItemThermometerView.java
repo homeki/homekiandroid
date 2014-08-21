@@ -20,10 +20,7 @@ public class DeviceListItemThermometerView extends AbstractDeviceListView<Thermo
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_list_thermometer, this);
-		
 		nameView = (TextView) findViewById(R.id.device_list_thermometer_name);
-		descriptionView = (TextView) findViewById(R.id.device_list_thermometer_description);
-		
 		temperatureView = (TextView) findViewById(R.id.device_list_thermometer_temperature);
 	}
 	

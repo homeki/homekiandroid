@@ -39,7 +39,7 @@ public class DeviceListActivity extends ActionBarActivity {
 		progressDialog.setMessage("Loading...");
 
 		drawerLayout = (DrawerLayout)findViewById(R.id.main_layout);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.title_activity_main, R.string.title_activity_main);
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name);
 		drawerLayout.setDrawerListener(drawerToggle);
 		drawerToggle.setDrawerIndicatorEnabled(true);
 

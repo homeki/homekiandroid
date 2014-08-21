@@ -8,11 +8,9 @@ import android.widget.Toast;
 import com.homeki.android.model.devices.Device;
 import com.homeki.android.server.ActionPerformer;
 import com.homeki.android.server.ActionPerformer.OnChannelValueSetListener;
-import com.homeki.android.view.DeviceItemView;
 
 public abstract class AbstractDeviceListView<T extends Device> extends LinearLayout implements DeviceItemView {
 	protected TextView nameView;
-	protected TextView descriptionView;
 	protected Device device;
 	protected Context context;
 	protected ActionPerformer actionPerformer;
@@ -30,7 +28,6 @@ public abstract class AbstractDeviceListView<T extends Device> extends LinearLay
 		this.device = device;
 
 		nameView.setText(device.getName());
-		descriptionView.setText(this.device.getDescription());
 
 		onDeviceSet((T) device);
 	}

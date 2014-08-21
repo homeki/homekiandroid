@@ -2,54 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+		android:layout_margin="@dimen/padding_medium"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+				android:weightSum="1"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_small"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+				<TextView
+						android:id="@+id/device_list_dimmer_name"
+						style="@style/ListItemName"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="Dimmer" />
 
-            <TextView
-                android:id="@+id/device_list_dimmer_name"
-                style="@style/ListItemName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dimmer" />
+				<Switch
+						android:id="@+id/device_list_dimmer_onoff"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/device_list_dimmer_description"
-                style="@style/ListItemDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Desc" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <Switch
-                android:id="@+id/device_list_dimmer_onoff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_small" />
-        </LinearLayout>
     </LinearLayout>
 
     <SeekBar
         android:id="@+id/device_list_dimmer_value_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:max="255" />
 
 </LinearLayout>

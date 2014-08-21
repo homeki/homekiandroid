@@ -28,7 +28,6 @@ public class DeviceListItemDimmerView extends AbstractDeviceListView<DimmerDevic
 	protected void inflate(LayoutInflater layoutInflater) {
 		layoutInflater.inflate(R.layout.device_list_dimmer, this);
 		nameView = (TextView) findViewById(R.id.device_list_dimmer_name);
-		descriptionView = (TextView) findViewById(R.id.device_list_dimmer_description);
 		valueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
 		onOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
 
