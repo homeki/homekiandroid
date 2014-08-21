@@ -29,7 +29,7 @@ public class DeviceListActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.device_list);
 		
 		model = DeviceListModel.getModel();
 
