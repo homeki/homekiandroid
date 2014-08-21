@@ -1,38 +1,49 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.homeki.android">
+	package="com.homeki.android">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-  <application
-    android:uiOptions="none"
-    android:icon="@drawable/ic_launcher"
-    android:label="@string/app_name"
-    android:allowBackup="true"
-    android:theme="@style/AppTheme">
-    <activity
-      android:name=".DeviceListActivity"
-      android:label="@string/app_name">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-    <activity
-      android:name=".SettingsActivity"
-      android:label="@string/app_name">
-    </activity>
-    <service android:name=".reporter.GeofencingIntentService"/>
-    <service android:name=".reporter.RetryIntentService"/>
-    <receiver
-      android:name=".reporter.BootBroadcastReceiver"
-      android:enabled="true"
-      android:exported="true">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-      </intent-filter>
-      </receiver>
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-  </application>
+	<application
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme"
+		android:uiOptions="none">
+
+		<activity
+			android:name=".DeviceListActivity"
+			android:label="@string/app_name">
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+
+		</activity>
+
+		<activity
+			android:name=".SettingsActivity"
+			android:label="@string/app_name"></activity>
+
+		<service android:name=".reporter.GeofencingIntentService" />
+		<service android:name=".reporter.RetryIntentService" />
+
+		<receiver
+			android:name=".reporter.BootBroadcastReceiver"
+			android:enabled="true"
+			android:exported="true">
+
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+
+		</receiver>
+
+		<meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version" />
+
+	</application>
 </manifest>

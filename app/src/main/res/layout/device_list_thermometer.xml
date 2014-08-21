@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-		android:layout_margin="@dimen/padding_medium"
-    android:weightSum="1">
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="@dimen/padding_medium"
+	android:orientation="horizontal"
+	android:weightSum="1">
 
-		<TextView
-				android:id="@+id/device_list_thermometer_name"
-				style="@style/ListItemName"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="Name" />
+	<TextView
+		android:id="@+id/device_list_thermometer_name"
+		style="@style/ListItemName"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="Name" />
 
-    <TextView
-        android:id="@+id/device_list_thermometer_temperature"
-        style="@style/ListItemValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="20.0 °C" />
+	<TextView
+		android:id="@+id/device_list_thermometer_temperature"
+		style="@style/ListItemValue"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="20.0 °C" />
 
 </LinearLayout>
