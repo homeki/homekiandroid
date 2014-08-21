@@ -11,14 +11,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-public abstract class BaseActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.base);
+		setContentView(R.layout.main);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name);
@@ -30,26 +30,32 @@ public abstract class BaseActivity extends ActionBarActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
-		findViewById(R.id.main_devices_button).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.devices_menu).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(BaseActivity.this, DeviceListActivity.class));
+				drawerLayout.closeDrawers();
+				v.setSelected(true);
+				changeFragment(new DeviceListFragment());
 			}
 		});
 
-		findViewById(R.id.main_settings_button).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.settings_menu).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(BaseActivity.this, SettingsActivity.class));
+				drawerLayout.closeDrawers();
+				startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 			}
 		});
 
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.main_frame, getFragment(), "Fragment");
-		transaction.commit();
+		findViewById(R.id.devices_menu).setSelected(true);
+		changeFragment(new DeviceListFragment());
 	}
 
-	protected abstract Fragment getFragment();
+	private void changeFragment(Fragment fragment) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.main_frame, fragment, "Fragment");
+		transaction.commit();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
