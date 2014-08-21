@@ -16,7 +16,7 @@ public class DeviceListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		model = DeviceListModel.getModel(getActivity());
+		model = DeviceListModel.getModel();
 		actionPerformer = new ServerActionPerformer(getActivity());
 		listAdapter = new DeviceListAdapter(getActivity(), model, actionPerformer);
 	}

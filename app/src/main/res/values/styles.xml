@@ -1,12 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<style name="AppTheme" parent="Theme.AppCompat.Light">
-		<item name="android:actionBarStyle">@style/MyActionBar</item>
-	</style>
-
-	<style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-		<item name="android:background">#2ba0ff</item>
-	</style>
+	<style name="AppTheme" parent="Theme.AppCompat.Light"/>
 
 	<style name="ListItemName">
 		<item name="android:textSize">20sp</item>

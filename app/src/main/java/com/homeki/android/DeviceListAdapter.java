@@ -47,9 +47,9 @@ public class DeviceListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View view, ViewGroup parent) {
+	public View getView(int pos, View convertView, ViewGroup parent) {
 		Device item = (Device) getItem(pos);
-		AbstractDeviceListView<?> deviceView = null;
+		AbstractDeviceListView<?> view;
 
 		switch (item.getType()) {
 			case DIMMER:
@@ -65,7 +65,7 @@ public class DeviceListAdapter extends BaseAdapter {
 				throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
 		}
 
-		deviceView.setDevice(item);
+		view.setDevice(item);
 		return view;
 	}
 }

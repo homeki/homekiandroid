@@ -31,16 +31,15 @@ public class DeviceListActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		model = DeviceListModel.getModel(this);
+		model = DeviceListModel.getModel();
 
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCanceledOnTouchOutside(false);
 		progressDialog.setMessage("Loading...");
-		progressDialog.show();
 
 		drawerLayout = (DrawerLayout)findViewById(R.id.main_layout);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_action_search, R.string.title_activity_main, R.string.title_activity_main);
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.title_activity_main, R.string.title_activity_main);
 		drawerLayout.setDrawerListener(drawerToggle);
 		drawerToggle.setDrawerIndicatorEnabled(true);
 
@@ -71,6 +70,9 @@ public class DeviceListActivity extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		Log.i("DeviceCollectionActivity", "onResume()");
+
+		progressDialog.show();
+
 		ActionPerformer actionPerformer = new ServerActionPerformer(this);
 		actionPerformer.requestDeviceList(new OnDeviceListReceivedListener() {
 			@Override

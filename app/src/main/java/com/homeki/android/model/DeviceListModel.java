@@ -1,6 +1,5 @@
 package com.homeki.android.model;
 
-import android.content.Context;
 import android.util.Log;
 import com.homeki.android.model.devices.Device;
 import com.homeki.android.model.devices.Device.DeviceOwner;
@@ -13,19 +12,17 @@ public class DeviceListModel implements DeviceListProvider, DeviceOwner {
 
 	private static DeviceListModel instance;
 
-	public static DeviceListModel getModel(Context context) {
-		if (instance == null) instance = new DeviceListModel(context);
+	public static DeviceListModel getModel() {
+		if (instance == null) instance = new DeviceListModel();
 		return instance;
 	}
 
 	private ArrayList<Device> devices;
 	private List<OnDeviceListChangedListener> changedListeners;
-	private Context context;
 
-	private DeviceListModel(Context context) {
-		this.devices = new ArrayList<Device>();
-		this.context = context;
-		this.changedListeners = new ArrayList<OnDeviceListChangedListener>();
+	private DeviceListModel() {
+		this.devices = new ArrayList<>();
+		this.changedListeners = new ArrayList<>();
 	}
 
 	@Override
