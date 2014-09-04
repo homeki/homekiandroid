@@ -1,5 +1,7 @@
 # Homeki Android
 
+[![Circle CI](https://circleci.com/gh/homeki/homekiandroid/tree/develop.png?style=badge)](https://circleci.com/gh/homeki/homekiandroid/tree/develop)
+
 This is the Android app/client for Homeki server.
 
 ## Local development
