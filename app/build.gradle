@@ -6,6 +6,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
+
 apply plugin: 'android'
 
 repositories {
@@ -28,19 +29,19 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-//    signingConfigs {
-//        myConfig {
-//            storeFile file("<PATH>/homekikeystore")
-//            storePassword "<PASSWORD>"
-//            keyAlias "homekideveloperkey"
-//            keyPassword "<PASSWORD>"
-//        }
-//    }
+    signingConfigs {
+        myConfig {
+            storeFile file("../homeki.keystore")
+            storePassword "$System.env.SIGNING_KEY"
+            keyAlias "homekideveloper"
+            keyPassword "$System.env.SIGNING_KEY"
+        }
+    }
 
     buildTypes {
         release {
             runProguard false
-//            signingConfig signingConfigs.myConfig
+            signingConfig signingConfigs.myConfig
         }
     }
 }
