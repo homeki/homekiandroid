@@ -33,7 +33,7 @@ android {
         myConfig {
             storeFile file("../homeki.keystore")
             storePassword "$System.env.SIGNING_KEY"
-            keyAlias "homekideveloper"
+            keyAlias "homekideveloperkey"
             keyPassword "$System.env.SIGNING_KEY"
         }
     }
