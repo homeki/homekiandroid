@@ -7,16 +7,18 @@
 	android:weightSum="1">
 
 	<TextView
-		android:id="@+id/device_list_thermometer_name"
+		android:id="@+id/thermometer_device_list_item_name"
 		style="@android:style/TextAppearance.Medium"
+		android:includeFontPadding="false"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:text="Name" />
 
 	<TextView
-		android:id="@+id/device_list_thermometer_temperature"
+		android:id="@+id/thermometer_device_list_item_temperature"
 		style="@android:style/TextAppearance.Medium"
+		android:includeFontPadding="false"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="20.0 °C" />

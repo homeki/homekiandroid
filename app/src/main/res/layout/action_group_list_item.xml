@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="@dimen/padding_medium"
+	android:orientation="horizontal">
+
+	<TextView
+		android:id="@+id/action_group_list_item_name"
+		style="@android:style/TextAppearance.Medium"
+		android:includeFontPadding="false"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Name" />
+
+</LinearLayout>

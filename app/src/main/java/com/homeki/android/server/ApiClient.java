@@ -39,6 +39,16 @@ public class ApiClient {
 		return get(getServerUrl() + "/devices", new TypeToken<List<JsonDevice>>(){}.getType());
 	}
 
+	public List<JsonActionGroup> getActionGroups() {
+		Log.i(TAG, "Fetching all action groups.");
+		return get(getServerUrl() + "/actiongroups", new TypeToken<List<JsonActionGroup>>(){}.getType());
+	}
+
+	public void triggerActionGroup(int id) {
+		Log.i(TAG, "Triggering action group " + id + ".");
+		get(getServerUrl() + "/actiongroups/" + id + "/trigger", null);
+	}
+
 	public LatLng getServerLocation() {
 		Log.i(TAG, "Fetching server location.");
 		JsonServer server = get(getServerUrl() + "/server", JsonServer.class);
@@ -94,8 +104,13 @@ public class ApiClient {
 			int statusCode = response.getStatusLine().getStatusCode();
 			switch (statusCode) {
 				case 200:
-					String json = EntityUtils.toString(response.getEntity());
-					return GSON.fromJson(json, type);
+					if (type == null) {
+						finish(response);
+						return null;
+					} else {
+						String json = EntityUtils.toString(response.getEntity());
+						return GSON.fromJson(json, type);
+					}
 				default:
 					finish(response);
 					throw new RuntimeException("Unhandled response code " + statusCode + ".");
@@ -169,6 +184,11 @@ public class ApiClient {
 		public int id;
 		public String name;
 		public Number lastValue;
+	}
+
+	public static class JsonActionGroup {
+		public int actionGroupId;
+		public String name;
 	}
 
 	private static class JsonClient {

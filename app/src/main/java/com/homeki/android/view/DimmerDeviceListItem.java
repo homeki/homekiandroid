@@ -26,10 +26,10 @@ public class DimmerDeviceListItem extends DeviceListItem {
 		onOffChangedListener = new OnOffChangedListener();
 		seekBarChangedListener = new SeekBarChangedListener();
 
-		layoutInflater.inflate(R.layout.device_list_dimmer, this);
-		nameView = (TextView) findViewById(R.id.device_list_dimmer_name);
-		valueBar = (SeekBar) findViewById(R.id.device_list_dimmer_value_bar);
-		onOffSwitch = (Switch) findViewById(R.id.device_list_dimmer_onoff);
+		layoutInflater.inflate(R.layout.dimmer_device_list_item, this);
+		nameView = (TextView) findViewById(R.id.dimmer_device_list_item_name);
+		valueBar = (SeekBar) findViewById(R.id.dimmer_device_list_item_level);
+		onOffSwitch = (Switch) findViewById(R.id.dimmer_device_list_item_onoff);
 
 		valueBar.setOnSeekBarChangeListener(seekBarChangedListener);
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);

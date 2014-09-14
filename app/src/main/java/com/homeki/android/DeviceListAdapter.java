@@ -15,37 +15,37 @@ import java.util.List;
 public class DeviceListAdapter extends BaseAdapter {
 	private final Context context;
 	private final ApiClient apiClient;
-	private List<ApiClient.JsonDevice> devices;
+	private List<ApiClient.JsonDevice> jsonDevices;
 
 	public DeviceListAdapter(Context context, ApiClient apiClient) {
 		this.context = context;
 		this.apiClient = apiClient;
-		this.devices = new ArrayList<>();
+		this.jsonDevices = new ArrayList<>();
 	}
 
-	public void setDevices(List<ApiClient.JsonDevice> devices) {
-		this.devices = devices;
+	public void setDevices(List<ApiClient.JsonDevice> jsonDevices) {
+		this.jsonDevices = jsonDevices;
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return devices.size();
+		return jsonDevices.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return devices.get(position);
+		return jsonDevices.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return devices.get(position).deviceId;
+		return jsonDevices.get(position).deviceId;
 	}
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		ApiClient.JsonDevice jsonDevice = devices.get(pos);
+		ApiClient.JsonDevice jsonDevice = jsonDevices.get(pos);
 
 		switch (jsonDevice.type) {
 			case DIMMER:

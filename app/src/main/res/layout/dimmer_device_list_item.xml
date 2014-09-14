@@ -12,21 +12,22 @@
 		android:weightSum="1">
 
 		<TextView
-			android:id="@+id/device_list_dimmer_name"
+			android:id="@+id/dimmer_device_list_item_name"
 			style="@android:style/TextAppearance.Medium"
+			android:includeFontPadding="false"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="Dimmer" />
 
 		<Switch
-			android:id="@+id/device_list_dimmer_onoff"
+			android:id="@+id/dimmer_device_list_item_onoff"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 	</LinearLayout>
 
 	<SeekBar
-		android:id="@+id/device_list_dimmer_value_bar"
+		android:id="@+id/dimmer_device_list_item_level"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:max="255" />

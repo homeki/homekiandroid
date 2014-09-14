@@ -21,9 +21,9 @@ public class SwitchDeviceListItem extends DeviceListItem {
 	protected void inflate(LayoutInflater layoutInflater) {
 		onOffChangedListener = new OnOffChangedListener();
 
-		layoutInflater.inflate(R.layout.device_list_switch, this);
-		nameView = (TextView) findViewById(R.id.device_list_switch_name);
-		onOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
+		layoutInflater.inflate(R.layout.switch_device_list_item, this);
+		nameView = (TextView) findViewById(R.id.switch_device_list_item_name);
+		onOffSwitch = (Switch) findViewById(R.id.switch_device_list_item_onoff);
 
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}

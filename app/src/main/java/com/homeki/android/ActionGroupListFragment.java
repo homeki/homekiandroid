@@ -10,11 +10,11 @@ import com.homeki.android.server.ApiClient;
 
 import java.util.List;
 
-public class DeviceListFragment extends ListFragment {
-	private static final String TAG = DeviceListFragment.class.getSimpleName();
+public class ActionGroupListFragment extends ListFragment {
+	private static final String TAG = ActionGroupListFragment.class.getSimpleName();
 
 	private ApiClient apiClient;
-	private DeviceListAdapter listAdapter;
+	private ActionGroupListAdapter listAdapter;
 	private ProgressDialog progressDialog;
 
 	@Override
@@ -22,7 +22,7 @@ public class DeviceListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		apiClient = new ApiClient(getActivity());
-		listAdapter = new DeviceListAdapter(getActivity(), apiClient);
+		listAdapter = new ActionGroupListAdapter(getActivity(), apiClient);
 
 		progressDialog = new ProgressDialog(getActivity());
 		progressDialog.setIndeterminate(true);
@@ -36,11 +36,11 @@ public class DeviceListFragment extends ListFragment {
 
 		progressDialog.show();
 
-		new AsyncTask<Void, Void, List<ApiClient.JsonDevice>>() {
+		new AsyncTask<Void, Void, List<ApiClient.JsonActionGroup>>() {
 			@Override
-			protected List<ApiClient.JsonDevice> doInBackground(Void... params) {
+			protected List<ApiClient.JsonActionGroup> doInBackground(Void... params) {
 				try {
-					return apiClient.getDevices();
+					return apiClient.getActionGroups();
 				} catch (Exception e) {
 					Log.e(TAG, "Failed to get devices.", e);
 					return null;
@@ -48,15 +48,15 @@ public class DeviceListFragment extends ListFragment {
 			}
 
 			@Override
-			protected void onPostExecute(List<ApiClient.JsonDevice> jsonDevices) {
+			protected void onPostExecute(List<ApiClient.JsonActionGroup> jsonActionGroups) {
 				progressDialog.dismiss();
 
-				if (jsonDevices == null) {
-					Toast.makeText(getActivity(), "Failed to get devices. Check server settings.", Toast.LENGTH_LONG).show();
+				if (jsonActionGroups == null) {
+					Toast.makeText(getActivity(), "Failed to get action groups. Check server settings.", Toast.LENGTH_LONG).show();
 					return;
 				}
 
-				listAdapter.setDevices(jsonDevices);
+				listAdapter.setActionGroups(jsonActionGroups);
 			}
 		}.execute();
 	}

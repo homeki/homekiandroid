@@ -7,15 +7,16 @@
 	android:weightSum="1">
 
 	<TextView
-		android:id="@+id/device_list_switch_name"
+		android:id="@+id/switch_device_list_item_name"
 		style="@android:style/TextAppearance.Medium"
+		android:includeFontPadding="false"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:text="Switch" />
 
 	<Switch
-		android:id="@+id/device_list_switch_onoff"
+		android:id="@+id/switch_device_list_item_onoff"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
 

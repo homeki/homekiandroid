@@ -14,6 +14,9 @@ import android.view.View;
 public class MainActivity extends ActionBarActivity {
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
+	private MenuOption selectedMenuItem;
+	private View devicesMenu;
+	private View actionGroupsMenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,24 @@ public class MainActivity extends ActionBarActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
-		findViewById(R.id.devices_menu).setOnClickListener(new View.OnClickListener() {
+		devicesMenu = findViewById(R.id.devices_menu);
+		actionGroupsMenu = findViewById(R.id.action_groups_menu);
+
+		devicesMenu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				drawerLayout.closeDrawers();
-				v.setSelected(true);
-				changeFragment(new DeviceListFragment());
+				selectedMenuItem = MenuOption.DEVICES;
+				updateFragment();
+			}
+		});
+
+		actionGroupsMenu.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				drawerLayout.closeDrawers();
+				selectedMenuItem = MenuOption.ACTION_GROUPS;
+				updateFragment();
 			}
 		});
 
@@ -47,8 +62,41 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		findViewById(R.id.devices_menu).setSelected(true);
+		selectedMenuItem = MenuOption.DEVICES;
+		if (savedInstanceState != null && savedInstanceState.containsKey("selectedMenuItem")) selectedMenuItem = MenuOption.valueOf(savedInstanceState.getString("selectedMenuItem"));
+		updateFragment();
+	}
+
+	private void updateFragment() {
+		switch (selectedMenuItem) {
+			case ACTION_GROUPS:
+				showActionGroups();
+				break;
+			case DEVICES:
+			default:
+				showDevices();
+				break;
+		}
+	}
+
+	private void showDevices() {
+		devicesMenu.setSelected(true);
+		actionGroupsMenu.setSelected(false);
 		changeFragment(new DeviceListFragment());
+		selectedMenuItem = MenuOption.DEVICES;
+	}
+
+	private void showActionGroups() {
+		devicesMenu.setSelected(false);
+		actionGroupsMenu.setSelected(true);
+		changeFragment(new ActionGroupListFragment());
+		selectedMenuItem = MenuOption.ACTION_GROUPS;
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("selectedMenuItem", selectedMenuItem.toString());
 	}
 
 	private void changeFragment(Fragment fragment) {
@@ -67,5 +115,10 @@ public class MainActivity extends ActionBarActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		drawerToggle.syncState();
+	}
+
+	protected enum MenuOption {
+		DEVICES,
+		ACTION_GROUPS
 	}
 }
