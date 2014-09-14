@@ -7,20 +7,20 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.homeki.android.R;
-import com.homeki.android.model.devices.SwitchDevice;
-import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ApiClient;
 
-public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevice> {
+public class SwitchDeviceListItem extends DeviceListItem {
 	private Switch onOffSwitch;
 	private OnOffChangedListener onOffChangedListener;
 
-	public DeviceListItemSwitchView(Context context, ActionPerformer actionPerformer) {
-		super(context, actionPerformer);
-		onOffChangedListener = new OnOffChangedListener();
+	public SwitchDeviceListItem(Context context, ApiClient apiClient, ApiClient.JsonDevice jsonDevice) {
+		super(context, apiClient, jsonDevice);
 	}
 
 	@Override
 	protected void inflate(LayoutInflater layoutInflater) {
+		onOffChangedListener = new OnOffChangedListener();
+
 		layoutInflater.inflate(R.layout.device_list_switch, this);
 		nameView = (TextView) findViewById(R.id.device_list_switch_name);
 		onOffSwitch = (Switch) findViewById(R.id.device_list_switch_onoff);
@@ -29,18 +29,15 @@ public class DeviceListItemSwitchView extends AbstractDeviceListView<SwitchDevic
 	}
 
 	@Override
-	protected void onDeviceSet(SwitchDevice device) {
+	protected void updateView() {
 		onOffSwitch.setOnCheckedChangeListener(null);
-		onOffSwitch.setChecked(device.getValue());
+		onOffSwitch.setChecked(getChannelValue("Switch").intValue() > 0);
 		onOffSwitch.setOnCheckedChangeListener(onOffChangedListener);
 	}
 
 	private class OnOffChangedListener implements OnCheckedChangeListener {
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-			SwitchDevice device = (SwitchDevice) DeviceListItemSwitchView.this.device;
-			device.setValue(isChecked);
-
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			setChannelValue("Switch", isChecked ? 1 : 0);
 		}
 	}

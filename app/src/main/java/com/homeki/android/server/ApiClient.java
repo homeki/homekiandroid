@@ -4,18 +4,25 @@ import android.content.Context;
 import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.model.devices.DeviceBuilder;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import com.homeki.android.misc.Settings;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class ApiClient {
-	private static String TAG = ApiClient.class.getSimpleName();
+	private static final String TAG = ApiClient.class.getSimpleName();
+	private static final Gson GSON = new Gson();
 
 	private Context context;
 
@@ -23,172 +30,159 @@ public class ApiClient {
 		this.context = context;
 	}
 
-	private String getServerURL() {
+	private String getServerUrl() {
 		return "http://" + Settings.getServerUrl(context) + ":" + Settings.getServerPort(context) + "/api";
 	}
 
-	public List<Device> getAllDevices() {
-		Log.d(TAG, "getAllDevices()");
-
-		ArrayList<Device> devices = new ArrayList<>();
-		HttpURLConnection connection = null;
-
-		try {
-			connection = (HttpURLConnection) new URL(getServerURL() + "/devices").openConnection();
-			connection.setConnectTimeout(2000);
-
-			InputStream stream = connection.getInputStream();
-
-			String response = readStreamToEnd(stream);
-			Gson gson = new Gson();
-			DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
-
-			for (int i = 0; i < deviceArray.length; i++) {
-				Device device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].active, deviceArray[i].channels);
-				devices.add(device);
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "getAllDevices() " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			Log.d(TAG, "getAllDevices() disconnect");
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-
-		return devices;
+	public List<JsonDevice> getDevices() {
+		Log.i(TAG, "Fetching all devices.");
+		return get(getServerUrl() + "/devices", new TypeToken<List<JsonDevice>>(){}.getType());
 	}
 
 	public LatLng getServerLocation() {
-		Log.d(TAG, "getServerLocation()");
+		Log.i(TAG, "Fetching server location.");
+		JsonServer server = get(getServerUrl() + "/server", JsonServer.class);
+		return new LatLng(server.locationLatitude, server.locationLongitude);
+	}
 
-		HttpURLConnection connection = null;
+	public void registerClient(String id) {
+		Log.i(TAG, "Registering client " + id + ".");
+		post(getServerUrl() + "/clients", new JsonClient(id));
+	}
+
+	public void unregisterClient(String id) {
+		Log.i(TAG, "Unregistering client " + id + ".");
+		delete(getServerUrl() + "/clients/" + id);
+	}
+
+	public void setChannelValueForDevice(int deviceId, int channelId, int value) {
+		Log.i(TAG, "Setting channel " + channelId + " for device " + deviceId + " to " + value + ".");
+		post(getServerUrl() + "/devices/" + deviceId + "/channels/" + channelId, new JsonChannelValue(value));
+	}
+
+	private void post(String url, Object data) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setHeader("Content-Type", "application/json; charset=utf-8");
 
 		try {
-			connection = (HttpURLConnection) new URL(getServerURL() + "/server").openConnection();
-			connection.setConnectTimeout(2000);
+			httpPost.setEntity(new StringEntity(GSON.toJson(data)));
+			HttpResponse response = httpClient.execute(httpPost);
 
-			InputStream stream = connection.getInputStream();
-
-			String response = readStreamToEnd(stream);
-			Gson gson = new Gson();
-			JSONServer server = gson.fromJson(response, JSONServer.class);
-
-			return new LatLng(server.locationLatitude, server.locationLongitude);
-		} catch (Exception e) {
-			Log.e(TAG, "getServerLocation() " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			Log.d(TAG, "getServerLocation() disconnect");
-			if (connection != null) {
-				connection.disconnect();
+			int statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+				case 200:
+				case 201:
+					finish(response);
+					return;
+				default:
+					finish(response);
+					throw new RuntimeException("Unhandled response code " + statusCode + ".");
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-
-		return new LatLng(0, 0);
 	}
 
-	public void registerClient(String id) throws Exception {
-		HttpURLConnection connection = null;
+	private <T> T get(String url, Type type) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(url);
 
 		try {
-			Gson gson = new Gson();
-			connection = (HttpURLConnection) new URL(getServerURL() + "/clients").openConnection();
-			connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(1000);
+			HttpResponse response = httpClient.execute(httpGet);
 
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			String json = gson.toJson(new JSONClient(id));
-			writer.write(json);
-			writer.flush();
-
-			connection.getInputStream();
-		} finally {
-			Log.d(TAG, "registerClient() disconnect");
-			if (connection != null) {
-				connection.disconnect();
+			int statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+				case 200:
+					String json = EntityUtils.toString(response.getEntity());
+					return GSON.fromJson(json, type);
+				default:
+					finish(response);
+					throw new RuntimeException("Unhandled response code " + statusCode + ".");
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public void unregisterClient(String id) throws Exception {
-		HttpURLConnection connection = null;
+	private void delete(String url) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpDelete httpDelete = new HttpDelete(url);
 
 		try {
-			connection = (HttpURLConnection) new URL(getServerURL() + "/clients/" + id).openConnection();
-			connection.setRequestMethod("DELETE");
-			connection.setConnectTimeout(1000);
+			HttpResponse response = httpClient.execute(httpDelete);
 
-			connection.getInputStream();
-		} finally {
-			Log.d(TAG, "unregisterClient() disconnect");
-			if (connection != null) {
-				connection.disconnect();
+			int statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+				case 200:
+				case 201:
+					finish(response);
+					return;
+				default:
+					finish(response);
+					throw new RuntimeException("Unhandled response code " + statusCode + ".");
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public boolean setChannelValueForDevice(int deviceId, int channel, int value) {
-		HttpURLConnection connection = null;
-
-		try {
-			Gson gson = new Gson();
-			connection = (HttpURLConnection) new URL(getServerURL() + "/devices/" + deviceId + "/channels/" + channel).openConnection();
-			connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(1000);
-
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			String json = gson.toJson(new JSONChannelValue(value));
-			writer.write(json);
-			writer.flush();
-
-			connection.getInputStream();
-		} catch (Exception e) {
-			Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());
-			e.printStackTrace();
-
-			return false;
-		} finally {
-			Log.d(TAG, "setChannelValueForDevice() disconnect");
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-
-		return true;
+	private void finish(HttpResponse response) throws IOException {
+		if (response.getEntity() == null) return;
+		// consumeContent() will be renamed to finish() in next major, as it actually releases all resources
+		// and allows the underlying http connection to be reused.
+		// http://developer.android.com/reference/org/apache/http/HttpEntity.html#consumeContent()
+		response.getEntity().consumeContent();
 	}
 
-	private String readStreamToEnd(InputStream inputStream) throws IOException {
-		BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-		StringBuilder total = new StringBuilder();
-		String line;
-		while ((line = r.readLine()) != null) {
-			total.append(line);
-		}
-		return total.toString();
-	}
-
-	private class JSONServer {
+	private static class JsonServer {
 		public double locationLatitude;
 		public double locationLongitude;
 		public String name;
 	}
 
-	private class JSONClient {
+	public static enum DeviceType {
+		@SerializedName("switch")
+		SWITCH,
+
+		@SerializedName("switchmeter")
+		SWITCH_METER,
+
+		@SerializedName("dimmer")
+		DIMMER,
+
+		@SerializedName("thermometer")
+		THERMOMETER
+	}
+
+	public static class JsonDevice {
+		public DeviceType type;
+		public int deviceId;
+		public String name;
+		public String description;
+		public String added;
+		public boolean active;
+		public List<JsonDeviceChannel> channels;
+	}
+
+	public static class JsonDeviceChannel {
+		public int id;
+		public String name;
+		public Number lastValue;
+	}
+
+	private static class JsonClient {
 		public String id;
 
-		public JSONClient(String id) {
+		public JsonClient(String id) {
 			this.id = id;
 		}
 	}
 
-	private class JSONChannelValue {
+	private static class JsonChannelValue {
 		public int value;
 
-		public JSONChannelValue(int value) {
+		public JsonChannelValue(int value) {
 			this.value = value;
 		}
 	}

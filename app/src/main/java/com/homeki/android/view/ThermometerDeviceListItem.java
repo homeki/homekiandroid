@@ -4,17 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 import com.homeki.android.R;
-import com.homeki.android.model.devices.ThermometerDevice;
-import com.homeki.android.server.ActionPerformer;
+import com.homeki.android.server.ApiClient;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class DeviceListItemThermometerView extends AbstractDeviceListView<ThermometerDevice> {
+public class ThermometerDeviceListItem extends DeviceListItem {
 	private TextView temperatureView;
 	
-	public DeviceListItemThermometerView(Context context, ActionPerformer actionPerformer) {
-		super(context, actionPerformer);
+	public ThermometerDeviceListItem(Context context, ApiClient apiClient, ApiClient.JsonDevice jsonDevice) {
+		super(context, apiClient, jsonDevice);
 	}
 
 	@Override
@@ -25,8 +24,8 @@ public class DeviceListItemThermometerView extends AbstractDeviceListView<Thermo
 	}
 	
 	@Override
-	protected void onDeviceSet(ThermometerDevice device) {
-		double temp = device.getTemperature();
+	protected void updateView() {
+		double temp = getChannelValue("Temperature").doubleValue();
 		DecimalFormat df = new DecimalFormat("0.0");
 		df.setDecimalSeparatorAlwaysShown(true);
 		df.setRoundingMode(RoundingMode.HALF_UP);

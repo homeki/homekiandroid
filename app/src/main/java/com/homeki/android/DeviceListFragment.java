@@ -1,19 +1,19 @@
 package com.homeki.android;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-
+import android.util.Log;
 import android.widget.Toast;
-import com.homeki.android.model.DeviceListModel;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.server.ServerActionPerformer;
+import com.homeki.android.server.ApiClient;
 
 import java.util.List;
 
 public class DeviceListFragment extends ListFragment {
-	private DeviceListModel model;
+	private static final String TAG = DeviceListFragment.class.getSimpleName();
+
+	private ApiClient apiClient;
 	private DeviceListAdapter listAdapter;
 	private ProgressDialog progressDialog;
 
@@ -21,9 +21,8 @@ public class DeviceListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		model = DeviceListModel.getModel();
-		ActionPerformer actionPerformer = new ServerActionPerformer(getActivity());
-		listAdapter = new DeviceListAdapter(getActivity(), model, actionPerformer);
+		apiClient = new ApiClient(getActivity());
+		listAdapter = new DeviceListAdapter(getActivity(), apiClient);
 
 		progressDialog = new ProgressDialog(getActivity());
 		progressDialog.setIndeterminate(true);
@@ -33,23 +32,33 @@ public class DeviceListFragment extends ListFragment {
 
 	@Override
 	public void onResume() {
+		super.onResume();
+
 		progressDialog.show();
 
-		ActionPerformer actionPerformer = new ServerActionPerformer(getActivity());
-		actionPerformer.requestDeviceList(new ActionPerformer.OnDeviceListReceivedListener() {
+		new AsyncTask<Void, Void, List<ApiClient.JsonDevice>>() {
 			@Override
-			public void onDeviceListReceived(List<Device> devices) {
-				if (devices != null && devices.size() > 0) {
-					model.setDeviceList(devices);
-				} else {
+			protected List<ApiClient.JsonDevice> doInBackground(Void... params) {
+				try {
+					return apiClient.getDevices();
+				} catch (Exception e) {
+					Log.e(TAG, "Failed to get devices.", e);
+					return null;
+				}
+			}
+
+			@Override
+			protected void onPostExecute(List<ApiClient.JsonDevice> jsonDevices) {
+				progressDialog.dismiss();
+
+				if (jsonDevices == null) {
 					Toast.makeText(getActivity(), "Failed to get device list. Check server settings.", Toast.LENGTH_LONG).show();
+					return;
 				}
 
-				progressDialog.dismiss();
+				listAdapter.setDevices(jsonDevices);
 			}
-		});
-
-		super.onResume();
+		}.execute();
 	}
 
 	@Override

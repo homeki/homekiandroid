@@ -4,69 +4,59 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import com.homeki.android.server.ApiClient;
+import com.homeki.android.view.DimmerDeviceListItem;
+import com.homeki.android.view.SwitchDeviceListItem;
+import com.homeki.android.view.ThermometerDeviceListItem;
 
-import android.widget.ListAdapter;
-import com.homeki.android.model.DeviceListProvider;
-import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
-import com.homeki.android.model.devices.Device;
-import com.homeki.android.server.ActionPerformer;
-import com.homeki.android.view.AbstractDeviceListView;
-import com.homeki.android.view.DeviceListItemDimmerView;
-import com.homeki.android.view.DeviceListItemSwitchView;
-import com.homeki.android.view.DeviceListItemThermometerView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeviceListAdapter extends BaseAdapter {
-	private DeviceListProvider listProvider;
-	private ActionPerformer actionPerformer;
-	private Context context;
+	private final Context context;
+	private final ApiClient apiClient;
+	private List<ApiClient.JsonDevice> devices;
 
-	public DeviceListAdapter(Context context, DeviceListProvider listProvider, ActionPerformer actionPerformer) {
+	public DeviceListAdapter(Context context, ApiClient apiClient) {
 		this.context = context;
-		this.actionPerformer = actionPerformer;
-		this.listProvider = listProvider;
-		this.listProvider.addOnDeviceListChangedListener(new OnDeviceListChangedListener() {
-      @Override
-      public void onDeviceListChanged() {
-        notifyDataSetChanged();
-      }
-    });
+		this.apiClient = apiClient;
+		this.devices = new ArrayList<>();
+	}
+
+	public void setDevices(List<ApiClient.JsonDevice> devices) {
+		this.devices = devices;
+		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return listProvider.getDeviceCount();
+		return devices.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return listProvider.getDeviceAtPosition(position);
+		return devices.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return listProvider.getDeviceAtPosition(position).getId();
+		return devices.get(position).deviceId;
 	}
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		Device item = (Device) getItem(pos);
-		AbstractDeviceListView<?> view;
+		ApiClient.JsonDevice jsonDevice = devices.get(pos);
 
-		switch (item.getType()) {
+		switch (jsonDevice.type) {
 			case DIMMER:
-				view = new DeviceListItemDimmerView(context, actionPerformer);
-				break;
+				return new DimmerDeviceListItem(context, apiClient, jsonDevice);
 			case SWITCH:
-				view = new DeviceListItemSwitchView(context, actionPerformer);
-				break;
+			case SWITCH_METER:
+				return new SwitchDeviceListItem(context, apiClient, jsonDevice);
 			case THERMOMETER:
-				view = new DeviceListItemThermometerView(context, actionPerformer);
-				break;
+				return new ThermometerDeviceListItem(context, apiClient, jsonDevice);
 			default:
-				throw new RuntimeException("Found no corresponding view to device of type " + item.getType() + ".");
+				throw new RuntimeException("Found no view for device of type " + jsonDevice.type + ".");
 		}
-
-		view.setDevice(item);
-		return view;
 	}
 }
