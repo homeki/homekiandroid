@@ -19,11 +19,13 @@
 
 		<TextView
 			android:id="@+id/devices_menu"
+			android:drawableLeft="@drawable/ic_action_view_as_grid"
 			style="@style/MenuItem"
 			android:text="Devices" />
 
 		<TextView
 			android:id="@+id/action_groups_menu"
+			android:drawableLeft="@drawable/ic_action_labels"
 			style="@style/MenuItem"
 			android:text="Action groups" />
 
@@ -34,6 +36,7 @@
 
 		<TextView
 			android:id="@+id/settings_menu"
+			android:drawableLeft="@drawable/ic_action_settings"
 			style="@style/MenuItem"
 			android:text="Settings" />
 	</LinearLayout>

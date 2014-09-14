@@ -3,12 +3,15 @@
 	<style name="AppTheme" parent="Theme.AppCompat.Light" />
 
 	<style name="MenuItem" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">#505050</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:paddingLeft">@dimen/padding_large</item>
 		<item name="android:paddingTop">@dimen/padding_medium</item>
 		<item name="android:paddingBottom">@dimen/padding_medium</item>
 		<item name="android:background">@drawable/selector</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:includeFontPadding">false</item>
 	</style>
 
 </resources>
