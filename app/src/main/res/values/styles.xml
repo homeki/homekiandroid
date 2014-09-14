@@ -2,12 +2,13 @@
 
 	<style name="AppTheme" parent="Theme.AppCompat.Light" />
 
-	<style name="ListItemName">
-		<item name="android:textSize">20sp</item>
-	</style>
-
-	<style name="ListItemValue">
-		<item name="android:textSize">20sp</item>
+	<style name="MenuItem" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:paddingLeft">@dimen/padding_large</item>
+		<item name="android:paddingTop">@dimen/padding_medium</item>
+		<item name="android:paddingBottom">@dimen/padding_medium</item>
+		<item name="android:background">@drawable/selector</item>
 	</style>
 
 </resources>

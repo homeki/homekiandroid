@@ -19,24 +19,12 @@
 
 		<TextView
 			android:id="@+id/devices_menu"
-			style="@style/ListItemName"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="@dimen/padding_large"
-			android:paddingTop="@dimen/padding_medium"
-			android:paddingBottom="@dimen/padding_medium"
-			android:background="@drawable/selector"
+			style="@style/MenuItem"
 			android:text="Devices" />
 
 		<TextView
 			android:id="@+id/action_groups_menu"
-			style="@style/ListItemName"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="@dimen/padding_large"
-			android:paddingTop="@dimen/padding_medium"
-			android:paddingBottom="@dimen/padding_medium"
-			android:background="@drawable/selector"
+			style="@style/MenuItem"
 			android:text="Action groups" />
 
 		<View
@@ -46,12 +34,7 @@
 
 		<TextView
 			android:id="@+id/settings_menu"
-			style="@style/ListItemName"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="@dimen/padding_large"
-			android:paddingTop="@dimen/padding_medium"
-			android:paddingBottom="@dimen/padding_medium"
+			style="@style/MenuItem"
 			android:text="Settings" />
 	</LinearLayout>
 
