@@ -7,7 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import com.homeki.android.reporter.GeofencingIntentService;
 import com.homeki.android.reporter.ReporterTask;
-import com.homeki.android.server.RestClient;
+import com.homeki.android.server.ApiClient;
 import com.homeki.android.misc.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
@@ -33,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
 				boolean enabled = Settings.isClientRegisteringEnabled(context);
 
 				if (enabled) {
-					RestClient client = new RestClient(context);
+					ApiClient client = new ApiClient(context);
 					Settings.setServerLocation(context, client.getServerLocation());
 				} else {
 					// unregister one last time

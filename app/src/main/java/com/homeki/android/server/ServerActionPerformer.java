@@ -11,12 +11,12 @@ import java.util.List;
 public class ServerActionPerformer implements ActionPerformer {
 	private static String TAG = ServerActionPerformer.class.getSimpleName();
 
-	private RestClient client;
+	private ApiClient client;
 	private Context context;
 
 	public ServerActionPerformer(Context context) {
 		this.context = context;
-		this.client = new RestClient(context);
+		this.client = new ApiClient(context);
 	}
 
 	public void requestDeviceList(final OnDeviceListReceivedListener listener) {

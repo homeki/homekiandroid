@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.homeki.android.R;
-import com.homeki.android.server.RestClient;
+import com.homeki.android.server.ApiClient;
 import com.homeki.android.misc.Settings;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class ReporterTask implements Runnable {
 			return;
 		}
 
-		RestClient client = new RestClient(context);
+		ApiClient client = new ApiClient(context);
 		String guid = UUID.randomUUID().toString();
 		try {
 			client.registerClient(guid);
@@ -55,7 +55,7 @@ public class ReporterTask implements Runnable {
 			return;
 		}
 
-		RestClient client = new RestClient(context);
+		ApiClient client = new ApiClient(context);
 		String guid = Settings.getRegisteredClientGuid(context);
 		try {
 			client.unregisterClient(guid);

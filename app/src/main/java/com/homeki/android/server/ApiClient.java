@@ -14,12 +14,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestClient {
-	private static String TAG = RestClient.class.getSimpleName();
+public class ApiClient {
+	private static String TAG = ApiClient.class.getSimpleName();
 
 	private Context context;
 
-	public RestClient(Context context) {
+	public ApiClient(Context context) {
 		this.context = context;
 	}
 
