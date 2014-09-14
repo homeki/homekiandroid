@@ -25,8 +25,6 @@ public class DeviceListFragment extends ListFragment {
 		ActionPerformer actionPerformer = new ServerActionPerformer(getActivity());
 		listAdapter = new DeviceListAdapter(getActivity(), model, actionPerformer);
 
-		model = DeviceListModel.getModel();
-
 		progressDialog = new ProgressDialog(getActivity());
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCanceledOnTouchOutside(false);

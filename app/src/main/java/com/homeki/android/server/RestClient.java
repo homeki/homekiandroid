@@ -15,181 +15,181 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestClient {
-    private static String TAG = RestClient.class.getSimpleName();
+	private static String TAG = RestClient.class.getSimpleName();
 
-    private Context context;
+	private Context context;
 
-    public RestClient(Context context) {
-        this.context = context;
-    }
+	public RestClient(Context context) {
+		this.context = context;
+	}
 
-    private String getServerURL() {
-        return "http://" + Settings.getServerUrl(context) + ":" + Settings.getServerPort(context) + "/api";
-    }
+	private String getServerURL() {
+		return "http://" + Settings.getServerUrl(context) + ":" + Settings.getServerPort(context) + "/api";
+	}
 
-    public List<Device> getAllDevices() {
-        Log.d(TAG, "getAllDevices()");
+	public List<Device> getAllDevices() {
+		Log.d(TAG, "getAllDevices()");
 
-        ArrayList<Device> devices = new ArrayList<>();
-        HttpURLConnection connection = null;
+		ArrayList<Device> devices = new ArrayList<>();
+		HttpURLConnection connection = null;
 
-        try {
-            connection = (HttpURLConnection) new URL(getServerURL() + "/devices").openConnection();
-            connection.setConnectTimeout(2000);
+		try {
+			connection = (HttpURLConnection) new URL(getServerURL() + "/devices").openConnection();
+			connection.setConnectTimeout(2000);
 
-            InputStream stream = connection.getInputStream();
+			InputStream stream = connection.getInputStream();
 
-            String response = readStreamToEnd(stream);
-            Gson gson = new Gson();
-            DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
+			String response = readStreamToEnd(stream);
+			Gson gson = new Gson();
+			DeviceBuilder.Device[] deviceArray = gson.fromJson(response, DeviceBuilder.Device[].class);
 
-            for (int i = 0; i < deviceArray.length; i++) {
-                Device device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].active, deviceArray[i].channels);
-                devices.add(device);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "getAllDevices() " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            Log.d(TAG, "getAllDevices() disconnect");
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+			for (int i = 0; i < deviceArray.length; i++) {
+				Device device = DeviceBuilder.build(deviceArray[i].type, deviceArray[i].deviceId, deviceArray[i].name, deviceArray[i].description, deviceArray[i].active, deviceArray[i].channels);
+				devices.add(device);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "getAllDevices() " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			Log.d(TAG, "getAllDevices() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 
-        return devices;
-    }
+		return devices;
+	}
 
-    public LatLng getServerLocation() {
-        Log.d(TAG, "getServerLocation()");
+	public LatLng getServerLocation() {
+		Log.d(TAG, "getServerLocation()");
 
-        HttpURLConnection connection = null;
+		HttpURLConnection connection = null;
 
-        try {
-            connection = (HttpURLConnection) new URL(getServerURL() + "/server").openConnection();
-            connection.setConnectTimeout(2000);
+		try {
+			connection = (HttpURLConnection) new URL(getServerURL() + "/server").openConnection();
+			connection.setConnectTimeout(2000);
 
-            InputStream stream = connection.getInputStream();
+			InputStream stream = connection.getInputStream();
 
-            String response = readStreamToEnd(stream);
-            Gson gson = new Gson();
-            JSONServer server = gson.fromJson(response, JSONServer.class);
+			String response = readStreamToEnd(stream);
+			Gson gson = new Gson();
+			JSONServer server = gson.fromJson(response, JSONServer.class);
 
-            return new LatLng(server.locationLatitude, server.locationLongitude);
-        } catch (Exception e) {
-            Log.e(TAG, "getServerLocation() " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            Log.d(TAG, "getServerLocation() disconnect");
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+			return new LatLng(server.locationLatitude, server.locationLongitude);
+		} catch (Exception e) {
+			Log.e(TAG, "getServerLocation() " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			Log.d(TAG, "getServerLocation() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 
-        return new LatLng(0, 0);
-    }
+		return new LatLng(0, 0);
+	}
 
-    public void registerClient(String id) throws Exception {
-        HttpURLConnection connection = null;
+	public void registerClient(String id) throws Exception {
+		HttpURLConnection connection = null;
 
-        try {
-            Gson gson = new Gson();
-            connection = (HttpURLConnection) new URL(getServerURL() + "/clients").openConnection();
-            connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(1000);
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "/clients").openConnection();
+			connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
 
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            String json = gson.toJson(new JSONClient(id));
-            writer.write(json);
-            writer.flush();
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONClient(id));
+			writer.write(json);
+			writer.flush();
 
-            connection.getInputStream();
-        } finally {
-            Log.d(TAG, "registerClient() disconnect");
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
+			connection.getInputStream();
+		} finally {
+			Log.d(TAG, "registerClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
 
-    public void unregisterClient(String id) throws Exception {
-        HttpURLConnection connection = null;
+	public void unregisterClient(String id) throws Exception {
+		HttpURLConnection connection = null;
 
-        try {
-            connection = (HttpURLConnection) new URL(getServerURL() + "/clients/" + id).openConnection();
-            connection.setRequestMethod("DELETE");
-            connection.setConnectTimeout(1000);
+		try {
+			connection = (HttpURLConnection) new URL(getServerURL() + "/clients/" + id).openConnection();
+			connection.setRequestMethod("DELETE");
+			connection.setConnectTimeout(1000);
 
-            connection.getInputStream();
-        } finally {
-            Log.d(TAG, "unregisterClient() disconnect");
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
+			connection.getInputStream();
+		} finally {
+			Log.d(TAG, "unregisterClient() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
 
-    public boolean setChannelValueForDevice(int deviceId, int channel, int value) {
-        HttpURLConnection connection = null;
+	public boolean setChannelValueForDevice(int deviceId, int channel, int value) {
+		HttpURLConnection connection = null;
 
-        try {
-            Gson gson = new Gson();
-            connection = (HttpURLConnection) new URL(getServerURL() + "/devices/" + deviceId + "/channels/" + channel).openConnection();
-            connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(1000);
+		try {
+			Gson gson = new Gson();
+			connection = (HttpURLConnection) new URL(getServerURL() + "/devices/" + deviceId + "/channels/" + channel).openConnection();
+			connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(1000);
 
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            String json = gson.toJson(new JSONChannelValue(value));
-            writer.write(json);
-            writer.flush();
+			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			String json = gson.toJson(new JSONChannelValue(value));
+			writer.write(json);
+			writer.flush();
 
-            connection.getInputStream();
-        } catch (Exception e) {
-            Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());
-            e.printStackTrace();
+			connection.getInputStream();
+		} catch (Exception e) {
+			Log.e(TAG, "setChannelValueForDevice() " + e.getMessage());
+			e.printStackTrace();
 
-            return false;
-        } finally {
-            Log.d(TAG, "setChannelValueForDevice() disconnect");
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+			return false;
+		} finally {
+			Log.d(TAG, "setChannelValueForDevice() disconnect");
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    private String readStreamToEnd(InputStream inputStream) throws IOException {
-        BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder total = new StringBuilder();
-        String line;
-        while ((line = r.readLine()) != null) {
-            total.append(line);
-        }
-        return total.toString();
-    }
+	private String readStreamToEnd(InputStream inputStream) throws IOException {
+		BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+		StringBuilder total = new StringBuilder();
+		String line;
+		while ((line = r.readLine()) != null) {
+			total.append(line);
+		}
+		return total.toString();
+	}
 
-    private class JSONServer {
-        public double locationLatitude;
-        public double locationLongitude;
-        public String name;
-    }
+	private class JSONServer {
+		public double locationLatitude;
+		public double locationLongitude;
+		public String name;
+	}
 
-    private class JSONClient {
-        public String id;
+	private class JSONClient {
+		public String id;
 
-        public JSONClient(String id) {
-            this.id = id;
-        }
-    }
+		public JSONClient(String id) {
+			this.id = id;
+		}
+	}
 
-    private class JSONChannelValue {
-        public int value;
+	private class JSONChannelValue {
+		public int value;
 
-        public JSONChannelValue(int value) {
-            this.value = value;
-        }
-    }
+		public JSONChannelValue(int value) {
+			this.value = value;
+		}
+	}
 }

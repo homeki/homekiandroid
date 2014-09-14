@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import android.widget.ListAdapter;
 import com.homeki.android.model.DeviceListProvider;
 import com.homeki.android.model.DeviceListProvider.OnDeviceListChangedListener;
 import com.homeki.android.model.devices.Device;

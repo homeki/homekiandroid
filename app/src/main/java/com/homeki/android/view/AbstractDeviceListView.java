@@ -26,9 +26,7 @@ public abstract class AbstractDeviceListView<T extends Device> extends LinearLay
 	@Override
 	public void setDevice(Device device) {
 		this.device = device;
-
 		nameView.setText(device.getName());
-
 		onDeviceSet((T) device);
 	}
 
