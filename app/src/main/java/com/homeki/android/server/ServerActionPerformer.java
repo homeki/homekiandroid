@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.homeki.android.model.devices.Device;
-import com.homeki.android.settings.Settings;
+import com.homeki.android.misc.Settings;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.homeki.android.settings;
+package com.homeki.android.misc;
 
 import android.content.Context;
 import android.content.SharedPreferences;

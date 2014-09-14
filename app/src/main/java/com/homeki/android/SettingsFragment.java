@@ -8,7 +8,7 @@ import android.preference.PreferenceFragment;
 import com.homeki.android.reporter.GeofencingIntentService;
 import com.homeki.android.reporter.ReporterTask;
 import com.homeki.android.server.RestClient;
-import com.homeki.android.settings.Settings;
+import com.homeki.android.misc.Settings;
 
 public class SettingsFragment extends PreferenceFragment {
 	@Override

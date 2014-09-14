@@ -6,7 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.homeki.android.model.devices.Device;
 import com.homeki.android.model.devices.DeviceBuilder;
-import com.homeki.android.settings.Settings;
+import com.homeki.android.misc.Settings;
 
 import java.io.*;
 import java.net.HttpURLConnection;

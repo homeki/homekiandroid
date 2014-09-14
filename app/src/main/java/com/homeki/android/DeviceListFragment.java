@@ -13,7 +13,6 @@ import com.homeki.android.server.ServerActionPerformer;
 import java.util.List;
 
 public class DeviceListFragment extends ListFragment {
-	private ActionPerformer actionPerformer;
 	private DeviceListModel model;
 	private DeviceListAdapter listAdapter;
 	private ProgressDialog progressDialog;
@@ -23,7 +22,7 @@ public class DeviceListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		model = DeviceListModel.getModel();
-		actionPerformer = new ServerActionPerformer(getActivity());
+		ActionPerformer actionPerformer = new ServerActionPerformer(getActivity());
 		listAdapter = new DeviceListAdapter(getActivity(), model, actionPerformer);
 
 		model = DeviceListModel.getModel();
