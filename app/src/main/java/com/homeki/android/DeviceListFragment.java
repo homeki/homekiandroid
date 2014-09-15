@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.widget.Toast;
+import com.homeki.android.misc.Settings;
 import com.homeki.android.server.ApiClient;
+import com.homeki.android.server.ServerLocator;
 
 import java.util.List;
 
@@ -41,9 +43,24 @@ public class DeviceListFragment extends ListFragment {
 			protected List<ApiClient.JsonDevice> doInBackground(Void... params) {
 				try {
 					return apiClient.getDevices();
-				} catch (Exception e) {
-					Log.e(TAG, "Failed to get devices.", e);
-					return null;
+				} catch (Exception e1) {
+					Log.e(TAG, "Failed to get devices, trying to locate on wifi.", e1);
+
+					try {
+						String hostname = ServerLocator.locateServerOnWifi();
+						Settings.setServerUrl(DeviceListFragment.this.getActivity(), hostname);
+					} catch (Exception e2) {
+						Log.e(TAG, "Failed to locate server on wifi, giving up.", e2);
+						return null;
+					}
+
+					try {
+						Log.i(TAG, "Retrying device fetch using server located on wifi.");
+						return apiClient.getDevices();
+					} catch (Exception e2) {
+						Log.e(TAG, "Failed to get devices.", e2);
+						return null;
+					}
 				}
 			}
 

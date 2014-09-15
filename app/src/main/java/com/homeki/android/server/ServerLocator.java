@@ -4,8 +4,9 @@ import android.util.Log;
 import com.homeki.android.misc.Misc;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 public class ServerLocator {
 	private static String TAG = ServerLocator.class.getSimpleName();
@@ -15,12 +16,14 @@ public class ServerLocator {
 		
 		DatagramSocket socket = null;
 
+		Log.i(TAG, "Waiting for broadcast...");
+
 		try {
 			byte[] receiveData = new byte[512];
 			DatagramPacket pack = new DatagramPacket(receiveData, receiveData.length);
 
 			socket = new DatagramSocket(1337);
-			socket.setSoTimeout(5000);
+			socket.setSoTimeout(7500);
 			socket.receive(pack);
 
 			String[] data = new String(receiveData, 0, pack.getLength()).split("\\|");
@@ -51,6 +54,8 @@ public class ServerLocator {
 		public void run() {
 			// wait to avoid a racing scenario on sending request and starting to listen for response
 			Misc.sleep(500);
+
+			Log.i(TAG, "Sending broadcast.");
 
 			try {
 				byte[] data = "HOMEKI".getBytes("utf-8");
