@@ -19,9 +19,12 @@ public class ActionGroupListItem extends LinearLayout {
 
 		LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layoutInflater.inflate(R.layout.action_group_list_item, this);
+
 		TextView nameView = (TextView) findViewById(R.id.action_group_list_item_name);
 		nameView.setText(jsonActionGroup.name);
-		nameView.setOnClickListener(new OnClickListener() {
+
+		View containerView = findViewById(R.id.action_group_list_item_container);
+		containerView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				new AsyncTask<Void, Void, Boolean>() {
